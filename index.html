@@ -492,6 +492,19 @@ footer .jp{font-size:24px}
     $("strip").appendChild(b);
   });
 
+  /* ---- ссылки на разделы: плавная прокрутка без #раздела в адресе ---- */
+  document.addEventListener("click", function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if(!a || a.target || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    var id = a.getAttribute("href").slice(1);
+    if(!id) return;
+    var el = id === "top" ? null : document.getElementById(id);
+    if(id !== "top" && !el) return;
+    e.preventDefault();
+    if(el) el.scrollIntoView({ behavior: "smooth" }); else window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  if(location.hash && history.replaceState) history.replaceState(null, "", location.pathname + location.search);
+
   /* ---- новости ---- */
   var NEWS = (window.NEWS || []).filter(function(n){ return n && (n.title || n.text); });
   if(NEWS.length){
