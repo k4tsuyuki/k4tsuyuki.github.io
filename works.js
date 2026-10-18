@@ -32,17 +32,17 @@ window.SITE = {
    --------------------------------------------------------------------- */
 
 window.WORKS = [
-  { title: "Archetype 3HC",              year: "2026", link: "https://www.youtube.com/watch?v=YSs2BbX69Fo", tags: ["AMV"] },
+  { title: "Archetype 3HC",              year: "2026", link: "https://www.youtube.com/watch?v=YSs2BbX69Fo", tags: ["AMV", "4K"] },
   { title: "Sing Me to Sleep",           year: "2026", link: "https://youtu.be/gpQxpaTkwDQ", tags: ["AMV", "4K"] },
   { title: "Save Me × Legendary Lovers", year: "2026", link: "https://youtu.be/_Asoua2qE_0", tags: ["AMV", "4K"] },
-  { title: "Forever Young",              year: "2026", link: "https://youtu.be/gxeuKaxkKi8", tags: ["AMV"] },
-  { title: "Transgender 2",              year: "2026", link: "https://youtu.be/xv_AfLaNKWQ", tags: ["AMV", "Collab", "Loop"] },
+  { title: "Forever Young",              year: "2026", link: "https://youtu.be/gxeuKaxkKi8", tags: ["AMV", "4K"] },
+  { title: "Transgender 2",              year: "2026", link: "https://youtu.be/xv_AfLaNKWQ", tags: ["AMV", "Collab", "4K"] },
   { title: "Cachalot",                   year: "2026", link: "https://youtu.be/k-nNshOo_9o", tags: ["AMV", "Collab", "4K"] },
   { title: "Spokoynaya Noch",            year: "2026", link: "https://youtu.be/oNwfnxYTpaw", tags: ["AMV", "4K"] },
-  { title: "I'm God",                    year: "2026", link: "https://youtu.be/38tOSZbfzXk", tags: ["AMV"] },
+  { title: "I'm God",                    year: "2026", link: "https://youtu.be/38tOSZbfzXk", tags: ["AMV", "4K"] },
   { title: "Missing Textures",           year: "2026", link: "https://youtu.be/wH6_dg3BL80", tags: ["AMV", "4K"] },
-  { title: "Transgender",                year: "2025", link: "https://youtu.be/hvh8QtzKZQA", tags: ["AMV"] },
-  { title: "Just Ur Doll",               year: "2025", link: "https://youtu.be/TWAUvWGPW7k", tags: ["AMV"] },
-  { title: "Under Your Spell",           year: "2025", link: "https://youtu.be/f5h1Djyj19M", tags: ["AMV"] },
-  { title: "Can't Feel Myself",          year: "2024", link: "https://youtu.be/xg8joSFOHxU", tags: ["AMV", "Animation"] }
+  { title: "Transgender",                year: "2025", link: "https://youtu.be/hvh8QtzKZQA", tags: ["AMV", "4K"] },
+  { title: "Just Ur Doll",               year: "2025", link: "https://youtu.be/TWAUvWGPW7k", tags: ["AMV", "4K"] },
+  { title: "Under Your Spell",           year: "2025", link: "https://youtu.be/f5h1Djyj19M", tags: ["AMV", "4K"] },
+  { title: "Can't Feel Myself",          year: "2024", link: "https://youtu.be/xg8joSFOHxU", tags: ["MMV", "4K"] }
 ];

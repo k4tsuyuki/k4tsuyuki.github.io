@@ -118,7 +118,8 @@ footer .jp{font-size:24px}
 .p-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));display:flex;gap:8px;align-items:center}
 .stage{position:relative;width:min(100%,calc((100vh - 230px) * 16 / 9));aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
 .stage.fake-fs{position:fixed;inset:0;width:100%!important;height:100%;aspect-ratio:auto;z-index:85}
-.yt{position:absolute;left:0;top:-50%;width:100%;height:200%;pointer-events:none}
+/* плеер рендерится вдвое больше и сжимается: YouTube видит большой экран и отдаёт более высокое качество */
+.yt{position:absolute;left:0;top:-50%;width:200%;height:400%;transform:scale(.5);transform-origin:0 0;pointer-events:none}
 .yt iframe{width:100%;height:100%;border:0;display:block}
 .shield{position:absolute;inset:0;z-index:2;cursor:pointer}
 .poster{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:#000;transition:opacity .4s}
@@ -131,10 +132,11 @@ footer .jp{font-size:24px}
 .p-note{max-width:40ch;color:var(--ash);margin:0}
 .p-note a{color:var(--paper);text-decoration:underline}
 .bar,.p-title{width:min(100%,calc((100vh - 230px) * 16 / 9))}
-.bar{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto auto;gap:14px;align-items:center}
+.bar{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto auto auto;gap:14px;align-items:center}
 .ctl{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--hair);border-radius:50%}
 .ctl:hover{border-color:var(--paper)}
 .ctl svg{width:14px;height:14px}
+.yt-link{font-size:10px;font-weight:700;letter-spacing:.02em}
 .time{font-variant-numeric:tabular-nums;color:var(--ash);white-space:nowrap}
 .seek{position:relative;height:22px;cursor:pointer;touch-action:none}
 .seek::before{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:var(--hair)}
@@ -155,7 +157,7 @@ footer .jp{font-size:24px}
   .card.big{grid-template-columns:minmax(0,1fr)}
   .c-row{grid-template-columns:minmax(0,1fr) auto}
   .c-row .lb:first-child{grid-column:1/-1;margin-bottom:-8px}
-  .bar{grid-template-columns:auto minmax(0,1fr) auto auto auto;gap:10px}
+  .bar{grid-template-columns:auto minmax(0,1fr) auto auto auto auto;gap:10px}
   .bar .cur{display:none}
   .top .who .m{display:none}
 }
@@ -198,7 +200,7 @@ footer .jp{font-size:24px}
 
     <div class="sheet">
       <div class="sheet-head lb">
-        <span>Portfolio no. <span id="yearNow">2026</span></span>
+        <span>Anime edits / <span id="yearNow">2026</span></span>
         <span style="display:flex;gap:10px;align-items:flex-start"><span class="tate jp">編集</span><span class="dots" aria-hidden="true"><i></i><i></i></span></span>
       </div>
       <div class="lb stack para">
@@ -275,6 +277,7 @@ footer .jp{font-size:24px}
     <span class="time" id="tDur">00:00</span>
     <button class="ctl" id="pMute" aria-label="Mute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="icMute"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 010 6M19 6a8 8 0 010 12"/></svg></button>
     <button class="ctl" id="pFs" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    <a class="ctl yt-link" id="pYt" href="#" target="_blank" rel="noopener" title="Open on YouTube (choose quality there)" aria-label="Open on YouTube">YT</a>
   </div>
   <div class="p-title"><h3 id="pTitle"></h3><span class="lb m" id="pMeta"></span></div>
 </div>
@@ -404,9 +407,9 @@ footer .jp{font-size:24px}
       yp = new YT.Player("ytMount", {
         host: "https://www.youtube-nocookie.com",
         videoId: w.id,
-        playerVars: { autoplay:1, controls:0, disablekb:1, fs:0, iv_load_policy:3, modestbranding:1, rel:0, playsinline:1 },
+        playerVars: { autoplay:1, controls:0, disablekb:1, fs:0, iv_load_policy:3, modestbranding:1, rel:0, playsinline:1, vq:"hd2160" },
         events: {
-          onReady: function(e){ e.target.playVideo(); syncMute(); },
+          onReady: function(e){ try{ e.target.setPlaybackQuality("highres"); }catch(err){} e.target.playVideo(); syncMute(); },
           onStateChange: onState,
           onError: function(){ note("This video can't be embedded. " + ytLink(w)); }
         }
@@ -439,6 +442,12 @@ footer .jp{font-size:24px}
     setTimeout(function(){ if(!cur) P.hidden = true; }, 300);
   }
 
+  $("pYt").addEventListener("click", function(e){
+    if(!cur || !cur.id){ e.preventDefault(); return; }
+    var t = (yp && yp.getCurrentTime) ? Math.floor(yp.getCurrentTime()) : 0;
+    this.href = "https://www.youtube.com/watch?v=" + cur.id + (t ? "&t=" + t + "s" : "");
+    if(yp && yp.pauseVideo) yp.pauseVideo();
+  });
   $("shield").addEventListener("click", toggle);
   $("bigPlay").addEventListener("click", toggle);
   $("pToggle").addEventListener("click", toggle);
