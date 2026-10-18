@@ -95,10 +95,33 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .grow{flex:1}
 .name{font-weight:400;font-size:clamp(64px,10.4vw,168px);line-height:.86;letter-spacing:-.035em;margin:0;overflow-wrap:anywhere}
 .name{display:flex;justify-content:center}
-.name img{display:block;width:min(100%,640px);height:auto;animation:rise 1.1s cubic-bezier(.2,.7,.1,1) both}
+.name img{display:block;width:min(82%,600px);margin-inline:auto;height:auto;animation:rise 1.1s cubic-bezier(.2,.7,.1,1) both}
 .top .logo{height:26px;width:auto}
 @keyframes rise{from{transform:translateY(18%);opacity:0}to{transform:none;opacity:1}}
 .tags{display:flex;gap:4px;flex-wrap:wrap}
+/* статус + таймкод */
+.status{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:10px;border-block:1px solid var(--hair)}
+.status .on{display:inline-flex;align-items:center;gap:8px}
+.status .on i{width:7px;height:7px;border-radius:50%;background:var(--paper);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.tc{display:inline-flex;gap:12px;font-variant-numeric:tabular-nums}
+.tc .rec{display:inline-flex;align-items:center;gap:6px}
+.tc .rec i{width:7px;height:7px;border-radius:50%;border:1px solid var(--paper)}
+/* логотип с катаканой */
+.hero-mark{position:relative;display:grid;place-items:center}
+.kana{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;pointer-events:none;user-select:none}
+.kana span{writing-mode:vertical-rl;font-family:var(--f-jp);font-weight:500;font-size:clamp(13px,1.1vw,16px);letter-spacing:.6em;color:var(--ash)}
+/* плёнка последних работ */
+.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mini{display:flex;flex-direction:column;gap:8px;min-width:0;text-align:left}
+.mini .frame{border:0}
+.mini .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini:hover .frame img,.mini:focus-visible .frame img{filter:grayscale(0) contrast(1.02) brightness(.95);transform:scale(1.04)}
+.mini .frame .ph{font-size:clamp(16px,1.6vw,22px)}
+.sheet-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.socials{display:flex;gap:14px;flex-wrap:wrap}
+.socials a{color:var(--ash);transition:color .3s}
+.socials a:hover{color:var(--paper)}
 .foot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end}
 .num{font-size:clamp(88px,12vw,190px);line-height:.78;letter-spacing:-.04em;font-weight:400;font-variant-numeric:tabular-nums}
 .tate{writing-mode:vertical-rl;font-size:13px;letter-spacing:.35em;color:var(--ash)}
@@ -222,16 +245,28 @@ footer .jp{font-size:24px}
     <div class="sheet">
       <div class="sheet-head lb">
         <span data-i18n="head">Katsuyuki / video editor</span>
-        <span style="display:flex;gap:10px;align-items:flex-start"><span class="tate jp">編集</span><span class="dots" aria-hidden="true"><i></i><i></i></span></span>
+        <span class="dots" aria-hidden="true"><i></i><i></i></span>
       </div>
       <div class="lb cols">
         <div><span data-i18n="works">Works</span><br><a href="#works" class="m" data-i18n="see_all">See all ↓</a></div>
         <div><span data-i18n="contact">Contact</span><br><a href="#contact" class="m" id="mailTop">vplisetskyi@gmail.com</a></div>
       </div>
+      <div class="status lb">
+        <span class="on"><i></i><span data-i18n="open">Open for commissions</span></span>
+        <span class="tc m"><span class="rec"><i></i>REC</span><span id="timecode">00:00:00:00</span><span>24 FPS</span></span>
+      </div>
       <div class="grow"></div>
-      <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"></h1>
+      <div class="hero-mark">
+        <div class="kana" aria-hidden="true"><span>カツユキ</span><span>編集者</span></div>
+        <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"></h1>
+      </div>
       <div class="grow"></div>
-      <div class="tags"><span class="pill">AMV</span><span class="pill">MMV</span><span class="pill">4K</span></div>
+      <div class="lb m" data-i18n="recent">Recent</div>
+      <div class="strip" id="strip"></div>
+      <div class="sheet-foot">
+        <div class="tags"><span class="pill">AMV</span><span class="pill">MMV</span><span class="pill">4K</span></div>
+        <div class="socials lb" id="socials"></div>
+      </div>
     </div>
   </div>
 
@@ -306,13 +341,13 @@ footer .jp{font-size:24px}
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", onyt:"Watch on YouTube ↗", lang_to:"EN", lang_aria:"Switch to Ukrainian", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗", lang_to:"EN", lang_aria:"Switch to Ukrainian", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", onyt:"Дивитися на YouTube ↗", lang_to:"УКР", lang_aria:"Перейти на англійську", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗", lang_to:"УКР", lang_aria:"Перейти на англійську", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -398,6 +433,38 @@ footer .jp{font-size:24px}
     b.addEventListener("click", function(){ openPlayer(w); });
     $("grid").appendChild(b);
   });
+
+  /* ---- плёнка последних работ (2–4) ---- */
+  WORKS.slice(1, 4).forEach(function(w){
+    var b = document.createElement("button");
+    b.className = "mini lb";
+    b.setAttribute("aria-label", w.title);
+    b.innerHTML = '<div class="frame"><img alt="" loading="lazy"><div class="ph" hidden></div></div><span class="t"></span>';
+    b.querySelector(".t").textContent = w.title;
+    b.querySelector(".ph").textContent = w.title;
+    var img = b.querySelector("img");
+    thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; });
+    b.addEventListener("click", function(){ openPlayer(w); });
+    $("strip").appendChild(b);
+  });
+
+  /* ---- соцсети коротко ---- */
+  var SHORT = { Telegram:"TG", Instagram:"IG", Steam:"Steam", Discord:"Discord" };
+  (SITE.contacts||[]).forEach(function(c){
+    if(!SHORT[c.label]) return;
+    var a = document.createElement("a");
+    a.textContent = SHORT[c.label];
+    if(c.url){ a.href = c.url; a.target = "_blank"; a.rel = "noopener"; } else { a.href = "#contact"; }
+    $("socials").appendChild(a);
+  });
+
+  /* ---- таймкод ---- */
+  var t0 = performance.now();
+  (function tick(){
+    var f = Math.floor((performance.now() - t0) / 1000 * 24);
+    txt("timecode", pad(Math.floor(f/86400)%24) + ":" + pad(Math.floor(f/1440)%60) + ":" + pad(Math.floor(f/24)%60) + ":" + pad(f%24));
+    requestAnimationFrame(tick);
+  })();
 
   /* ---- контакты ---- */
   (SITE.contacts||[]).forEach(function(c){
