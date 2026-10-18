@@ -120,10 +120,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .mini .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mini:hover .frame img,.mini:focus-visible .frame img{filter:grayscale(0) contrast(1.02) brightness(.95);transform:scale(1.04)}
 .mini .frame .ph{font-size:clamp(16px,1.6vw,22px)}
-.sheet-foot{display:flex;justify-content:flex-end;align-items:center;gap:16px;flex-wrap:wrap}
-.socials{display:flex;gap:14px;flex-wrap:wrap}
-.socials a{color:var(--ash);transition:color .3s}
-.socials a:hover{color:var(--paper)}
 .foot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end}
 .num{font-size:clamp(88px,12vw,190px);line-height:.78;letter-spacing:-.04em;font-weight:400;font-variant-numeric:tabular-nums}
 .tate{writing-mode:vertical-rl;font-size:13px;letter-spacing:.35em;color:var(--ash)}
@@ -263,9 +259,6 @@ footer .jp{font-size:24px}
       <div class="grow"></div>
       <div class="lb m" data-i18n="recent">Recent</div>
       <div class="strip" id="strip"></div>
-      <div class="sheet-foot">
-        <div class="socials lb" id="socials"></div>
-      </div>
     </div>
   </div>
 
@@ -445,16 +438,6 @@ footer .jp{font-size:24px}
     thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; });
     b.addEventListener("click", function(){ openPlayer(w); });
     $("strip").appendChild(b);
-  });
-
-  /* ---- соцсети коротко ---- */
-  var SHORT = { Telegram:"TG", Instagram:"IG", Steam:"Steam", Discord:"Discord" };
-  (SITE.contacts||[]).forEach(function(c){
-    if(!SHORT[c.label]) return;
-    var a = document.createElement("a");
-    a.textContent = SHORT[c.label];
-    if(c.url){ a.href = c.url; a.target = "_blank"; a.rel = "noopener"; } else { a.href = "#contact"; }
-    $("socials").appendChild(a);
   });
 
   /* ---- контакты ---- */
