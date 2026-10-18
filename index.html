@@ -76,6 +76,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tgl:hover{border-color:var(--paper)}
 .tgl svg{width:12px;height:12px}
 .logo-img{filter:var(--logo)}
+/* плавная смена темы и языка */
+.theme-fade,.theme-fade *,.theme-fade *::before,.theme-fade *::after{transition:background-color .7s ease,color .7s ease,border-color .7s ease,filter .7s ease!important}
+[data-i18n],#langBtn{transition:opacity .3s ease}
+.i18n-out [data-i18n],.i18n-out #langBtn{opacity:0}
 
 /* ---------- разворот ---------- */
 .spread{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,2vw,28px);padding-block:clamp(16px,2.4vw,32px)}
@@ -192,7 +196,7 @@ footer .jp{font-size:24px}
 <header class="top">
   <div class="wrap lb">
     <a href="#top" class="who" style="display:flex;gap:10px;align-items:center"><img class="logo logo-img" src="img/logo.png" alt="Katsuyuki"><span class="m" data-i18n="role">Video editor</span></a>
-    <nav aria-label="Sections"><a href="#works" data-i18n="nav_works">Works</a><a href="#contact" data-i18n="nav_contact">Contact</a><button class="tgl" id="langBtn" type="button" aria-label="Українська">UA</button><button class="tgl" id="themeBtn" type="button" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
+    <nav aria-label="Sections"><a href="#works" data-i18n="nav_works">Works</a><a href="#contact" data-i18n="nav_contact">Contact</a><button class="tgl" id="langBtn" type="button" aria-label="Switch to Ukrainian">EN</button><button class="tgl" id="themeBtn" type="button" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
   </div>
 </header>
 
@@ -302,13 +306,13 @@ footer .jp{font-size:24px}
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", onyt:"Watch on YouTube ↗", lang_to:"UA", lang_aria:"Українська", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", onyt:"Watch on YouTube ↗", lang_to:"EN", lang_aria:"Switch to Ukrainian", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", onyt:"Дивитися на YouTube ↗", lang_to:"EN", lang_aria:"English", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", onyt:"Дивитися на YouTube ↗", lang_to:"УКР", lang_aria:"Перейти на англійську", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -318,7 +322,17 @@ footer .jp{font-size:24px}
     $("langBtn").textContent = t("lang_to"); $("langBtn").setAttribute("aria-label", t("lang_aria"));
     syncTheme();
   }
-  $("langBtn").addEventListener("click", function(){ lang = lang === "en" ? "uk" : "en"; store("lang", lang); applyLang(); });
+  var swapping = false;
+  $("langBtn").addEventListener("click", function(){
+    if(swapping) return; swapping = true;
+    lang = lang === "en" ? "uk" : "en"; store("lang", lang);
+    document.documentElement.classList.add("i18n-out");
+    setTimeout(function(){
+      applyLang();
+      document.documentElement.classList.remove("i18n-out");
+      setTimeout(function(){ swapping = false; }, 300);
+    }, 300);
+  });
 
   /* ---- тема ---- */
   function isLight(){ return document.documentElement.getAttribute("data-theme") === "light"; }
@@ -326,7 +340,10 @@ footer .jp{font-size:24px}
   if(store("theme") === "light") document.documentElement.setAttribute("data-theme", "light");
   $("themeBtn").addEventListener("click", function(){
     var next = isLight() ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next); store("theme", next); syncTheme();
+    var root = document.documentElement;
+    root.classList.add("theme-fade");
+    root.setAttribute("data-theme", next); store("theme", next); syncTheme();
+    clearTimeout(window.__fadeT); window.__fadeT = setTimeout(function(){ root.classList.remove("theme-fade"); }, 800);
   });
 
   function ytId(url){
