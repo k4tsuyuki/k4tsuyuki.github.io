@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Katsuyuki</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Katsuyuki: anime edits, AMV and manga animation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;700&family=Shippori+Mincho:wght@500&display=swap">
+<style>
+/* Layout: two editorial "sheets" on black, like a printed spread; tiny bold caps labels on a grid, one oversized name. */
+:root{
+  --void:#060606;        /* фон страницы */
+  --sheet:#101010;       /* листы */
+  --paper:#eeebe5;       /* текст, тёплый белый */
+  --ash:#85827c;         /* второстепенный */
+  --hair:rgba(238,235,229,.16);
+  --veil:rgba(6,6,6,.7);
+
+  --f:"Arial Narrow","Archivo Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+  --f-jp:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+
+  --gl:max(16px, env(safe-area-inset-left, 0px));
+  --gr:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;background:var(--void)}
+body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);font-stretch:condensed;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--paper);color:var(--void)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0;text-align:inherit}
+:focus-visible{outline:1px solid var(--paper);outline-offset:3px}
+img{max-width:100%;display:block}
+
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1480px;margin-inline:auto}
+.lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
+.lb .m{color:var(--ash)}
+.jp{font-family:var(--f-jp);font-weight:500}
+.dots{display:inline-flex;gap:0}
+.dots i{width:16px;height:16px;border-radius:50%;background:var(--paper);display:block}
+.dots i+i{margin-left:-3px}
+.pill{display:inline-flex;align-items:center;height:20px;padding:0 9px;border-radius:999px;background:var(--paper);color:var(--void);font-size:11px;font-weight:700;text-transform:uppercase;white-space:nowrap}
+.pill.o{background:none;color:var(--paper);border:1px solid var(--hair)}
+.rule{display:flex;align-items:center;gap:10px}
+.rule::after{content:"";flex:1;height:1px;background:var(--paper);opacity:.75}
+
+/* ---------- верх ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--void)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(6,6,6,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:12px}
+.top nav{display:flex;gap:clamp(14px,3vw,32px)}
+.top nav a{opacity:.7;transition:opacity .2s}
+.top nav a:hover{opacity:1}
+
+/* ---------- разворот ---------- */
+.spread{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,2vw,28px);padding-block:clamp(16px,2.4vw,32px)}
+.sheet{background:var(--sheet);border:1px solid rgba(238,235,229,.06);padding:clamp(16px,2.4vw,30px);display:flex;flex-direction:column;gap:clamp(20px,3vw,36px);min-width:0;min-height:min(86vh,880px)}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.cover{position:relative;width:min(100%,560px);aspect-ratio:4/5;max-width:100%;overflow:hidden;background:#000;cursor:pointer}
+.cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.12) brightness(.82);transition:filter .9s,transform 1.4s cubic-bezier(.2,.7,.1,1)}
+.cover:hover img{filter:grayscale(0) brightness(.95);transform:scale(1.04)}
+.cover .cap{position:absolute;left:12px;bottom:12px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px}
+.cols.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.stack{display:grid;gap:14px}
+.grow{flex:1}
+.name{font-weight:400;font-size:clamp(64px,10.4vw,168px);line-height:.86;letter-spacing:-.035em;margin:0;overflow-wrap:anywhere}
+.name img{display:block;width:min(100%,640px);height:auto;animation:rise 1.1s cubic-bezier(.2,.7,.1,1) both}
+.top .logo{height:26px;width:auto}
+@keyframes rise{from{transform:translateY(18%);opacity:0}to{transform:none;opacity:1}}
+.tags{display:flex;gap:4px;flex-wrap:wrap}
+.foot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end}
+.num{font-size:clamp(88px,12vw,190px);line-height:.78;letter-spacing:-.04em;font-weight:400;font-variant-numeric:tabular-nums}
+.tate{writing-mode:vertical-rl;font-size:13px;letter-spacing:.35em;color:var(--ash)}
+.para{max-width:46ch}
+
+/* ---------- секции ---------- */
+section{padding-block:clamp(56px,8vw,120px);border-top:1px solid var(--hair)}
+.s-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:clamp(24px,3.4vw,44px)}
+.s-head h2{font-weight:400;font-size:clamp(52px,8vw,128px);line-height:.85;letter-spacing:-.035em;margin:12px 0 0;display:flex;gap:14px;align-items:flex-start}
+.s-head h2 .jp{font-size:15px;writing-mode:vertical-rl;letter-spacing:.3em;color:var(--ash);margin-top:6px}
+.s-head .num{font-size:clamp(64px,8vw,128px)}
+
+/* работы */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,40px) clamp(12px,1.6vw,22px)}
+.card{display:flex;flex-direction:column;gap:12px;min-width:0;width:100%}
+.card.big{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:clamp(14px,2vw,28px);align-items:end}
+.frame{position:relative;aspect-ratio:16/9;max-width:100%;width:100%;overflow:hidden;background:var(--sheet)}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.85);transform:scale(1.02);transition:filter .9s ease,transform 1.2s cubic-bezier(.2,.7,.1,1)}
+.card:hover .frame img,.card:focus-visible .frame img{filter:grayscale(0) brightness(1);transform:scale(1.06)}
+.frame .ph{position:absolute;inset:0;display:flex;align-items:flex-end;padding:14px;color:var(--ash);font-size:clamp(28px,3.6vw,56px);line-height:.9;letter-spacing:-.03em;background:repeating-linear-gradient(90deg,transparent 0 59px,rgba(238,235,229,.05) 59px 60px)}
+.frame .play{position:absolute;right:10px;bottom:10px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.card:hover .frame .play,.card:focus-visible .frame .play{opacity:1;transform:none}
+.c-meta{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 14px;align-items:baseline}
+.c-meta .t{font-size:clamp(15px,1.3vw,18px)}
+.card.big .c-meta .t{font-size:clamp(28px,3.4vw,52px);font-weight:400;text-transform:none;letter-spacing:-.02em;line-height:.95}
+.c-note{grid-column:2/-1;color:var(--ash);font-weight:400;text-transform:none;font-size:14px;letter-spacing:0}
+.c-tags{grid-column:2/-1}
+
+/* контакты */
+.c-row{display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:16px;align-items:center;padding-block:clamp(16px,2.2vw,26px);border-bottom:1px solid var(--hair);transition:padding .3s}
+a.c-row:hover{padding-left:10px}
+.c-row .v{font-size:clamp(28px,5.4vw,84px);line-height:1;letter-spacing:-.03em;overflow-wrap:anywhere}
+.copy{border:1px solid var(--hair);border-radius:999px;padding:6px 12px}
+.copy:hover{border-color:var(--paper)}
+
+footer{border-top:1px solid var(--hair);padding-block:24px 36px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+footer .jp{font-size:24px}
+
+/* ---------- плеер ---------- */
+.player{position:fixed;inset:0;z-index:80;background:rgba(4,4,4,.97);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 60px) var(--gr) calc(env(safe-area-inset-bottom,0px) + 24px) var(--gl);opacity:0;transition:opacity .35s}
+.player.show{opacity:1}
+.p-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));display:flex;gap:8px;align-items:center}
+.stage{position:relative;width:min(100%,calc((100vh - 230px) * 16 / 9));aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
+.stage.fake-fs{position:fixed;inset:0;width:100%!important;height:100%;aspect-ratio:auto;z-index:85}
+.yt{position:absolute;left:0;top:-50%;width:100%;height:200%;pointer-events:none}
+.yt iframe{width:100%;height:100%;border:0;display:block}
+.shield{position:absolute;inset:0;z-index:2;cursor:pointer}
+.poster{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:#000;transition:opacity .4s}
+.poster .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(1) brightness(.4)}
+.poster.hide{opacity:0;pointer-events:none}
+.poster .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;padding:16px;text-align:center}
+.big-play{width:76px;height:76px;border-radius:50%;border:1px solid var(--paper);display:grid;place-items:center;background:var(--veil);transition:background .3s,color .3s}
+.big-play:hover{background:var(--paper);color:var(--void)}
+.big-play svg{width:20px;height:20px;margin-left:4px}
+.p-note{max-width:40ch;color:var(--ash);margin:0}
+.p-note a{color:var(--paper);text-decoration:underline}
+.bar,.p-title{width:min(100%,calc((100vh - 230px) * 16 / 9))}
+.bar{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto auto;gap:14px;align-items:center}
+.ctl{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--hair);border-radius:50%}
+.ctl:hover{border-color:var(--paper)}
+.ctl svg{width:14px;height:14px}
+.time{font-variant-numeric:tabular-nums;color:var(--ash);white-space:nowrap}
+.seek{position:relative;height:22px;cursor:pointer;touch-action:none}
+.seek::before{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:var(--hair)}
+.seek .fill{position:absolute;left:0;top:10px;height:1px;background:var(--paper);width:0}
+.seek .knob{position:absolute;top:6px;width:9px;height:9px;margin-left:-4px;background:var(--paper);border-radius:50%;left:0}
+.p-title{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap}
+.p-title h3{margin:0;font-weight:400;font-size:clamp(26px,3vw,42px);line-height:1;letter-spacing:-.02em}
+
+@media (max-width:980px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .spread{grid-template-columns:minmax(0,1fr)}
+  .sheet{min-height:0}
+  .cover{width:100%;aspect-ratio:4/4}
+  .cols.three{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .card.big{grid-template-columns:minmax(0,1fr)}
+  .c-row{grid-template-columns:minmax(0,1fr) auto}
+  .c-row .lb:first-child{grid-column:1/-1;margin-bottom:-8px}
+  .bar{grid-template-columns:auto minmax(0,1fr) auto auto auto;gap:10px}
+  .bar .cur{display:none}
+  .top .who .m{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap lb">
+    <a href="#top" class="who" style="display:flex;gap:10px;align-items:center"><img class="logo" src="img/logo.png" alt="Katsuyuki"><span class="m">Video editor</span></a>
+    <nav aria-label="Sections"><a href="#works">Works</a><a href="#contact">Contact</a></nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- РАЗВОРОТ -->
+  <div class="wrap spread">
+    <div class="sheet">
+      <button class="cover" id="cover" aria-label="Play latest work">
+        <img id="coverImg" alt="">
+        <span class="cap pill" id="coverCap">Latest</span>
+      </button>
+      <div class="lb stack">
+        <div>O.<br><span id="coverTitle">Archetype 3HC</span><br><span class="m" id="coverYear">2026</span></div>
+        <div class="cols">
+          <div>Anime edits<br>AMV</div>
+          <div>Software<br><span id="sw">After Effects / Photoshop</span></div>
+        </div>
+        <div>Created by <span id="handle">@k4tsuyuki</span></div>
+      </div>
+      <div class="grow"></div>
+      <div class="lb rule">B.</div>
+      <div class="lb cols">
+        <div>YouTube<br><a class="m" href="https://www.youtube.com/@k4tsuyuki" target="_blank" rel="noopener">@k4tsuyuki ↗</a></div>
+        <div>Payhip<br><a class="m" href="https://payhip.com/koyomifanboy" target="_blank" rel="noopener">koyomifanboy ↗</a></div>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <div class="sheet-head lb">
+        <span>Portfolio no. <span id="yearNow">2026</span></span>
+        <span style="display:flex;gap:10px;align-items:flex-start"><span class="tate jp">編集</span><span class="dots" aria-hidden="true"><i></i><i></i></span></span>
+      </div>
+      <div class="lb stack para">
+        <div>Anime / Manga</div>
+        <div>Katsuyuki ○ — video editor.<br>Anime edits and AMV.</div>
+      </div>
+      <div class="lb cols three">
+        <div>O.<br>Works<br><a href="#works" class="m">See all ↓</a></div>
+        <div>Video editor<br><span id="focus">Anime edits / AMV</span></div>
+        <div>Contact<br><a href="#contact" id="mailTop">vplisetskyi@gmail.com</a></div>
+      </div>
+      <div class="grow"></div>
+      <h1 class="name" id="heroName"><img src="img/logo.png" alt="Katsuyuki"></h1>
+      <div class="tags"><span class="pill">Anime edits</span><span class="pill">AMV</span><span class="pill">4K</span></div>
+      <div class="lb cols"><span class="rule">G.</span><span class="rule">O.</span></div>
+      <div class="foot">
+        <div class="lb stack">
+          <div>Software<br><span class="m" id="sw3">After Effects / Photoshop</span></div>
+          <div>Works on site</div>
+        </div>
+        <div class="num" id="bigCount" aria-label="Number of works">13</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- РАБОТЫ -->
+  <section id="works">
+    <div class="wrap">
+      <div class="s-head">
+        <div><div class="lb">Selected works<br><span class="m">Click to watch</span></div><h2>Works <span class="jp">作品</span></h2></div>
+        <div class="num" id="worksCount">13</div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+
+
+
+  <!-- КОНТАКТЫ -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="s-head"><div><div class="lb">Commissions / Collabs</div><h2>Contact <span class="jp">連絡</span></h2></div></div>
+      <div class="rows" id="contacts"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap lb">
+    <span id="copy">© 2026 Katsuyuki</span>
+    <span class="dots" aria-hidden="true"><i></i><i></i></span>
+    <a href="#top">Back to top ↑ <span class="jp">終</span></a>
+  </div>
+</footer>
+
+<div class="player" id="player" hidden role="dialog" aria-modal="true" aria-label="Video">
+  <button class="p-close lb" id="pClose">Close ✕</button>
+  <div class="stage" id="stage">
+    <div class="yt"><div id="ytMount"></div></div>
+    <div class="shield" id="shield"></div>
+    <div class="poster" id="poster">
+      <div class="bg" id="posterBg"></div>
+      <div class="inner">
+        <button class="big-play" id="bigPlay" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg></button>
+        <p class="p-note lb" id="pNote" hidden></p>
+      </div>
+    </div>
+  </div>
+  <div class="bar lb" id="bar">
+    <button class="ctl" id="pToggle" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor" id="icToggle"><path d="M6 4l14 8-14 8z"/></svg></button>
+    <span class="time cur" id="tCur">00:00</span>
+    <div class="seek" id="seek" role="slider" aria-label="Seek" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+    <span class="time" id="tDur">00:00</span>
+    <button class="ctl" id="pMute" aria-label="Mute"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="icMute"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path d="M16 9a4 4 0 010 6M19 6a8 8 0 010 12"/></svg></button>
+    <button class="ctl" id="pFs" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+  </div>
+  <div class="p-title"><h3 id="pTitle"></h3><span class="lb m" id="pMeta"></span></div>
+</div>
+
+<script src="works.js"></script>
+<script>
+(function(){
+  var SITE = window.SITE || {}, WORKS = window.WORKS || [];
+  var $ = function(id){ return document.getElementById(id); };
+  var pad = function(n){ return String(n).padStart(2,"0"); };
+  function txt(id, v){ var el = $(id); if(el && v != null) el.textContent = v; }
+
+  function ytId(url){
+    if(!url) return "";
+    var m = String(url).match(/(?:youtu\.be\/|v=|\/shorts\/|\/embed\/|\/live\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : (/^[A-Za-z0-9_-]{11}$/.test(url) ? url : "");
+  }
+  WORKS.forEach(function(w){ w.id = ytId(w.link); w.vertical = /\/shorts\//.test(w.link||""); });
+
+  /* ---- тексты ---- */
+  var name = SITE.name || "Katsuyuki", yr = new Date().getFullYear();
+  document.title = name;
+  txt("yearNow", yr); txt("copy", "© " + yr + " " + name);
+  txt("sw", SITE.software); txt("sw3", SITE.software); txt("focus", SITE.focus);
+  var yt = (SITE.contacts||[]).find(function(c){ return /youtube/i.test(c.label); });
+  if(yt) txt("handle", yt.value);
+  var mail = (SITE.contacts||[]).find(function(c){ return /mail/i.test(c.label); });
+  if(mail) txt("mailTop", mail.value);
+  txt("bigCount", pad(WORKS.length)); txt("worksCount", pad(WORKS.length));
+
+  /* ---- обложки ---- */
+  function thumb(w, img, onFail){
+    if(!w.id){ onFail(); return; }
+    var tries = ["maxresdefault","hqdefault"], i = 0;
+    img.onload = function(){ if(img.naturalWidth <= 120) next(); };
+    img.onerror = next;
+    function next(){ if(i < tries.length) img.src = "https://i.ytimg.com/vi/"+w.id+"/"+tries[i++]+".jpg"; else onFail(); }
+    next();
+  }
+  var latest = WORKS[0];
+  if(latest){
+    txt("coverTitle", latest.title); txt("coverYear", latest.year);
+    thumb(latest, $("coverImg"), function(){ $("coverImg").hidden = true; });
+    $("cover").addEventListener("click", function(){ openPlayer(latest); });
+  }
+
+  /* ---- сетка работ ---- */
+  var PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10" style="margin-right:6px"><path d="M6 4l14 8-14 8z"/></svg>';
+  WORKS.forEach(function(w, i){
+    var b = document.createElement("button");
+    b.className = "card" + (i===0 ? " big" : "");
+    b.setAttribute("aria-label", "Watch " + w.title);
+    b.innerHTML = '<div class="frame"><img alt="" loading="lazy"><div class="ph" hidden></div><span class="pill play">'+PLAY+'Watch</span></div>'+
+      '<div class="c-meta lb"><span class="m">No. '+pad(i+1)+'</span><span class="t"></span><span class="m yr"></span><div class="tags c-tags"></div></div>';
+    b.querySelector(".t").textContent = w.title;
+    b.querySelector(".yr").textContent = w.year || "";
+    var tg = b.querySelector(".c-tags");
+    (w.tags||[]).forEach(function(t, k){ var s = document.createElement("span"); s.className = "pill" + (k ? " o" : ""); s.textContent = t; tg.appendChild(s); });
+    if(w.note){ var n = document.createElement("span"); n.className = "c-note"; n.textContent = w.note; b.querySelector(".c-meta").appendChild(n); }
+    b.querySelector(".ph").textContent = w.title;
+    var img = b.querySelector("img");
+    thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; });
+    b.addEventListener("click", function(){ openPlayer(w); });
+    $("grid").appendChild(b);
+  });
+
+  /* ---- контакты ---- */
+  (SITE.contacts||[]).forEach(function(c){
+    var isMail = /^mailto:/.test(c.url||"");
+    var el = document.createElement(c.url && !isMail ? "a" : "div");
+    el.className = "c-row";
+    if(c.url && !isMail){ el.href = c.url; el.target = "_blank"; el.rel = "noopener"; }
+    el.innerHTML = '<span class="lb m"></span><span class="v"></span><span class="lb"></span>';
+    el.children[0].textContent = c.label;
+    el.children[1].textContent = c.value;
+    if(isMail || !c.url){
+      var btn = document.createElement("button"); btn.className = "copy lb"; btn.textContent = "Copy";
+      btn.addEventListener("click", function(){
+        var done = function(){ btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = "Copy"; }, 1600); };
+        try{ navigator.clipboard.writeText(c.value).then(done, function(){ selectText(el.children[1]); }); }catch(e){ selectText(el.children[1]); }
+      });
+      el.children[2].appendChild(btn);
+      if(isMail){ var a = document.createElement("a"); a.href = c.url; a.className = "lb"; a.textContent = "Write ↗"; a.style.marginLeft = "10px"; el.children[2].appendChild(a); }
+    } else if(c.url){ el.children[2].textContent = "↗"; }
+    $("contacts").appendChild(el);
+  });
+  function selectText(node){ var r = document.createRange(); r.selectNodeContents(node); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+
+  /* ================= ПЛЕЕР ================= */
+  var P = $("player"), stage = $("stage"), poster = $("poster"), yp = null, cur = null, apiState = "idle", waiters = [], timer = null, dragging = false;
+  var IC_PLAY = '<path d="M6 4l14 8-14 8z"/>', IC_PAUSE = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+
+  function loadApi(cb){
+    if(window.YT && window.YT.Player){ cb(true); return; }
+    waiters.push(cb);
+    if(apiState !== "idle") return;
+    apiState = "loading";
+    window.onYouTubeIframeAPIReady = function(){ apiState = "ready"; flush(true); };
+    var s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api";
+    s.onerror = function(){ apiState = "idle"; flush(false); };
+    document.head.appendChild(s);
+    setTimeout(function(){ if(apiState === "loading"){ apiState = "idle"; flush(false); } }, 6000);
+  }
+  function flush(ok){ var w = waiters; waiters = []; w.forEach(function(f){ f(ok); }); }
+  function ms(s){ s = Math.max(0, Math.floor(s||0)); return pad(Math.floor(s/60)) + ":" + pad(s%60); }
+  function note(html){ var n = $("pNote"); if(html){ n.innerHTML = html; n.hidden = false; } else n.hidden = true; }
+  function setIcon(p){ $("icToggle").innerHTML = p ? IC_PAUSE : IC_PLAY; $("pToggle").setAttribute("aria-label", p ? "Pause" : "Play"); }
+  function ytLink(w){ return '<a href="https://youtu.be/'+w.id+'" target="_blank" rel="noopener">Watch on YouTube ↗</a>'; }
+
+  function openPlayer(w){
+    cur = w;
+    txt("pTitle", w.title);
+    txt("pMeta", [w.client, w.year].concat((w.tags||[]).slice(0,2)).filter(Boolean).join(" / "));
+    var vert = !!w.vertical;
+    stage.style.aspectRatio = vert ? "9/16" : "";
+    stage.style.width = vert ? "min(100%, calc((100vh - 230px) * 9 / 16))" : "";
+    $("posterBg").style.backgroundImage = w.id ? "url(https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg)" : "none";
+    poster.classList.remove("hide"); note(""); setIcon(false); progress(0,0);
+    P.hidden = false; requestAnimationFrame(function(){ P.classList.add("show"); });
+    document.body.style.overflow = "hidden";
+    $("pClose").focus();
+    if(!w.id){ note("This work has no video link yet."); return; }
+    loadApi(function(ok){
+      if(cur !== w) return;
+      if(!ok){ note("The video can't load here. " + ytLink(w)); return; }
+      yp = new YT.Player("ytMount", {
+        host: "https://www.youtube-nocookie.com",
+        videoId: w.id,
+        playerVars: { autoplay:1, controls:0, disablekb:1, fs:0, iv_load_policy:3, modestbranding:1, rel:0, playsinline:1 },
+        events: {
+          onReady: function(e){ e.target.playVideo(); syncMute(); },
+          onStateChange: onState,
+          onError: function(){ note("This video can't be embedded. " + ytLink(w)); }
+        }
+      });
+    });
+  }
+  function onState(e){
+    var s = e.data;
+    if(s === 1){ poster.classList.add("hide"); setIcon(true); note(""); startTimer(); } else setIcon(false);
+    if(s === 2 || s === 0 || s === 5) poster.classList.remove("hide");
+    if(s === 0) note("Watch again");
+  }
+  function startTimer(){ clearInterval(timer); timer = setInterval(function(){ if(yp && yp.getDuration && !dragging) progress(yp.getCurrentTime(), yp.getDuration()); }, 250); }
+  function progress(c, d){
+    var p = d ? c/d*100 : 0;
+    $("fill").style.width = p + "%"; $("knob").style.left = p + "%";
+    $("seek").setAttribute("aria-valuenow", Math.round(p));
+    txt("tCur", ms(c)); txt("tDur", ms(d));
+  }
+  function toggle(){ if(!yp || !yp.getPlayerState) return; if(yp.getPlayerState() === 1) yp.pauseVideo(); else yp.playVideo(); }
+  function syncMute(){ if(!yp || !yp.isMuted) return; var m = yp.isMuted(); $("icMute").style.opacity = m ? .35 : 1; $("pMute").setAttribute("aria-label", m ? "Unmute" : "Mute"); }
+  function closePlayer(){
+    cur = null; clearInterval(timer);
+    if(document.fullscreenElement) document.exitFullscreen().catch(function(){});
+    stage.classList.remove("fake-fs");
+    if(yp && yp.destroy) yp.destroy();
+    yp = null;
+    if(!$("ytMount")) stage.querySelector(".yt").innerHTML = '<div id="ytMount"></div>';
+    P.classList.remove("show"); document.body.style.overflow = "";
+    setTimeout(function(){ if(!cur) P.hidden = true; }, 300);
+  }
+
+  $("shield").addEventListener("click", toggle);
+  $("bigPlay").addEventListener("click", toggle);
+  $("pToggle").addEventListener("click", toggle);
+  $("pClose").addEventListener("click", closePlayer);
+  $("pMute").addEventListener("click", function(){ if(!yp || !yp.isMuted) return; yp.isMuted() ? yp.unMute() : yp.mute(); setTimeout(syncMute, 60); });
+  $("pFs").addEventListener("click", function(){
+    if(document.fullscreenElement){ document.exitFullscreen().catch(function(){}); return; }
+    if(stage.classList.contains("fake-fs")){ stage.classList.remove("fake-fs"); return; }
+    var req = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if(!req){ stage.classList.add("fake-fs"); return; }
+    try{ var r = req.call(stage); if(r && r.catch) r.catch(function(){ stage.classList.add("fake-fs"); }); }catch(err){ stage.classList.add("fake-fs"); }
+  });
+  stage.addEventListener("dblclick", function(){ $("pFs").click(); });
+
+  function seekAt(x){
+    var r = $("seek").getBoundingClientRect(), p = Math.min(1, Math.max(0, (x - r.left) / r.width));
+    if(yp && yp.getDuration){ var d = yp.getDuration(); progress(p*d, d); return p*d; }
+    return 0;
+  }
+  $("seek").addEventListener("pointerdown", function(e){ dragging = true; $("seek").setPointerCapture(e.pointerId); seekAt(e.clientX); });
+  $("seek").addEventListener("pointermove", function(e){ if(dragging) seekAt(e.clientX); });
+  $("seek").addEventListener("pointerup", function(e){ if(!dragging) return; dragging = false; var t = seekAt(e.clientX); if(yp && yp.seekTo) yp.seekTo(t, true); });
+  $("seek").addEventListener("keydown", function(e){
+    if(!yp || !yp.getCurrentTime) return;
+    if(e.key === "ArrowRight") yp.seekTo(yp.getCurrentTime() + 5, true);
+    if(e.key === "ArrowLeft") yp.seekTo(yp.getCurrentTime() - 5, true);
+  });
+  document.addEventListener("keydown", function(e){
+    if(P.hidden) return;
+    if(e.key === "Escape"){ if(stage.classList.contains("fake-fs")) stage.classList.remove("fake-fs"); else if(!document.fullscreenElement) closePlayer(); }
+    if(e.key === " " && e.target.tagName !== "BUTTON"){ e.preventDefault(); toggle(); }
+  });
+})();
+</script>
+</body>
+</html>
