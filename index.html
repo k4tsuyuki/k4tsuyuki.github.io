@@ -242,8 +242,8 @@ footer .jp{font-size:24px}
       <div class="grow"></div>
       <div class="rule"></div>
       <div class="lb cols">
-        <div>YouTube<br><a class="m" href="https://www.youtube.com/@k4tsuyuki" target="_blank" rel="noopener">@k4tsuyuki ↗</a></div>
-        <div>Payhip<br><a class="m" href="https://payhip.com/koyomifanboy" target="_blank" rel="noopener">koyomifanboy ↗</a></div>
+        <div>YouTube<br><a class="m" href="https://www.youtube.com/@k4tsuyuki" target="_blank" rel="noopener">@k4tsuyuki ↗︎</a></div>
+        <div>Payhip<br><a class="m" href="https://payhip.com/koyomifanboy" target="_blank" rel="noopener">koyomifanboy ↗︎</a></div>
       </div>
     </div>
 
@@ -253,7 +253,7 @@ footer .jp{font-size:24px}
         <span class="dots" aria-hidden="true"><i></i><i></i></span>
       </div>
       <div class="lb cols">
-        <div><span data-i18n="works">Works</span><br><a href="#works" class="m" data-i18n="see_all">See all ↓</a></div>
+        <div><span data-i18n="works">Works</span><br><a href="#works" class="m" data-i18n="see_all">See all ↓︎</a></div>
         <div><span data-i18n="contact">Contact</span><br><a href="#contact" class="m" id="mailTop">vplisetskyi@gmail.com</a></div>
       </div>
       <div class="status lb">
@@ -295,7 +295,7 @@ footer .jp{font-size:24px}
   <div class="wrap lb">
     <span id="copy">© 2026 Katsuyuki</span>
     <span class="dots" aria-hidden="true"><i></i><i></i></span>
-    <a href="#top"><span data-i18n="top">Back to top ↑</span> <span class="jp">終</span></a>
+    <a href="#top"><span data-i18n="top">Back to top ↑︎</span> <span class="jp">終</span></a>
   </div>
 </footer>
 
@@ -336,17 +336,17 @@ footer .jp{font-size:24px}
   /* ---- языки ---- */
   var I18N = {
     en: { role:"Video editor", nav_works:"Works", nav_contact:"Contact", latest:"Latest", software:"Software",
-          head:"Katsuyuki / video editor", works:"Works", see_all:"See all ↓", contact:"Contact", click:"Click to watch",
-          h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑", close:"Close ✕",
-          watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗", c_Email:"Email",
+          head:"Katsuyuki / video editor", works:"Works", see_all:"See all ↓︎", contact:"Contact", click:"Click to watch",
+          h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
+          watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗", lang_to:"EN", lang_aria:"Switch to Ukrainian", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", latest:"Остання робота", software:"Софт",
-          head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓", contact:"Контакти", click:"Натисни, щоб дивитися",
-          h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑", close:"Закрити ✕",
-          watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗", c_Email:"Пошта",
+          head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
+          h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
+          watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗", lang_to:"УКР", lang_aria:"Перейти на англійську", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -485,7 +485,7 @@ footer .jp{font-size:24px}
       });
       el.children[2].appendChild(btn);
       if(isMail){ var a = document.createElement("a"); a.href = c.url; a.className = "lb"; a.setAttribute("data-i18n", "write"); a.textContent = t("write"); a.style.marginLeft = "10px"; el.children[2].appendChild(a); }
-    } else if(c.url){ el.children[2].textContent = "↗"; }
+    } else if(c.url){ el.children[2].textContent = "↗︎"; }
     $("contacts").appendChild(el);
   });
   applyLang();
