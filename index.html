@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Katsuyuki</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <meta name="description" content="Katsuyuki: anime edits, AMV and manga animation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +120,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .mini .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mini:hover .frame img,.mini:focus-visible .frame img{filter:grayscale(0) contrast(1.02) brightness(.95);transform:scale(1.04)}
 .mini .frame .ph{font-size:clamp(16px,1.6vw,22px)}
-.sheet-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.sheet-foot{display:flex;justify-content:flex-end;align-items:center;gap:16px;flex-wrap:wrap}
 .socials{display:flex;gap:14px;flex-wrap:wrap}
 .socials a{color:var(--ash);transition:color .3s}
 .socials a:hover{color:var(--paper)}
@@ -262,7 +264,6 @@ footer .jp{font-size:24px}
       <div class="lb m" data-i18n="recent">Recent</div>
       <div class="strip" id="strip"></div>
       <div class="sheet-foot">
-        <div class="tags"><span class="pill">AMV</span><span class="pill">MMV</span><span class="pill">4K</span></div>
         <div class="socials lb" id="socials"></div>
       </div>
     </div>
