@@ -81,6 +81,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* плавная смена темы и языка */
 /* тема раскрывается кругом от кнопки, язык меняется мягким наплывом (View Transitions) */
 .vt-theme::view-transition-old(root),.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
+/* фон под панелями Safari меняется плавно вместе с кругом, а не скачком */
+html.vt-theme{transition:background-color .7s cubic-bezier(.65,0,.25,1)}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.45s;animation-timing-function:ease}
 
 /* ---------- разворот ---------- */
