@@ -150,6 +150,17 @@ section{padding-block:clamp(56px,8vw,120px);border-top:1px solid var(--hair)}
 .c-note{grid-column:2/-1;color:var(--ash);font-weight:400;text-transform:none;font-size:14px;letter-spacing:0}
 .c-tags{grid-column:2/-1}
 
+/* новости */
+.n-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;padding-block:clamp(18px,2.4vw,30px);border-bottom:1px solid var(--hair)}
+.n-row:first-child{border-top:1px solid var(--hair)}
+.n-row .d{color:var(--ash);padding-top:.5em;font-variant-numeric:tabular-nums}
+.n-row h3{margin:0;font-weight:400;font-size:clamp(24px,3vw,44px);line-height:1;letter-spacing:-.02em}
+.n-row p{margin:12px 0 0;max-width:62ch;color:var(--ash);white-space:pre-line;overflow-wrap:anywhere}
+.n-row .go{display:inline-block;margin-top:16px;border:1px solid var(--hair);border-radius:999px;padding:7px 14px;transition:border-color .3s}
+.n-row .go:hover{border-color:var(--paper)}
+.more{margin-top:20px;border:1px solid var(--hair);border-radius:999px;padding:8px 16px}
+.more:hover{border-color:var(--paper)}
+
 /* контакты */
 .c-row{display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:16px;align-items:center;padding-block:clamp(16px,2.2vw,26px);border-bottom:1px solid var(--hair);transition:padding .3s}
 a.c-row:hover{padding-left:10px}
@@ -211,6 +222,8 @@ footer .jp{font-size:24px}
   .grid{grid-template-columns:minmax(0,1fr)}
   .card.big{grid-template-columns:minmax(0,1fr)}
   .c-row{grid-template-columns:minmax(0,1fr) auto}
+  .n-row{grid-template-columns:minmax(0,1fr);gap:6px}
+  .n-row .d{padding-top:0}
   .c-row .lb:first-child{grid-column:1/-1;margin-bottom:-8px}
   .c-row .acts:has(button){grid-column:1/-1;margin-top:-4px}
   .bar{grid-template-columns:auto minmax(0,1fr) auto auto auto auto;gap:10px}
@@ -226,7 +239,7 @@ footer .jp{font-size:24px}
 <header class="top">
   <div class="wrap lb">
     <a href="#top" class="who" style="display:flex;gap:10px;align-items:center"><img class="logo logo-img" src="img/logo.png" alt="Katsuyuki"><span class="m" data-i18n="role">Video editor</span></a>
-    <nav aria-label="Sections"><a href="#works" data-i18n="nav_works">Works</a><a href="#contact" data-i18n="nav_contact">Contact</a><button class="tgl" id="langBtn" type="button" aria-label="Switch to Ukrainian">EN</button><button class="tgl" id="themeBtn" type="button" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
+    <nav aria-label="Sections"><a href="#works" data-i18n="nav_works">Works</a><a href="#news" id="navNews" data-i18n="nav_news">News</a><a href="#contact" data-i18n="nav_contact">Contact</a><button class="tgl" id="langBtn" type="button" aria-label="Switch to Ukrainian">EN</button><button class="tgl" id="themeBtn" type="button" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
   </div>
 </header>
 
@@ -284,6 +297,15 @@ footer .jp{font-size:24px}
 
 
 
+  <!-- НОВОСТИ (заполняются из news.js; без записей раздел скрыт) -->
+  <section id="news" hidden>
+    <div class="wrap">
+      <div class="s-head"><div><div class="lb m" data-i18n="news_sub">Projects / Files</div><h2><span data-i18n="h_news">News</span> <span class="jp">新着</span></h2></div></div>
+      <div class="news" id="newsList"></div>
+      <button class="more lb" id="newsMore" type="button" hidden data-i18n="news_more">Show more</button>
+    </div>
+  </section>
+
   <!-- КОНТАКТЫ -->
   <section id="contact">
     <div class="wrap">
@@ -327,6 +349,7 @@ footer .jp{font-size:24px}
 </div>
 
 <script src="works.js"></script>
+<script src="news.js"></script>
 <script>
 (function(){
   var SITE = window.SITE || {}, WORKS = window.WORKS || [];
@@ -337,13 +360,13 @@ footer .jp{font-size:24px}
 
   /* ---- языки ---- */
   var I18N = {
-    en: { role:"Video editor", nav_works:"Works", nav_contact:"Contact", latest:"Latest", software:"Software",
+    en: { role:"Video editor", nav_works:"Works", nav_contact:"Contact", nav_news:"News", h_news:"News", news_sub:"Projects / Files", news_more:"Show more", open_link:"Open ↗︎", latest:"Latest", software:"Software",
           head:"Katsuyuki / video editor", works:"Works", see_all:"See all ↓︎", contact:"Contact", click:"Click to watch",
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
           again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", light:"Light theme", dark:"Dark theme" },
-    uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", latest:"Остання робота", software:"Софт",
+    uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Проєкти / Файли", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
@@ -468,6 +491,36 @@ footer .jp{font-size:24px}
     b.addEventListener("click", function(){ openPlayer(w); });
     $("strip").appendChild(b);
   });
+
+  /* ---- новости ---- */
+  var NEWS = (window.NEWS || []).filter(function(n){ return n && (n.title || n.text); });
+  if(NEWS.length){
+    $("news").hidden = false;
+    var SHOWN = 4;
+    NEWS.forEach(function(n, i){
+      var el = document.createElement("article"); el.className = "n-row";
+      if(i >= SHOWN) el.hidden = true;
+      var m = String(n.date || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+      el.innerHTML = '<time class="d lb"></time><div><h3></h3><p></p></div>';
+      el.querySelector("time").textContent = m ? m[3] + "." + m[2] + "." + m[1] : (n.date || "");
+      if(m) el.querySelector("time").setAttribute("datetime", m[0]);
+      el.querySelector("h3").textContent = n.title || "";
+      var p = el.querySelector("p"); if(n.text) p.textContent = n.text; else p.remove();
+      if(n.link){
+        var a = document.createElement("a"); a.className = "go lb"; a.href = n.link; a.target = "_blank"; a.rel = "noopener";
+        if(n.button) a.textContent = n.button + " ↗\ufe0e"; else { a.setAttribute("data-i18n", "open_link"); a.textContent = t("open_link"); }
+        el.lastElementChild.appendChild(a);
+      }
+      $("newsList").appendChild(el);
+    });
+    if(NEWS.length > SHOWN){
+      $("newsMore").hidden = false;
+      $("newsMore").addEventListener("click", function(){
+        $("newsList").querySelectorAll(".n-row[hidden]").forEach(function(r){ r.hidden = false; });
+        this.hidden = true;
+      });
+    }
+  } else { $("navNews").remove(); }
 
   /* ---- контакты ---- */
   (SITE.contacts||[]).forEach(function(c){
