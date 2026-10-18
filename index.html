@@ -598,7 +598,9 @@ footer .jp{font-size:24px}
     stage.style.aspectRatio = vert ? "9/16" : "";
     stage.style.width = vert ? "min(100%, calc((100vh - 230px) * 9 / 16))" : "";
     P.classList.toggle("vert", vert);
-    $("posterBg").style.backgroundImage = w.id ? "url(https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg)" : "none";
+    /* заставка в максимальном качестве (та же картинка, что в списке работ, обычно уже в кэше) */
+    $("posterBg").style.backgroundImage = "none";
+    if(w.id){ var pi = new Image(); thumb(w, pi, function(){}); pi.addEventListener("load", function(){ if(cur === w && pi.naturalWidth > 120) $("posterBg").style.backgroundImage = "url(" + pi.src + ")"; }); }
     poster.classList.remove("hide"); note(""); setIcon(false); progress(0,0);
     P.hidden = false; requestAnimationFrame(function(){ P.classList.add("show"); });
     document.body.style.overflow = "hidden";
