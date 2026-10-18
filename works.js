@@ -6,9 +6,7 @@
 
 window.SITE = {
   name: "Katsuyuki",
-  focus: "Anime edits / AMV",
   software: "After Effects / Photoshop",
-  count: "10",                  // большая цифра на главной и у раздела Works
   /* контакты: если ссылки нет (url: ""), рядом будет кнопка Copy */
   contacts: [
     { label: "Email",   value: "vplisetskyi@gmail.com", url: "mailto:vplisetskyi@gmail.com" },

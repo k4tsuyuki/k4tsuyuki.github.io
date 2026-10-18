@@ -180,15 +180,10 @@ footer .jp{font-size:24px}
     <div class="sheet">
       <button class="cover" id="cover" aria-label="Play latest work">
         <img id="coverImg" alt="">
-        <span class="cap pill" id="coverCap">Latest</span>
       </button>
       <div class="lb stack">
         <div>Latest<br><span id="coverTitle">Archetype 3HC</span><br><span class="m" id="coverYear">2026</span></div>
-        <div class="cols">
-          <div>Anime edits<br>AMV</div>
-          <div>Software<br><span id="sw">After Effects / Photoshop</span></div>
-        </div>
-        <div>Created by <span id="handle">@k4tsuyuki</span></div>
+        <div>Software<br><span class="m" id="sw">After Effects / Photoshop</span></div>
       </div>
       <div class="grow"></div>
       <div class="rule"></div>
@@ -200,29 +195,16 @@ footer .jp{font-size:24px}
 
     <div class="sheet">
       <div class="sheet-head lb">
-        <span>Anime edits / <span id="yearNow">2026</span></span>
+        <span>Katsuyuki / video editor</span>
         <span style="display:flex;gap:10px;align-items:flex-start"><span class="tate jp">編集</span><span class="dots" aria-hidden="true"><i></i><i></i></span></span>
       </div>
-      <div class="lb stack para">
-        <div>Anime / Manga</div>
-        <div>Katsuyuki / video editor.<br>Anime edits and AMV.</div>
-      </div>
-      <div class="lb cols three">
+      <div class="lb cols">
         <div>Works<br><a href="#works" class="m">See all ↓</a></div>
-        <div>Video editor<br><span id="focus">Anime edits / AMV</span></div>
-        <div>Contact<br><a href="#contact" id="mailTop">vplisetskyi@gmail.com</a></div>
+        <div>Contact<br><a href="#contact" class="m" id="mailTop">vplisetskyi@gmail.com</a></div>
       </div>
       <div class="grow"></div>
       <h1 class="name" id="heroName"><img src="img/logo.png" alt="Katsuyuki"></h1>
-      <div class="tags"><span class="pill">Anime edits</span><span class="pill">AMV</span><span class="pill">4K</span></div>
-      <div class="rule"></div>
-      <div class="foot">
-        <div class="lb stack">
-          <div>Software<br><span class="m" id="sw3">After Effects / Photoshop</span></div>
-          <div>Works on site</div>
-        </div>
-        <div class="num" id="bigCount" aria-label="Number of works">10</div>
-      </div>
+      <div class="tags"><span class="pill">AMV</span><span class="pill">MMV</span><span class="pill">4K</span></div>
     </div>
   </div>
 
@@ -230,8 +212,7 @@ footer .jp{font-size:24px}
   <section id="works">
     <div class="wrap">
       <div class="s-head">
-        <div><div class="lb">Selected works<br><span class="m">Click to watch</span></div><h2>Works <span class="jp">作品</span></h2></div>
-        <div class="num" id="worksCount">10</div>
+        <div><div class="lb m">Click to watch</div><h2>Works <span class="jp">作品</span></h2></div>
       </div>
       <div class="grid" id="grid"></div>
     </div>
@@ -301,13 +282,11 @@ footer .jp{font-size:24px}
   var name = SITE.name || "Katsuyuki", yr = new Date().getFullYear();
   document.title = name;
   txt("yearNow", yr); txt("copy", "© " + yr + " " + name);
-  txt("sw", SITE.software); txt("sw3", SITE.software); txt("focus", SITE.focus);
+  txt("sw", SITE.software);
   var yt = (SITE.contacts||[]).find(function(c){ return /youtube/i.test(c.label); });
   if(yt) txt("handle", yt.value);
   var mail = (SITE.contacts||[]).find(function(c){ return /mail/i.test(c.label); });
   if(mail) txt("mailTop", mail.value);
-  var count = SITE.count || pad(WORKS.length);
-  txt("bigCount", count); txt("worksCount", count);
 
   /* ---- обложки ---- */
   function thumb(w, img, onFail){
