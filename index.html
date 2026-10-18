@@ -79,9 +79,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tgl svg{width:12px;height:12px}
 .logo-img{filter:var(--logo)}
 /* плавная смена темы и языка */
-.theme-fade,.theme-fade *,.theme-fade *::before,.theme-fade *::after{transition:background-color .7s ease,color .7s ease,border-color .7s ease,filter .7s ease!important}
-[data-i18n],#langBtn{transition:opacity .3s ease}
-.i18n-out [data-i18n],.i18n-out #langBtn{opacity:0}
+/* тема раскрывается кругом от кнопки, язык меняется мягким наплывом (View Transitions) */
+.vt-theme::view-transition-old(root),.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.45s;animation-timing-function:ease}
 
 /* ---------- разворот ---------- */
 .spread{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,2vw,28px);padding-block:clamp(16px,2.4vw,32px)}
@@ -210,6 +210,7 @@ footer .jp{font-size:24px}
   .card.big{grid-template-columns:minmax(0,1fr)}
   .c-row{grid-template-columns:minmax(0,1fr) auto}
   .c-row .lb:first-child{grid-column:1/-1;margin-bottom:-8px}
+  .c-row .acts:has(button){grid-column:1/-1;margin-top:-4px}
   .bar{grid-template-columns:auto minmax(0,1fr) auto auto auto auto;gap:10px}
   .bar .cur{display:none}
   .top .who .m{display:none}
@@ -355,16 +356,33 @@ footer .jp{font-size:24px}
     $("langBtn").textContent = t("lang_to"); $("langBtn").setAttribute("aria-label", t("lang_aria"));
     syncTheme();
   }
+  /* смена с анимацией; страница остаётся на том же месте, даже если текст стал длиннее или короче */
   var swapping = false;
+  function keepPlace(fn){
+    var y = 0, el = null;
+    if(window.scrollY > 0){
+      var hdr = document.querySelector(".top"), top = hdr ? hdr.getBoundingClientRect().bottom + 4 : 60;
+      el = document.elementFromPoint(window.innerWidth / 2, top);
+      while(el && el !== document.body && el.getBoundingClientRect().height > window.innerHeight * .6) el = el.firstElementChild;
+      if(el) y = el.getBoundingClientRect().top;
+    }
+    fn();
+    if(el && el.isConnected) window.scrollBy({ top: el.getBoundingClientRect().top - y, behavior: "instant" });
+  }
+  function morph(fn, cls, after){
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!document.startViewTransition || reduce){ keepPlace(fn); return; }
+    var root = document.documentElement;
+    if(cls) root.classList.add(cls);
+    swapping = true;
+    var vt = document.startViewTransition(function(){ keepPlace(fn); });
+    if(after) vt.ready.then(after, function(){});
+    vt.finished.then(done, done);
+    function done(){ if(cls) root.classList.remove(cls); swapping = false; }
+  }
   $("langBtn").addEventListener("click", function(){
-    if(swapping) return; swapping = true;
-    lang = lang === "en" ? "uk" : "en"; store("lang", lang);
-    document.documentElement.classList.add("i18n-out");
-    setTimeout(function(){
-      applyLang();
-      document.documentElement.classList.remove("i18n-out");
-      setTimeout(function(){ swapping = false; }, 300);
-    }, 300);
+    if(swapping) return;
+    morph(function(){ lang = lang === "en" ? "uk" : "en"; store("lang", lang); applyLang(); });
   });
 
   /* ---- тема ---- */
@@ -372,11 +390,14 @@ footer .jp{font-size:24px}
   function syncTheme(){ $("themeBtn").setAttribute("aria-label", isLight() ? t("dark") : t("light")); }
   if(store("theme") === "light") document.documentElement.setAttribute("data-theme", "light");
   $("themeBtn").addEventListener("click", function(){
-    var next = isLight() ? "dark" : "light";
-    var root = document.documentElement;
-    root.classList.add("theme-fade");
-    root.setAttribute("data-theme", next); store("theme", next); syncTheme();
-    clearTimeout(window.__fadeT); window.__fadeT = setTimeout(function(){ root.classList.remove("theme-fade"); }, 800);
+    if(swapping) return;
+    var next = isLight() ? "dark" : "light", root = document.documentElement;
+    var r = this.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    morph(function(){ root.setAttribute("data-theme", next); store("theme", next); syncTheme(); }, "vt-theme", function(){
+      root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
+        { duration: 700, easing: "cubic-bezier(.65,0,.25,1)", pseudoElement: "::view-transition-new(root)" });
+    });
   });
 
   function ytId(url){
@@ -452,7 +473,7 @@ footer .jp{font-size:24px}
     var el = document.createElement(c.url && !isMail ? "a" : "div");
     el.className = "c-row";
     if(c.url && !isMail){ el.href = c.url; el.target = "_blank"; el.rel = "noopener"; }
-    el.innerHTML = '<span class="lb m"></span><span class="v"></span><span class="lb"></span>';
+    el.innerHTML = '<span class="lb m"></span><span class="v"></span><span class="lb acts"></span>';
     el.children[0].textContent = c.label;
     if(I18N.en["c_" + c.label]) el.children[0].setAttribute("data-i18n", "c_" + c.label);
     el.children[1].textContent = c.value;
