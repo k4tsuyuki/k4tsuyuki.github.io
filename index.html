@@ -164,7 +164,13 @@ footer .jp{font-size:24px}
 .player.show{opacity:1}
 .p-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));display:flex;gap:8px;align-items:center}
 .stage{position:relative;width:min(100%,calc((100vh - 230px) * 16 / 9));aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
-.stage.fake-fs{position:fixed;inset:0;width:100%!important;height:100%;aspect-ratio:auto;z-index:85}
+/* полный экран: на весь экран идёт весь плеер, панель управления остаётся поверх видео */
+.player.fs{padding:0;background:#000}
+.player.fs .stage{width:min(100vw,calc(100dvh * 16 / 9))!important;max-height:100dvh}
+.player.fs.vert .stage{width:min(100vw,calc(100dvh * 9 / 16))!important}
+.player.fs .p-title{display:none}
+.player.fs .bar{position:absolute;left:0;right:0;bottom:0;width:auto;z-index:5;padding:28px max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(transparent,rgba(0,0,0,.8))}
+.player.fs .p-close{z-index:6;padding:8px 12px;background:rgba(0,0,0,.55);border-radius:999px}
 /* плеер рендерится вдвое больше и сжимается: YouTube видит большой экран и отдаёт более высокое качество */
 .yt{position:absolute;left:0;top:-50%;width:200%;height:400%;transform:scale(.5);transform-origin:0 0;pointer-events:none}
 .yt iframe{width:100%;height:100%;border:0;display:block}
@@ -492,6 +498,7 @@ footer .jp{font-size:24px}
     var vert = !!w.vertical;
     stage.style.aspectRatio = vert ? "9/16" : "";
     stage.style.width = vert ? "min(100%, calc((100vh - 230px) * 9 / 16))" : "";
+    P.classList.toggle("vert", vert);
     $("posterBg").style.backgroundImage = w.id ? "url(https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg)" : "none";
     poster.classList.remove("hide"); note(""); setIcon(false); progress(0,0);
     P.hidden = false; requestAnimationFrame(function(){ P.classList.add("show"); });
@@ -530,8 +537,7 @@ footer .jp{font-size:24px}
   function syncMute(){ if(!yp || !yp.isMuted) return; var m = yp.isMuted(); $("icMute").style.opacity = m ? .35 : 1; $("pMute").setAttribute("aria-label", m ? "Unmute" : "Mute"); }
   function closePlayer(){
     cur = null; clearInterval(timer);
-    if(document.fullscreenElement) document.exitFullscreen().catch(function(){});
-    stage.classList.remove("fake-fs");
+    exitFs();
     if(yp && yp.destroy) yp.destroy();
     yp = null;
     if(!$("ytMount")) stage.querySelector(".yt").innerHTML = '<div id="ytMount"></div>';
@@ -550,12 +556,27 @@ footer .jp{font-size:24px}
   $("pToggle").addEventListener("click", toggle);
   $("pClose").addEventListener("click", closePlayer);
   $("pMute").addEventListener("click", function(){ if(!yp || !yp.isMuted) return; yp.isMuted() ? yp.unMute() : yp.mute(); setTimeout(syncMute, 60); });
+  /* полный экран: настоящий, где браузер умеет (ПК, Android), иначе (iPhone) плеер просто растягивается на весь экран */
+  var IC_FS = $("pFs").innerHTML, IC_FS_EXIT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+  function fsEl(){ return document.fullscreenElement || document.webkitFullscreenElement; }
+  function setFs(on){
+    P.classList.toggle("fs", on);
+    $("pFs").innerHTML = on ? IC_FS_EXIT : IC_FS;
+    $("pFs").setAttribute("aria-label", on ? "Exit fullscreen" : "Fullscreen");
+  }
+  function exitFs(){
+    var ex = document.exitFullscreen || document.webkitExitFullscreen;
+    if(fsEl() && ex){ try{ var r = ex.call(document); if(r && r.catch) r.catch(function(){}); }catch(e){} }
+    setFs(false);
+  }
+  function onFsChange(){ if(!fsEl()) setFs(false); }
+  document.addEventListener("fullscreenchange", onFsChange);
+  document.addEventListener("webkitfullscreenchange", onFsChange);
   $("pFs").addEventListener("click", function(){
-    if(document.fullscreenElement){ document.exitFullscreen().catch(function(){}); return; }
-    if(stage.classList.contains("fake-fs")){ stage.classList.remove("fake-fs"); return; }
-    var req = stage.requestFullscreen || stage.webkitRequestFullscreen;
-    if(!req){ stage.classList.add("fake-fs"); return; }
-    try{ var r = req.call(stage); if(r && r.catch) r.catch(function(){ stage.classList.add("fake-fs"); }); }catch(err){ stage.classList.add("fake-fs"); }
+    if(P.classList.contains("fs")){ exitFs(); return; }
+    setFs(true);
+    var req = P.requestFullscreen || P.webkitRequestFullscreen;
+    if(req){ try{ var r = req.call(P); if(r && r.catch) r.catch(function(){}); }catch(e){} }
   });
   stage.addEventListener("dblclick", function(){ $("pFs").click(); });
 
@@ -574,7 +595,7 @@ footer .jp{font-size:24px}
   });
   document.addEventListener("keydown", function(e){
     if(P.hidden) return;
-    if(e.key === "Escape"){ if(stage.classList.contains("fake-fs")) stage.classList.remove("fake-fs"); else if(!document.fullscreenElement) closePlayer(); }
+    if(e.key === "Escape"){ if(P.classList.contains("fs")) exitFs(); else closePlayer(); }
     if(e.key === " " && e.target.tagName !== "BUTTON"){ e.preventDefault(); toggle(); }
   });
 })();
