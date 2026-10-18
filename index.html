@@ -359,6 +359,17 @@ footer .jp{font-size:24px}
   <div class="p-title"><h3 id="pTitle"></h3><span class="lb m" id="pMeta"></span></div>
 </div>
 
+<script>
+/* статистика GoatCounter (katsuyuki.goatcounter.com); считаем только на настоящем сайте, не в превью */
+window.track = function(){};
+if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
+  window.goatcounter = { allow_local: false };
+  var gc = document.createElement("script"); gc.async = true; gc.src = "https://gc.zgo.at/count.js";
+  gc.setAttribute("data-goatcounter", "https://katsuyuki.goatcounter.com/count");
+  document.head.appendChild(gc);
+  window.track = function(path, title){ try{ if(window.goatcounter && goatcounter.count) goatcounter.count({ path: path, title: title || path, event: true }); }catch(e){} };
+}
+</script>
 <script src="works.js"></script>
 <script src="news.js"></script>
 <script>
@@ -537,6 +548,7 @@ footer .jp{font-size:24px}
       if(n.link){
         var a = document.createElement("a"); a.className = "go lb"; a.href = n.link; a.target = "_blank"; a.rel = "noopener";
         if(n.button) a.textContent = n.button + " ↗\ufe0e"; else { a.setAttribute("data-i18n", "open_link"); a.textContent = t("open_link"); }
+        a.addEventListener("click", function(){ track("news link: " + (n.title || n.link)); });
         el.lastElementChild.appendChild(a);
       }
       $("newsList").appendChild(el);
@@ -555,7 +567,7 @@ footer .jp{font-size:24px}
     var isMail = /^mailto:/.test(c.url||"");
     var el = document.createElement(c.url && !isMail ? "a" : "div");
     el.className = "c-row";
-    if(c.url && !isMail){ el.href = c.url; el.target = "_blank"; el.rel = "noopener"; }
+    if(c.url && !isMail){ el.href = c.url; el.target = "_blank"; el.rel = "noopener"; el.addEventListener("click", function(){ track("contact: " + c.label); }); }
     el.innerHTML = '<span class="lb m"></span><span class="v"></span><span class="lb acts"></span>';
     el.children[0].textContent = c.label;
     if(I18N.en["c_" + c.label]) el.children[0].setAttribute("data-i18n", "c_" + c.label);
@@ -563,11 +575,12 @@ footer .jp{font-size:24px}
     if(isMail || !c.url){
       var btn = document.createElement("button"); btn.className = "copy lb"; btn.setAttribute("data-i18n", "copy"); btn.textContent = t("copy");
       btn.addEventListener("click", function(){
+        track("copy: " + c.label);
         var done = function(){ btn.textContent = t("copied"); setTimeout(function(){ btn.textContent = t("copy"); }, 1600); };
         try{ navigator.clipboard.writeText(c.value).then(done, function(){ selectText(el.children[1]); }); }catch(e){ selectText(el.children[1]); }
       });
       el.children[2].appendChild(btn);
-      if(isMail){ var a = document.createElement("a"); a.href = c.url; a.className = "lb"; a.setAttribute("data-i18n", "write"); a.textContent = t("write"); a.style.marginLeft = "10px"; el.children[2].appendChild(a); }
+      if(isMail){ var a = document.createElement("a"); a.href = c.url; a.className = "lb"; a.setAttribute("data-i18n", "write"); a.textContent = t("write"); a.style.marginLeft = "10px"; a.addEventListener("click", function(){ track("contact: " + c.label); }); el.children[2].appendChild(a); }
     } else if(c.url){ el.children[2].textContent = "↗︎"; }
     $("contacts").appendChild(el);
   });
@@ -597,6 +610,7 @@ footer .jp{font-size:24px}
 
   function openPlayer(w){
     cur = w;
+    track("video: " + w.title);
     txt("pTitle", w.title);
     txt("pMeta", [w.client, w.year].concat((w.tags||[]).slice(0,2)).filter(Boolean).join(" / "));
     var vert = !!w.vertical;
@@ -671,6 +685,7 @@ footer .jp{font-size:24px}
   $("pYt").addEventListener("click", function(e){
     if(!cur || !cur.id){ e.preventDefault(); return; }
     var t = (yp && yp.getCurrentTime) ? Math.floor(yp.getCurrentTime()) : 0;
+    track("open on YouTube: " + cur.title);
     this.href = "https://www.youtube.com/watch?v=" + cur.id + (t ? "&t=" + t + "s" : "");
     if(yp && yp.pauseVideo) yp.pauseVideo();
   });
