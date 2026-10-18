@@ -27,6 +27,7 @@ window.SITE = {
      year  — год
      link  — ссылка на YouTube (любая: youtu.be, watch, shorts)
      tags  — метки, например ["AMV", "4K"]
+     badge — (необязательно) плашка на обложке, например badge: "Flxwery's pick"
    --------------------------------------------------------------------- */
 
 window.WORKS = [
@@ -38,7 +39,7 @@ window.WORKS = [
   { title: "Spokoynaya Noch",            year: "2026", link: "https://youtu.be/oNwfnxYTpaw", tags: ["AMV", "4K"] },
   { title: "I'm God",                    year: "2026", link: "https://youtu.be/38tOSZbfzXk", tags: ["AMV", "4K"] },
   { title: "Missing Textures",           year: "2026", link: "https://youtu.be/wH6_dg3BL80", tags: ["AMV", "4K"] },
-  { title: "Transgender",                year: "2025", link: "https://youtu.be/hvh8QtzKZQA", tags: ["AMV", "4K"] },
+  { title: "Transgender",                year: "2025", link: "https://youtu.be/hvh8QtzKZQA", tags: ["AMV", "4K"], badge: "Flxwery's pick" },
   { title: "Just Ur Doll",               year: "2025", link: "https://youtu.be/TWAUvWGPW7k", tags: ["AMV", "4K"] },
   { title: "Under Your Spell",           year: "2025", link: "https://youtu.be/f5h1Djyj19M", tags: ["AMV", "4K"] },
   { title: "Can't Feel Myself",          year: "2024", link: "https://youtu.be/xg8joSFOHxU", tags: ["MMV", "4K"] },
