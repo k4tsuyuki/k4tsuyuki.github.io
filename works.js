@@ -33,7 +33,6 @@ window.WORKS = [
   { title: "Archetype 3HC",              year: "2026", link: "https://www.youtube.com/watch?v=YSs2BbX69Fo", tags: ["AMV", "4K"] },
   { title: "Sing Me to Sleep",           year: "2026", link: "https://youtu.be/gpQxpaTkwDQ", tags: ["AMV", "4K"] },
   { title: "Save Me × Legendary Lovers", year: "2026", link: "https://youtu.be/_Asoua2qE_0", tags: ["AMV", "4K"] },
-  { title: "Hand Outs",                  year: "2023", link: "https://youtu.be/kV8l_27O9sE", tags: ["AMV", "4K"] },
   { title: "Transgender 2",              year: "2026", link: "https://youtu.be/xv_AfLaNKWQ", tags: ["AMV", "Collab", "4K"] },
   { title: "Dove Doll 4HC",              year: "2026", link: "https://youtu.be/7wK3X0X2X90", tags: ["AMV", "4K"] },
   { title: "Spokoynaya Noch",            year: "2026", link: "https://youtu.be/oNwfnxYTpaw", tags: ["AMV", "4K"] },
@@ -42,5 +41,6 @@ window.WORKS = [
   { title: "Transgender",                year: "2025", link: "https://youtu.be/hvh8QtzKZQA", tags: ["AMV", "4K"] },
   { title: "Just Ur Doll",               year: "2025", link: "https://youtu.be/TWAUvWGPW7k", tags: ["AMV", "4K"] },
   { title: "Under Your Spell",           year: "2025", link: "https://youtu.be/f5h1Djyj19M", tags: ["AMV", "4K"] },
-  { title: "Can't Feel Myself",          year: "2024", link: "https://youtu.be/xg8joSFOHxU", tags: ["MMV", "4K"] }
+  { title: "Can't Feel Myself",          year: "2024", link: "https://youtu.be/xg8joSFOHxU", tags: ["MMV", "4K"] },
+  { title: "Hand Outs",                  year: "2023", link: "https://youtu.be/kV8l_27O9sE", tags: ["AMV", "4K"] }
 ];
