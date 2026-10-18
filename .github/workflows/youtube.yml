@@ -1,0 +1,27 @@
+name: New YouTube videos
+
+on:
+  schedule:
+    - cron: "23 * * * *"   # every hour
+  workflow_dispatch:        # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write
+
+concurrency: youtube-sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 .github/scripts/sync_youtube.py
+      - name: Commit if something changed
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+            git add works.js .github/youtube-seen.json
+            git commit -m "Add new YouTube videos"
+            git push
+          fi
