@@ -253,11 +253,9 @@ footer .jp{font-size:24px}
       </div>
       <div class="status lb">
         <span class="on"><i></i><span data-i18n="open">Open for commissions</span></span>
-        <span class="tc m"><span class="rec"><i></i>REC</span><span id="timecode">00:00:00:00</span><span>24 FPS</span></span>
       </div>
       <div class="grow"></div>
       <div class="hero-mark">
-        <div class="kana" aria-hidden="true"><span>カツユキ</span><span>編集者</span></div>
         <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"></h1>
       </div>
       <div class="grow"></div>
@@ -457,14 +455,6 @@ footer .jp{font-size:24px}
     if(c.url){ a.href = c.url; a.target = "_blank"; a.rel = "noopener"; } else { a.href = "#contact"; }
     $("socials").appendChild(a);
   });
-
-  /* ---- таймкод ---- */
-  var t0 = performance.now();
-  (function tick(){
-    var f = Math.floor((performance.now() - t0) / 1000 * 24);
-    txt("timecode", pad(Math.floor(f/86400)%24) + ":" + pad(Math.floor(f/1440)%60) + ":" + pad(Math.floor(f/24)%60) + ":" + pad(f%24));
-    requestAnimationFrame(tick);
-  })();
 
   /* ---- контакты ---- */
   (SITE.contacts||[]).forEach(function(c){
