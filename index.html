@@ -370,6 +370,10 @@ if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
   window.track = function(path, title){ try{ if(window.goatcounter && goatcounter.count) goatcounter.count({ path: path, title: title || path, event: true }); }catch(e){} };
 }
 </script>
+<script>
+/* страница «нет интернета»: см. sw.js и offline.html */
+if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)) addEventListener("load", function(){ navigator.serviceWorker.register("/sw.js").catch(function(){}); });
+</script>
 <script src="works.js"></script>
 <script src="news.js"></script>
 <script>
