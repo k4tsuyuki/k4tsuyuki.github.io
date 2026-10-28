@@ -163,7 +163,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 .mp .yt{position:absolute;left:0;top:-50%;width:200%;height:400%;transform:scale(.5);transform-origin:0 0;pointer-events:none}
 .mp .yt iframe{width:100%;height:100%;border:0;display:block}
 .mp-shield{position:absolute;inset:0;z-index:1;cursor:pointer}
-.mp-cov{position:absolute;inset:0;z-index:2;display:grid;place-items:center;background:#000 center/cover;transition:opacity .4s}
+.mp-cov{position:absolute;inset:0;z-index:2;filter:grayscale(1);display:grid;place-items:center;background:#000 center/cover;transition:opacity .4s}
 .mp-cov::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55)}
 .mp-cov>*{position:relative}
 .mp.on .mp-cov{opacity:0;pointer-events:none}
