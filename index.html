@@ -197,6 +197,9 @@ footer .jp{font-size:24px}
 /* ---------- плеер ---------- */
 .player{position:fixed;inset:0;z-index:80;background:rgba(4,4,4,.97);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 60px) var(--gr) calc(env(safe-area-inset-bottom,0px) + 24px) var(--gl);opacity:0;transition:opacity .35s}
 .player.show{opacity:1}
+.player .stage{transform:scale(.96);filter:blur(10px);transition:transform .45s cubic-bezier(.2,0,0,1),filter .45s}
+.player.show .stage{transform:none;filter:none}
+@media (prefers-reduced-motion:reduce){.player .stage{transform:none;filter:none;transition:none}}
 .p-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));display:flex;gap:8px;align-items:center}
 .stage{position:relative;width:min(100%,calc((100vh - 230px) * 16 / 9));aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
 /* полный экран: на весь экран идёт весь плеер, панель управления остаётся поверх видео */
@@ -264,6 +267,18 @@ footer .jp{font-size:24px}
   .totop{display:grid}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
+@view-transition{navigation:auto;types:page}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .3s cubic-bezier(.4,0,1,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .5s cubic-bezier(0,0,.2,1) both}
+:root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
+@keyframes pg-out{to{opacity:0;filter:blur(14px);transform:scale(.985)}}
+@keyframes pg-in{from{opacity:0;filter:blur(14px);transform:scale(1.015)}}
+.vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
+.vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
+@keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+@keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 </style>
 </head>
 <body>
@@ -458,7 +473,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   }
   $("langBtn").addEventListener("click", function(){
     if(swapping) return;
-    morph(function(){ lang = lang === "en" ? "uk" : "en"; store("lang", lang); applyLang(); });
+    morph(function(){ lang = lang === "en" ? "uk" : "en"; store("lang", lang); applyLang(); }, "vt-blur");
   });
 
   /* ---- тема ---- */

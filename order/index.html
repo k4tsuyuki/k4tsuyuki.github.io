@@ -80,6 +80,13 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
 
 /* окно заказа */
 dialog{border:1px solid var(--hair);background:var(--sheet);color:var(--paper);padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;font:inherit}
+dialog[open]{animation:dlg-in .4s cubic-bezier(.2,0,0,1)}
+dialog[open]::backdrop{animation:bd-in .4s ease}
+@keyframes dlg-in{from{opacity:0;transform:scale(.97);filter:blur(8px)}}
+@keyframes bd-in{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){dialog[open],dialog[open]::backdrop{animation:none}}
+.hint{color:var(--ash)}
+.two{align-items:start}
 dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 .f-in{padding:clamp(20px,3vw,32px);display:grid;gap:18px}
 .f-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
@@ -136,6 +143,19 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   .two{grid-template-columns:minmax(0,1fr)}
   .top .who .m{display:none}
 }
+/* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
+@view-transition{navigation:auto;types:page}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .3s cubic-bezier(.4,0,1,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .5s cubic-bezier(0,0,.2,1) both}
+:root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
+@keyframes pg-out{to{opacity:0;filter:blur(14px);transform:scale(.985)}}
+@keyframes pg-in{from{opacity:0;filter:blur(14px);transform:scale(1.015)}}
+.vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
+.vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
+@keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+@keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+.vt-theme::view-transition-old(root),.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
 </style>
 </head>
 <body>
@@ -229,7 +249,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
       <label class="field lb"><span><span data-en>Your name</span><span data-uk>Ваше імʼя</span></span>
         <input type="text" name="name" required maxlength="100" autocomplete="nickname"></label>
       <label class="field lb"><span><span data-en>Deadline</span><span data-uk>Термін</span><span class="m"><span data-en>Optional</span><span data-uk>Необовʼязково</span></span></span>
-        <input type="date" name="deadline" id="fDeadline"></label>
+        <input type="date" name="deadline" id="fDeadline"><span class="hint" id="fEarliest"></span></label>
     </div>
     <div class="two">
       <label class="field lb"><span>Email</span>
@@ -259,11 +279,29 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   var root = document.documentElement;
   function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
   function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Замовити едіт" : "Order an edit") + " · Katsuyuki"; }
-  document.getElementById("langBtn").addEventListener("click", function(){ root.lang = root.lang === "uk" ? "en" : "uk"; store("lang", root.lang); syncLang(); });
+  function morph(fn, cls, after){
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!document.startViewTransition || reduce){ fn(); return; }
+    root.classList.add(cls);
+    var vt = document.startViewTransition(fn);
+    if(after) vt.ready.then(after, function(){});
+    vt.finished.then(done, done);
+    function done(){ root.classList.remove(cls); }
+  }
+  document.getElementById("langBtn").addEventListener("click", function(){
+    morph(function(){ root.lang = root.lang === "uk" ? "en" : "uk"; store("lang", root.lang); syncLang(); }, "vt-blur");
+  });
   document.getElementById("themeBtn").addEventListener("click", function(){
     var light = root.getAttribute("data-theme") !== "light";
-    if(light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
-    store("theme", light ? "light" : "dark");
+    var r = this.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    morph(function(){
+      if(light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
+      store("theme", light ? "light" : "dark");
+    }, "vt-theme", function(){
+      root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
+        { duration: 700, easing: "cubic-bezier(.65,0,.25,1)", pseudoElement: "::view-transition-new(root)" });
+    });
   });
   syncLang();
 
@@ -292,6 +330,9 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   var ENDPOINT = "";
   var ACCESS_KEY = "85ba0e45-6828-488d-bd69-4b0272a62e0b";
   var PLANS = { short:{ name:"Short", min:20, max:20 }, standard:{ name:"Standard", min:50, max:50 }, long:{ name:"Long", min:150, max:150 }, choice:{ name:"Your choice", min:50, max:300 } };
+  /* минимальный срок каждого формата в днях; эдиты делаются по очереди, поэтому дни складываются */
+  var DAYS = { short:2, standard:3, long:7, choice:7 };
+  var freeFrom = "";   /* с какого дня я свободен (очередь из Google Таблицы, когда подключён ENDPOINT) */
   var root = document.documentElement, box = document.getElementById("orderBox"), form = document.getElementById("orderForm");
   var uk = function(){ return root.lang === "uk"; };
   var qty = { short:0, standard:0, long:0, choice:0 };
@@ -340,8 +381,26 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
       box.appendChild(b);
     });
   }
+  function iso(d){ return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
+  function earliest(){
+    var d = new Date(); d.setHours(12, 0, 0, 0);
+    if(freeFrom){ var f = new Date(freeFrom + "T12:00:00"); if(f > d) d = f; }
+    var n = 0; units().forEach(function(k){ n += DAYS[k]; });
+    d.setDate(d.getDate() + (n || DAYS.short)); return d;
+  }
+  function day(d, loc){ return d.toLocaleDateString(loc, { day: "numeric", month: "long" }); }
+  function syncDeadline(){
+    var dl = document.getElementById("fDeadline"), e = earliest(), v = iso(e);
+    dl.min = v; if(dl.value && dl.value < v) dl.value = "";
+    document.getElementById("fEarliest").innerHTML = '<span data-en>Earliest: ' + day(e, "en-GB") + '</span><span data-uk>Найраніше: ' + day(e, "uk-UA") + '</span>';
+  }
+  function queue(){
+    if(!ENDPOINT) return;
+    fetch(ENDPOINT + "?q=queue").then(function(r){ return r.json(); })
+      .then(function(j){ if(j && /^\d{4}-\d\d-\d\d$/.test(j.free || "")){ freeFrom = j.free; syncDeadline(); } }).catch(function(){});
+  }
   function draw(){
-    briefs();
+    briefs(); syncDeadline();
     document.querySelectorAll(".ci").forEach(function(r){ var k = r.getAttribute("data-k"); r.querySelector("b").textContent = qty[k]; r.classList.toggle("on", qty[k] > 0); });
     var t = totals(); document.getElementById("sum").hidden = !t.max || single();
     document.getElementById("sTotal").textContent = t.text; document.getElementById("sDep").textContent = t.dep;
@@ -355,9 +414,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   function placeholders(){ form.querySelectorAll("[data-ph-en]").forEach(function(el){ el.placeholder = el.getAttribute(uk() ? "data-ph-uk" : "data-ph-en"); }); }
   function msg(t, err){ var m = document.getElementById("fMsg"); m.textContent = t || ""; m.classList.toggle("err", !!err); }
   function open(plan){
-    var dl = document.getElementById("fDeadline"), now = new Date();
-    dl.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-    placeholders(); msg("");
+    placeholders(); msg(""); queue();
     if(plan && !qty[plan]){ if(single()) Object.keys(qty).forEach(function(x){ qty[x] = 0; }); qty[plan] = 1; }
     draw();
     form.hidden = false; document.getElementById("fDone").hidden = true;
@@ -397,6 +454,8 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
     var ideas = Array.prototype.slice.call(form.querySelectorAll("[name=idea]")), exs = form.querySelectorAll("[name=examples]");
     var bad = ideas.filter(function(x){ return !x.value.trim(); }).concat([form.elements.name, form.elements.email].filter(function(x){ return !x.checkValidity() || !x.value.trim(); }));
     if(bad.length){ msg(uk() ? "Заповніть обовʼязкові поля" : "Please fill in the required fields", true); bad[0].focus(); return; }
+    var dlEl = form.elements.deadline;
+    if(dlEl.value && dlEl.value < dlEl.min){ var e0 = earliest(); msg(uk() ? "Найраніший термін: " + day(e0, "uk-UA") : "The earliest deadline is " + day(e0, "en-GB"), true); dlEl.focus(); return; }
     var u = units(), multi = u.length > 1;
     var list = u.map(function(k, i){ return { edit: "Edit " + (i + 1) + " · " + PLANS[k].name + " (" + eur(PLANS[k].min, PLANS[k].max) + ")", idea: ideas[i].value.trim(), examples: exs[i].value.trim() }; });
     var ideaText = list.map(function(x){ return (multi ? x.edit + "\n" : "") + x.idea; }).join("\n\n");
