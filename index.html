@@ -325,6 +325,27 @@ footer .jp{font-size:24px}
 .vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
 .vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* уведомление о новой новости */
+.ntf{position:fixed;right:20px;bottom:20px;z-index:70;width:340px;max-width:calc(100vw - 24px);background:var(--bar);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--hair);border-radius:14px;padding:16px 16px 14px;color:var(--paper);box-shadow:0 18px 50px rgba(0,0,0,.35);transform:translateX(calc(100% + 40px));opacity:0;transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .4s}
+.ntf.on{transform:none;opacity:1}
+.ntf-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ntf-h i{width:7px;height:7px;border-radius:50%;background:var(--acc,var(--paper));box-shadow:0 0 8px var(--acc,var(--paper));animation:ntfp 1.6s infinite}
+@keyframes ntfp{50%{opacity:.35}}
+.ntf-h .d{opacity:.55;margin-left:auto;margin-right:26px}
+.ntf h4{margin:0 0 6px;font-size:16px;line-height:1.2}
+.ntf p{margin:0 0 12px;font-size:13px;line-height:1.4;opacity:.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ntf .go{display:inline-block;border:1px solid var(--paper);border-radius:99px;padding:6px 14px;color:var(--paper);text-decoration:none;cursor:pointer;background:none;font-family:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.ntf .go:hover{background:var(--paper);color:var(--bar)}
+.ntf .x{position:absolute;top:10px;right:10px;width:28px;height:28px;border:0;background:none;color:var(--paper);opacity:.6;cursor:pointer;font-size:16px;line-height:1}
+.ntf .x:hover{opacity:1}
+.ntf-bar{position:absolute;left:16px;right:16px;bottom:0;height:2px;background:var(--hair);overflow:hidden;border-radius:2px}
+.ntf-bar b{display:block;height:100%;background:var(--paper);opacity:.5;transform-origin:left;animation:ntfbar 12s linear forwards}
+.ntf:hover .ntf-bar b{animation-play-state:paused}
+@keyframes ntfbar{to{transform:scaleX(0)}}
+#navNews.new::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--acc,var(--paper));margin-left:5px;vertical-align:super}
+@media(max-width:760px){.ntf{left:12px;right:12px;width:auto;bottom:auto;top:calc(env(safe-area-inset-top,0px) + 64px);transform:translateY(calc(-100% - 90px))}}
+@media(prefers-reduced-motion:reduce){.ntf{transition:opacity .3s}}
 </style>
 </head>
 <body>
@@ -474,13 +495,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Проєкти / Файли", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", nt_new:"Нова новина", nt_read:"Читати", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -709,6 +730,36 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
         this.hidden = true;
       });
     }
+
+    /* всплывающее уведомление о свежей новости: показывается один раз, если новость не старше 3 недель */
+    (function(){
+      var n = NEWS[0], key = (n.date || "") + "|" + (n.title || ""), seen = "";
+      try { seen = localStorage.getItem("newsSeen") || ""; } catch(e){}
+      var d = new Date((n.date || "") + "T00:00:00"), fresh = !isNaN(d) && Date.now() - d < 21 * 864e5;
+      if(!fresh || seen === key) return;
+      $("navNews").classList.add("new");
+      function mark(){ try { localStorage.setItem("newsSeen", key); } catch(e){} }
+      var box = document.createElement("aside"); box.className = "ntf"; box.setAttribute("role", "status");
+      box.innerHTML = '<div class="ntf-h lb"><i></i><span data-i18n="nt_new"></span><span class="d"></span></div><h4></h4><p></p>' +
+        '<button class="go lb" data-i18n="nt_read"></button><button class="x" aria-label="Close">✕</button><div class="ntf-bar"><b></b></div>';
+      box.querySelector("[data-i18n=nt_new]").textContent = t("nt_new");
+      box.querySelector(".go").textContent = t("nt_read");
+      var m = String(n.date).match(/^(\d{4})-(\d{2})-(\d{2})/); box.querySelector(".d").textContent = m ? m[3] + "." + m[2] : "";
+      box.querySelector("h4").textContent = n.title || "";
+      var p = box.querySelector("p"); if(n.text) p.textContent = n.text.split("\n")[0]; else p.remove();
+      document.body.appendChild(box);
+      var timer;
+      function hide(){ clearTimeout(timer); box.classList.remove("on"); setTimeout(function(){ box.remove(); }, 700); }
+      setTimeout(function(){ box.classList.add("on"); mark(); timer = setTimeout(hide, 12000); }, 1600);
+      box.addEventListener("mouseenter", function(){ clearTimeout(timer); });
+      box.addEventListener("mouseleave", function(){ timer = setTimeout(hide, 5000); });
+      box.querySelector(".x").addEventListener("click", hide);
+      box.querySelector(".go").addEventListener("click", function(){
+        track("news popup: " + (n.title || "")); hide(); $("navNews").classList.remove("new");
+        $("news").scrollIntoView({ behavior: "smooth" });
+      });
+      $("navNews").addEventListener("click", function(){ this.classList.remove("new"); });
+    })();
   } else { $("navNews").remove(); }
 
   /* ---- контакты ---- */
