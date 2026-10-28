@@ -32,15 +32,23 @@ html[lang="uk"] [data-uk]{display:inline}
 html[lang="uk"] p[data-uk],html[lang="uk"] h1[data-uk]{display:block}
 /* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
 @view-transition{navigation:auto;types:page}
-:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .3s cubic-bezier(.4,0,1,1) both}
-:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .5s cubic-bezier(0,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .25s cubic-bezier(.4,0,1,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .4s cubic-bezier(0,0,.2,1) both}
 :root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
-@keyframes pg-out{to{opacity:0;filter:blur(14px);transform:scale(.985)}}
-@keyframes pg-in{from{opacity:0;filter:blur(14px);transform:scale(1.015)}}
+/* на компьютере без размытия: блюр на весь большой экран тормозит, остаются затухание и зум */
+@keyframes pg-out{to{opacity:0;transform:scale(.99)}}
+@keyframes pg-in{from{opacity:0;transform:scale(1.01)}}
+@keyframes bl-out{to{opacity:0}}
+@keyframes bl-in{from{opacity:0}}
+@media (max-width:760px){
+  @keyframes pg-out{to{opacity:0;filter:blur(12px);transform:scale(.985)}}
+  @keyframes pg-in{from{opacity:0;filter:blur(12px);transform:scale(1.015)}}
+  @keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+  @keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+}
+::view-transition-old(root),::view-transition-new(root),::view-transition-group(logo){will-change:opacity,transform}
 .vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
 .vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
-@keyframes bl-out{to{opacity:0;filter:blur(8px)}}
-@keyframes bl-in{from{opacity:0;filter:blur(8px)}}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 </style>
 </head>

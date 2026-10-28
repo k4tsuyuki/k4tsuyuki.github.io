@@ -81,10 +81,14 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
 /* окно заказа */
 dialog{border:1px solid var(--hair);background:var(--sheet);color:var(--paper);padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;font:inherit}
 dialog[open]{animation:dlg-in .4s cubic-bezier(.2,0,0,1)}
+dialog.closing{animation:dlg-out .25s cubic-bezier(.4,0,1,1) forwards}
+dialog.closing::backdrop{animation:bd-out .25s ease forwards}
+@keyframes dlg-out{to{opacity:0;transform:scale(.97);filter:blur(6px)}}
+@keyframes bd-out{to{opacity:0}}
 dialog[open]::backdrop{animation:bd-in .4s ease}
 @keyframes dlg-in{from{opacity:0;transform:scale(.97);filter:blur(8px)}}
 @keyframes bd-in{from{opacity:0}}
-@media (prefers-reduced-motion:reduce){dialog[open],dialog[open]::backdrop{animation:none}}
+@media (prefers-reduced-motion:reduce){dialog[open],dialog[open]::backdrop,dialog.closing,dialog.closing::backdrop{animation:none}}
 .hint{color:var(--ash)}
 .two{align-items:start}
 dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
@@ -145,18 +149,27 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
 }
 /* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
 @view-transition{navigation:auto;types:page}
-:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .3s cubic-bezier(.4,0,1,1) both}
-:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .5s cubic-bezier(0,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .25s cubic-bezier(.4,0,1,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .4s cubic-bezier(0,0,.2,1) both}
 :root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
-@keyframes pg-out{to{opacity:0;filter:blur(14px);transform:scale(.985)}}
-@keyframes pg-in{from{opacity:0;filter:blur(14px);transform:scale(1.015)}}
+/* на компьютере без размытия: блюр на весь большой экран тормозит, остаются затухание и зум */
+@keyframes pg-out{to{opacity:0;transform:scale(.99)}}
+@keyframes pg-in{from{opacity:0;transform:scale(1.01)}}
+@keyframes bl-out{to{opacity:0}}
+@keyframes bl-in{from{opacity:0}}
+@media (max-width:760px){
+  @keyframes pg-out{to{opacity:0;filter:blur(12px);transform:scale(.985)}}
+  @keyframes pg-in{from{opacity:0;filter:blur(12px);transform:scale(1.015)}}
+  @keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+  @keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+}
+::view-transition-old(root),::view-transition-new(root),::view-transition-group(logo){will-change:opacity,transform}
 .vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
 .vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
-@keyframes bl-out{to{opacity:0;filter:blur(8px)}}
-@keyframes bl-in{from{opacity:0;filter:blur(8px)}}
 @media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 .vt-theme::view-transition-old(root),.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
 </style>
+<script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/"},"eagerness":"moderate"}]}</script>
 </head>
 <body>
 <header class="top">
@@ -421,7 +434,16 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
     if(box.showModal) box.showModal(); else box.setAttribute("open", "");
     try{ window.goatcounter.count({ path: "order form: open", title: "order form: open", event: true }); }catch(e){}
   }
-  function close(){ if(box.close) box.close(); else box.removeAttribute("open"); }
+  function shut(){ box.classList.remove("closing"); if(box.close) box.close(); else box.removeAttribute("open"); }
+  function close(){
+    if(!box.open || box.classList.contains("closing")) return;
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduce){ shut(); return; }
+    box.classList.add("closing");
+    var t = setTimeout(shut, 400);
+    box.addEventListener("animationend", function h(e){ if(e.target !== box) return; box.removeEventListener("animationend", h); clearTimeout(t); shut(); });
+  }
+  box.addEventListener("cancel", function(e){ e.preventDefault(); close(); });
   document.querySelectorAll(".pick").forEach(function(b){ b.addEventListener("click", function(){ open(b.getAttribute("data-plan")); }); });
   document.getElementById("fClose").addEventListener("click", close);
   document.getElementById("fOk").addEventListener("click", close);
