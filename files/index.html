@@ -138,8 +138,9 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 .amt input{flex:1;min-width:0;font:inherit;font-size:18px;color:var(--paper);background:none;border:0;padding:10px 12px 10px 6px;outline:none}
 #pp{min-height:48px;color-scheme:light;background:none}
 #pp iframe{color-scheme:light;background:transparent}
-/* PayPal пишет тёмным текстом (форма карты, ошибки, «18 years»), поэтому кнопки всегда стоят на светлой плашке */
-#pp:not(:empty){background:#f6f5f1;padding:12px;border-radius:14px}
+/* PayPal рисует свой блок для светлого фона (тёмный текст в форме карты, ошибки, «18 years»).
+   В тёмной теме блок инвертируется: фон и кнопки становятся чёрными, текст светлым, синий цвет сохраняется. */
+:root:not([data-theme="light"]) #pp iframe{filter:invert(1) hue-rotate(180deg)}
 .b-msg{color:var(--ash)}
 .b-msg.err{color:var(--paper)}
 .b-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -461,7 +462,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     loadSdk().then(function(){
       if(cur !== p) return;
       window.paypal.Buttons({
-        style: { layout: "vertical", shape: "pill", color: "black", label: "pay", height: 44 },
+        style: { layout: "vertical", shape: "pill", color: root.getAttribute("data-theme") === "light" ? "black" : "white", label: "pay", height: 44 },
         onClick: function(d, actions){
           var a = p.pwyw ? amount() : p.price;
           if(a < p.price || a <= 0){ mode(); return actions.reject(); }
