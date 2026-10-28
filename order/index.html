@@ -36,9 +36,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;paddin
 .wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1480px;margin-inline:auto}
 .lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
 .m{color:var(--ash)}
-[data-uk]{display:none}
-html[lang="uk"] [data-en]{display:none}
-html[lang="uk"] [data-uk]{display:revert}
+[hidden]{display:none!important}
+html:not([lang="uk"]) [data-uk],html[lang="uk"] [data-en]{display:none!important}
 
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--void)}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bar);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair)}
@@ -74,11 +73,45 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
 .btn.o{border-color:var(--hair)}
 .btn.o:hover{border-color:var(--paper)}
 
+.plan .pick{align-self:stretch;justify-content:center;margin-top:-4px}
+.btn.solid{background:var(--paper);color:var(--void)}
+.btn.solid:hover{background:none;color:var(--paper)}
+
+/* окно заказа */
+dialog{border:1px solid var(--hair);background:var(--sheet);color:var(--paper);padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;font:inherit}
+dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.f-in{padding:clamp(20px,3vw,32px);display:grid;gap:18px}
+.f-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.f-head h2{font-weight:400;font-size:clamp(32px,4vw,48px);line-height:.95;letter-spacing:-.02em;margin:8px 0 0}
+.field{display:grid;gap:8px}
+.field > span{display:flex;justify-content:space-between;gap:12px}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;font-size:16px;color:var(--paper);background:var(--void);border:1px solid var(--hair);border-radius:0;padding:10px 12px;transition:border-color .2s}
+input:focus,textarea:focus{outline:none;border-color:var(--paper)}
+textarea{min-height:96px;resize:vertical}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.opts label{position:relative;cursor:pointer}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts label > span{display:grid;gap:4px;border:1px solid var(--hair);padding:10px;height:100%;transition:border-color .2s,background .2s,color .2s}
+.opts label > span i{font-style:normal;color:var(--ash)}
+.opts input:checked + span{background:var(--paper);color:var(--void);border-color:var(--paper)}
+.opts input:checked + span i{color:var(--void);opacity:.6}
+.opts input:focus-visible + span{outline:1px solid var(--paper);outline-offset:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.f-msg{color:var(--ash)}
+.f-msg.err{color:var(--paper)}
+.done{padding:clamp(28px,5vw,48px) clamp(20px,3vw,32px);display:grid;gap:14px;justify-items:start}
+.done h2{font-weight:400;font-size:clamp(32px,4vw,48px);line-height:.95;margin:0}
+.done p{margin:0;color:var(--ash)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
 @media (max-width:1100px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){
   .plans{grid-template-columns:minmax(0,1fr)}
   .plan{min-height:0}
   .how{grid-template-columns:minmax(0,1fr)}
+  .opts{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:minmax(0,1fr)}
   .top .who .m{display:none}
 }
 </style>
@@ -106,6 +139,7 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
         <div><dt class="m"><span data-en>Time</span><span data-uk>Термін</span></dt><dd><span data-en>2 days</span><span data-uk>2 дні</span></dd></div>
       </dl>
       <div class="price">€20</div>
+      <button class="btn pick lb" type="button" data-plan="short"><span data-en>Order</span><span data-uk>Замовити</span></button>
     </article>
     <article class="plan">
       <div class="no lb"><span class="m">02</span><span class="m">YouTube</span></div>
@@ -115,6 +149,7 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
         <div><dt class="m"><span data-en>Time</span><span data-uk>Термін</span></dt><dd><span data-en>3–4 days</span><span data-uk>3–4 дні</span></dd></div>
       </dl>
       <div class="price">€50</div>
+      <button class="btn pick lb" type="button" data-plan="standard"><span data-en>Order</span><span data-uk>Замовити</span></button>
     </article>
     <article class="plan">
       <div class="no lb"><span class="m">03</span><span class="m">YouTube</span></div>
@@ -124,6 +159,7 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
         <div><dt class="m"><span data-en>Time</span><span data-uk>Термін</span></dt><dd><span data-en>1 week</span><span data-uk>1 тиждень</span></dd></div>
       </dl>
       <div class="price">€150</div>
+      <button class="btn pick lb" type="button" data-plan="long"><span data-en>Order</span><span data-uk>Замовити</span></button>
     </article>
     <article class="plan">
       <div class="no lb"><span class="m">04</span><span class="m"><span data-en>Anime / Films</span><span data-uk>Аніме / Фільми</span></span></div>
@@ -133,17 +169,68 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
         <div><dt class="m"><span data-en>Length</span><span data-uk>Тривалість</span></dt><dd><span data-en>No limit</span><span data-uk>Без обмежень</span></dd></div>
       </dl>
       <div class="price">€100–300</div>
+      <button class="btn pick lb" type="button" data-plan="choice"><span data-en>Order</span><span data-uk>Замовити</span></button>
     </article>
   </div>
 
   <div class="how">
     <div>
       <div class="lb m"><span data-en>How to order</span><span data-uk>Як замовити</span></div>
-      <p><span data-en>Write to me and name the option.</span><span data-uk>Напишіть мені та вкажіть варіант.</span></p>
+      <p><span data-en>Fill in a short form. You can also write to me directly.</span><span data-uk>Заповніть коротку форму. Або напишіть мені напряму.</span></p>
     </div>
-    <div class="acts lb" id="acts"></div>
+    <div class="acts lb" id="acts"><button class="btn solid pick" type="button" data-plan=""><span data-en>Order form</span><span data-uk>Форма замовлення</span></button></div>
   </div>
 </main>
+
+<dialog id="orderBox" aria-labelledby="fTitle">
+  <form class="f-in" id="orderForm" novalidate>
+    <div class="f-head">
+      <div><div class="lb m"><span data-en>Order form</span><span data-uk>Форма замовлення</span></div>
+        <h2 id="fTitle"><span data-en>Tell me about your edit</span><span data-uk>Розкажіть про едіт</span></h2></div>
+      <button class="tgl lb" type="button" id="fClose" aria-label="Close">✕</button>
+    </div>
+
+    <div class="field lb"><span><span data-en>Option</span><span data-uk>Варіант</span></span>
+      <div class="opts">
+        <label><input type="radio" name="plan" value="short" required><span><span data-en>Short</span><span data-uk>Короткий</span><i>€20</i></span></label>
+        <label><input type="radio" name="plan" value="standard"><span><span data-en>Standard</span><span data-uk>Звичайний</span><i>€50</i></span></label>
+        <label><input type="radio" name="plan" value="long"><span><span data-en>Long</span><span data-uk>Довгий</span><i>€150</i></span></label>
+        <label><input type="radio" name="plan" value="choice"><span><span data-en>Your choice</span><span data-uk>На ваш вибір</span><i>€100–300</i></span></label>
+      </div>
+    </div>
+
+    <label class="field lb"><span><span data-en>What do you want?</span><span data-uk>Що ви хочете?</span></span>
+      <textarea name="idea" required maxlength="4000" data-ph-en="Anime or film, characters, song, mood, length…" data-ph-uk="Аніме чи фільм, персонажі, пісня, настрій, тривалість…"></textarea></label>
+
+    <label class="field lb"><span><span data-en>Examples</span><span data-uk>Приклади</span><span class="m"><span data-en>Optional</span><span data-uk>Необовʼязково</span></span></span>
+      <textarea name="examples" maxlength="3000" data-ph-en="Links to edits you like, the song, clips (YouTube, TikTok, Google Drive…)" data-ph-uk="Посилання на едіти, які подобаються, пісню, кліпи (YouTube, TikTok, Google Drive…)"></textarea></label>
+
+    <div class="two">
+      <label class="field lb"><span><span data-en>Your name</span><span data-uk>Ваше імʼя</span></span>
+        <input type="text" name="name" required maxlength="100" autocomplete="nickname"></label>
+      <label class="field lb"><span><span data-en>Deadline</span><span data-uk>Термін</span><span class="m"><span data-en>Optional</span><span data-uk>Необовʼязково</span></span></span>
+        <input type="text" name="deadline" maxlength="100" data-ph-en="e.g. by 20 November" data-ph-uk="напр. до 20 листопада"></label>
+    </div>
+    <div class="two">
+      <label class="field lb"><span>Email</span>
+        <input type="email" name="email" required maxlength="200" autocomplete="email"></label>
+      <label class="field lb"><span>Discord / Telegram<span class="m"><span data-en>Optional</span><span data-uk>Необовʼязково</span></span></span>
+        <input type="text" name="handle" maxlength="100"></label>
+    </div>
+    <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+    <div class="f-foot">
+      <span class="f-msg lb" id="fMsg"></span>
+      <button class="btn solid lb" type="submit" id="fSend"><span data-en>Send</span><span data-uk>Надіслати</span></button>
+    </div>
+  </form>
+  <div class="done" id="fDone" hidden>
+    <div class="lb m"><span data-en>Sent</span><span data-uk>Надіслано</span></div>
+    <h2><span data-en>Thank you!</span><span data-uk>Дякую!</span></h2>
+    <p><span data-en>I'll reply to your email soon.</span><span data-uk>Я скоро відповім вам на пошту.</span></p>
+    <button class="btn lb" type="button" id="fOk">OK</button>
+  </div>
+</dialog>
 
 <script src="/works.js"></script>
 <script>
@@ -173,6 +260,65 @@ h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:verti
     });
     a.addEventListener("click", function(){ try{ window.goatcounter.count({ path: "order contact: " + label, title: "order contact: " + label, event: true }); }catch(e){} });
     acts.appendChild(a);
+  });
+})();
+</script>
+<script>
+/* форма заказа: заявка уходит на почту через Web3Forms (web3forms.com).
+   ACCESS_KEY выдаёт сам Web3Forms, к нему привязана почта, куда приходят заявки. */
+(function(){
+  var ACCESS_KEY = "78b58813-6ebb-461f-b2c6-14b312b4aceb";
+  var root = document.documentElement, box = document.getElementById("orderBox"), form = document.getElementById("orderForm");
+  var uk = function(){ return root.lang === "uk"; };
+  var NAMES = { short:"Short (€20)", standard:"Standard (€50)", long:"Long (€150)", choice:"Your choice (€100–300)" };
+  function placeholders(){ form.querySelectorAll("[data-ph-en]").forEach(function(el){ el.placeholder = el.getAttribute(uk() ? "data-ph-uk" : "data-ph-en"); }); }
+  function msg(t, err){ var m = document.getElementById("fMsg"); m.textContent = t || ""; m.classList.toggle("err", !!err); }
+  function open(plan){
+    placeholders(); msg("");
+    if(plan){ var r = form.querySelector('input[name=plan][value="' + plan + '"]'); if(r) r.checked = true; }
+    form.hidden = false; document.getElementById("fDone").hidden = true;
+    if(box.showModal) box.showModal(); else box.setAttribute("open", "");
+    try{ window.goatcounter.count({ path: "order form: open", title: "order form: open", event: true }); }catch(e){}
+  }
+  function close(){ if(box.close) box.close(); else box.removeAttribute("open"); }
+  document.querySelectorAll(".pick").forEach(function(b){ b.addEventListener("click", function(){ open(b.getAttribute("data-plan")); }); });
+  document.getElementById("fClose").addEventListener("click", close);
+  document.getElementById("fOk").addEventListener("click", close);
+  box.addEventListener("click", function(e){ if(e.target === box) close(); });
+  form.addEventListener("input", function(){ msg(""); });
+  document.getElementById("langBtn").addEventListener("click", placeholders);
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var d = new FormData(form), plan = d.get("plan");
+    if(!plan){ msg(uk() ? "Оберіть варіант" : "Choose an option", true); return; }
+    var bad = ["idea", "name", "email"].filter(function(k){ return !form.elements[k].checkValidity() || !String(d.get(k)).trim(); });
+    if(bad.length){ msg(uk() ? "Заповніть обовʼязкові поля" : "Please fill in the required fields", true); form.elements[bad[0]].focus(); return; }
+    if(d.get("botcheck")) return;
+    var btn = document.getElementById("fSend"); btn.disabled = true; msg(uk() ? "Надсилаю…" : "Sending…");
+    var body = {
+      access_key: ACCESS_KEY,
+      subject: "New order: " + NAMES[plan] + " from " + d.get("name"),
+      from_name: "katsuyuki.studio",
+      replyto: d.get("email"),
+      "Option": NAMES[plan],
+      "Name": d.get("name"),
+      "Email": d.get("email"),
+      "Discord / Telegram": d.get("handle") || "-",
+      "Deadline": d.get("deadline") || "-",
+      "What they want": d.get("idea"),
+      "Examples": d.get("examples") || "-",
+      "Site language": uk() ? "UA" : "EN"
+    };
+    fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(body) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(!j.success) throw new Error(j.message);
+        form.reset(); form.hidden = true; document.getElementById("fDone").hidden = false;
+        try{ window.goatcounter.count({ path: "order form: sent", title: "order form: sent", event: true }); }catch(e){}
+      })
+      .catch(function(){ msg(uk() ? "Не вдалося надіслати. Спробуйте ще раз або напишіть на пошту." : "Couldn't send. Try again or write to my email.", true); })
+      .then(function(){ btn.disabled = false; });
   });
 })();
 </script>
