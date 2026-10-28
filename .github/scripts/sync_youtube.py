@@ -8,7 +8,7 @@ It also looks up each video's frame size once. Edits that are not 16:9
 (for example 1920x1440 or 1920x800) get ratio: "1920x1440" in works.js,
 so the site's player takes that shape.
 """
-import json, math, re, sys, time, urllib.request, urllib.error, xml.etree.ElementTree as ET
+import json, re, sys, time, urllib.request, urllib.error, xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -64,16 +64,17 @@ def is_short(vid):
 
 
 def frame_size(vid):
-    """Largest video format of the upload as (width, height), or None if YouTube didn't say."""
+    """Frame shape of the upload as (width, height), or None if YouTube didn't answer.
+
+    YouTube's oEmbed scales its answer to the video's own shape: a 4:3 upload
+    comes back as 1920x1440, a 2.4:1 one as 1920x800.
+    """
     try:
-        _, html = get(f"https://www.youtube.com/watch?v={vid}&hl=en")
+        _, body = get(f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json&maxwidth=1920&maxheight=1920")
+        d = json.loads(body)
+        return int(d["width"]), int(d["height"])
     except Exception:
         return None
-    i = html.find('"adaptiveFormats"')
-    if i < 0:
-        return None
-    sizes = [(int(w), int(h)) for w, h in re.findall(r'"width":(\d+),"height":(\d+)', html[i:i + 200000])]
-    return max(sizes, key=lambda s: s[0] * s[1]) if sizes else None
 
 
 def add_ratios(text, state):
@@ -93,9 +94,8 @@ def add_ratios(text, state):
         sized.add(m.group(1))
         w, h = size
         if h and w > h and abs(w / h - 16 / 9) > 0.05:
-            g = math.gcd(w, h)
-            # 2880x2160 and 1920x1440 are the same shape; keep the size he'd recognise when it's a common one
-            shape = {(4, 3): "1920x1440", (12, 5): "1920x800"}.get((w // g, h // g), f"{w}x{h}")
+            r = w / h  # the two shapes he uses most get their usual names
+            shape = "1920x1440" if abs(r - 4 / 3) < 0.03 else "1920x800" if abs(r - 2.4) < 0.05 else f"{w}x{h}"
             lines[n] = re.sub(r"\s*\}(,?)\s*$", f', ratio: "{shape}" }}\\1', line)
             print("Ratio", shape, "for", m.group(1))
     return "\n".join(lines), sorted(sized)
