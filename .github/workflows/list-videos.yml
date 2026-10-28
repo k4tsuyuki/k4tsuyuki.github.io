@@ -1,0 +1,29 @@
+name: List all YouTube videos (one-off)
+
+on:
+  push:
+    paths: [".github/workflows/list-videos.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q yt-dlp
+      - name: List videos (no Shorts) with dates
+        run: |
+          yt-dlp --ignore-errors --skip-download --sleep-requests 1 \
+            --print '%(id)s	%(upload_date)s	%(duration)s	%(title)s' \
+            "https://www.youtube.com/@k4tsuyuki/videos" > .github/all-videos.tsv || true
+          wc -l .github/all-videos.tsv
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git pull -q
+          git add .github/all-videos.tsv
+          git commit -m "List all YouTube videos" && git push || true
