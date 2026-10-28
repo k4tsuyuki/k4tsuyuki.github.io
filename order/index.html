@@ -92,6 +92,12 @@ textarea{min-height:96px;resize:vertical}
 .cart{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .ci{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--hair);padding:8px 8px 8px 12px;transition:border-color .2s,background .2s,color .2s}
 .ci-n{display:grid;gap:3px}
+/* один эдит: просто плитки на выбор, без − / + и итога */
+.cart.single{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cart.single .ci{cursor:pointer;padding:10px}
+.cart.single .qty{display:none}
+.more-t{text-transform:inherit;text-decoration:underline;text-underline-offset:3px}
+.more-t:hover{color:var(--paper)}
 .ci-n i{font-style:normal;color:var(--ash)}
 .ci.on{background:var(--paper);color:var(--void);border-color:var(--paper)}
 .ci.on .ci-n i{color:var(--void);opacity:.6}
@@ -116,6 +122,7 @@ textarea{min-height:96px;resize:vertical}
   .plan{min-height:0}
   .how{grid-template-columns:minmax(0,1fr)}
   .cart{grid-template-columns:minmax(0,1fr)}
+  .cart.single{grid-template-columns:1fr 1fr}
   .two{grid-template-columns:minmax(0,1fr)}
   .top .who .m{display:none}
 }
@@ -196,8 +203,8 @@ textarea{min-height:96px;resize:vertical}
       <button class="tgl lb" type="button" id="fClose" aria-label="Close">✕</button>
     </div>
 
-    <div class="field lb"><span><span data-en>Edits</span><span data-uk>Едіти</span><span class="m"><span data-en>You can pick several</span><span data-uk>Можна кілька</span></span></span>
-      <div class="cart" id="cart">
+    <div class="field lb"><span><span data-en>Option</span><span data-uk>Варіант</span><button type="button" class="m more-t" id="cartToggle"><span data-en>+ Several edits</span><span data-uk>+ Кілька едітів</span></button><button type="button" class="m more-t" id="cartOne" hidden><span data-en>Just one edit</span><span data-uk>Лише один едіт</span></button></span>
+      <div class="cart single" id="cart">
         <div class="ci" data-k="short"><span class="ci-n"><span data-en>Short</span><span data-uk>Короткий</span><i>€20</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
         <div class="ci" data-k="standard"><span class="ci-n"><span data-en>Standard</span><span data-uk>Звичайний</span><i>€50</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
         <div class="ci" data-k="long"><span class="ci-n"><span data-en>Long</span><span data-uk>Довгий</span><i>€150</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
@@ -288,13 +295,24 @@ textarea{min-height:96px;resize:vertical}
     return { min:mn, max:mx, text:eur(mn, mx), dep:eur(Math.round(mn / 2), Math.round(mx / 2)) };
   }
   function items(){ return Object.keys(qty).filter(function(k){ return qty[k]; }).map(function(k){ return qty[k] + " × " + PLANS[k].name + " (" + eur(PLANS[k].min, PLANS[k].max) + ")"; }); }
+  var cartEl = document.getElementById("cart");
+  function single(){ return cartEl.classList.contains("single"); }
+  function setMode(one){
+    cartEl.classList.toggle("single", one);
+    document.getElementById("cartToggle").hidden = !one; document.getElementById("cartOne").hidden = one;
+    if(one){ var keep = Object.keys(qty).filter(function(k){ return qty[k]; })[0]; Object.keys(qty).forEach(function(k){ qty[k] = k === keep ? 1 : 0; }); }
+    draw();
+  }
+  document.getElementById("cartToggle").addEventListener("click", function(){ setMode(false); });
+  document.getElementById("cartOne").addEventListener("click", function(){ setMode(true); });
   function draw(){
     document.querySelectorAll(".ci").forEach(function(r){ var k = r.getAttribute("data-k"); r.querySelector("b").textContent = qty[k]; r.classList.toggle("on", qty[k] > 0); });
-    var t = totals(); document.getElementById("sum").hidden = !t.max;
+    var t = totals(); document.getElementById("sum").hidden = !t.max || single();
     document.getElementById("sTotal").textContent = t.text; document.getElementById("sDep").textContent = t.dep;
   }
   document.querySelectorAll(".ci").forEach(function(r){
     var k = r.getAttribute("data-k");
+    r.addEventListener("click", function(){ if(!single()) return; Object.keys(qty).forEach(function(x){ qty[x] = x === k ? 1 : 0; }); draw(); msg(""); });
     r.querySelector(".up").addEventListener("click", function(){ if(qty[k] < 9) qty[k]++; draw(); msg(""); });
     r.querySelector(".dn").addEventListener("click", function(){ if(qty[k] > 0) qty[k]--; draw(); });
   });
@@ -302,7 +320,7 @@ textarea{min-height:96px;resize:vertical}
   function msg(t, err){ var m = document.getElementById("fMsg"); m.textContent = t || ""; m.classList.toggle("err", !!err); }
   function open(plan){
     placeholders(); msg("");
-    if(plan && !qty[plan]) qty[plan] = 1;
+    if(plan && !qty[plan]){ if(single()) Object.keys(qty).forEach(function(x){ qty[x] = 0; }); qty[plan] = 1; }
     draw();
     form.hidden = false; document.getElementById("fDone").hidden = true;
     if(box.showModal) box.showModal(); else box.setAttribute("open", "");
@@ -337,7 +355,7 @@ textarea{min-height:96px;resize:vertical}
   form.addEventListener("submit", function(e){
     e.preventDefault();
     var d = new FormData(form), t = totals();
-    if(!t.max){ msg(uk() ? "Додайте хоча б один едіт" : "Add at least one edit", true); return; }
+    if(!t.max){ msg(uk() ? "Оберіть варіант" : "Choose an option", true); return; }
     var bad = ["idea", "name", "email"].filter(function(k){ return !form.elements[k].checkValidity() || !String(d.get(k)).trim(); });
     if(bad.length){ msg(uk() ? "Заповніть обовʼязкові поля" : "Please fill in the required fields", true); form.elements[bad[0]].focus(); return; }
     if(d.get("botcheck")) return;
@@ -349,7 +367,7 @@ textarea{min-height:96px;resize:vertical}
     };
     (ENDPOINT ? viaScript(o) : viaWeb3(o))
       .then(function(){
-        form.reset(); Object.keys(qty).forEach(function(k){ qty[k] = 0; }); draw();
+        form.reset(); Object.keys(qty).forEach(function(k){ qty[k] = 0; }); setMode(true);
         form.hidden = true; document.getElementById("fDone").hidden = false;
         try{ window.goatcounter.count({ path: "order form: sent", title: "order form: sent", event: true }); }catch(e){}
       })
