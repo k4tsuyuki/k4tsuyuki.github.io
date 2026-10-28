@@ -231,9 +231,10 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
    PAYPAL_CLIENT_ID: публичный Client ID из PayPal Developer (Apps & Credentials → Live). Секретный ключ сюда НЕ вставляется, он только в Google Apps Script.
    ENDPOINT: тот же адрес Google Apps Script, что и в форме заказа. Он проверяет оплату в PayPal и выдаёт ссылку на файл. */
 (function(){
-  /* MAINTENANCE: true — вместо списка надпись, что магазин скоро заработает */
-  var MAINTENANCE = true;
-  var PAYPAL_CLIENT_ID = "";
+  /* MAINTENANCE: true — вместо списка надпись, что магазин скоро заработает.
+     Для проверки магазин всё равно открывается по адресу /files/?test */
+  var MAINTENANCE = true && !/[?&]test\b/.test(location.search);
+  var PAYPAL_CLIENT_ID = "BAALYgjprAPUMTIfXFdHrhip6D4qSJl7S_0Fd3EvBqgkDkS0plqUIDCyBvTYBGLFa8LXaDjsyZ0JyrsQ74";
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
   var root = document.documentElement, uk = function(){ return root.lang === "uk"; };
   var SHOP = window.SHOP || [], list = document.getElementById("list"), box = document.getElementById("buyBox");
@@ -302,7 +303,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     $("bMin").innerHTML = p.price ? both("min ", "мін. ") + eur(p.price) : both("0 = free", "0 = безкоштовно");
     mode(); paypal();
     if(box.showModal) box.showModal(); else box.setAttribute("open", "");
-    try{ history.replaceState(null, "", "?f=" + p.id); }catch(e){}
+    try{ history.replaceState(null, "", "?" + (/[?&]test\b/.test(location.search) ? "test&" : "") + "f=" + p.id); }catch(e){}
   }
   function shut(){ box.classList.remove("closing"); if(box.close) box.close(); else box.removeAttribute("open"); try{ history.replaceState(null, "", location.pathname); }catch(e){} }
   function close(){
