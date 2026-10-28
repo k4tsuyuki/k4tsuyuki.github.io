@@ -161,8 +161,16 @@ section{padding-block:clamp(56px,8vw,120px);border-top:1px solid var(--hair)}
 .filter button:hover{border-color:var(--paper)}
 .filter button.on{background:var(--paper);color:var(--void);border-color:var(--paper)}
 .card.out,.card.big.out{display:none}
-.grid:not(.all) .card.arc{display:none}
-.all-more{display:flex;justify-content:center;margin-top:clamp(28px,4vw,48px)}
+.grid.arc-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(28px,4vw,48px);padding-top:clamp(24px,3vw,36px);border-top:1px solid var(--hair);gap:clamp(18px,2vw,28px) clamp(10px,1.2vw,16px)}
+.arc-grid .card.later{display:none}
+.arc-grid .c-meta{grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px}
+.arc-grid .c-meta .t{font-size:13px;line-height:1.15}
+.arc-grid .c-tags{display:none}
+.arc-grid .frame .play{display:none}
+.arc-grid .frame .ph{font-size:clamp(16px,1.8vw,26px)!important;padding:12px!important}
+.pill-btn.ghost{border-color:var(--hair);color:var(--ash)}
+.pill-btn.ghost:hover{border-color:var(--paper);background:none;color:var(--paper)}
+.all-more{display:flex;justify-content:center;gap:10px;margin-top:clamp(28px,4vw,48px)}
 .pill-btn{display:inline-flex;align-items:center;height:40px;padding:0 22px;border:1px solid var(--paper);border-radius:999px;transition:background .3s,color .3s}
 .pill-btn:hover{background:var(--paper);color:var(--void)}
 .totop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:40;width:40px;height:40px;border-radius:50%;display:none;place-items:center;background:var(--bar);border:1px solid var(--hair);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}
@@ -264,6 +272,7 @@ footer .jp{font-size:24px}
 
 @media (max-width:980px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.arc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:760px){
   .spread{grid-template-columns:minmax(0,1fr)}
@@ -271,6 +280,9 @@ footer .jp{font-size:24px}
   .cover{width:100%;aspect-ratio:4/4}
   .cols.three{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid{grid-template-columns:minmax(0,1fr)}
+  .grid.arc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .arc-grid .c-meta{grid-template-columns:minmax(0,1fr) auto}
+  .arc-grid .c-meta > .m:first-child{display:none}
   .card.big{grid-template-columns:minmax(0,1fr)}
   .c-row{grid-template-columns:minmax(0,1fr) auto}
   .n-row{grid-template-columns:minmax(0,1fr);gap:6px}
@@ -466,13 +478,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"Files", all:"All", more:"All edits ↓︎", less:"Fewer edits ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"Files", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Проєкти / Файли", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"Файли", all:"Усі", more:"Усі едіти ↓︎", less:"Менше ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"Файли", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -569,7 +581,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     $("cover").addEventListener("click", function(){ openPlayer(latest); });
   }
 
-  /* ---- сетка работ ---- */
+  /* ---- сетка работ (архив, archive: true, идёт в отдельную компактную сетку под основной) ---- */
+  var AG = null;
+  function arcGrid(){
+    if(AG) return AG;
+    AG = document.createElement("div"); AG.className = "grid arc-grid"; AG.id = "arcGrid"; AG.hidden = true;
+    $("grid").after(AG); return AG;
+  }
   var PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10" style="margin-right:6px"><path d="M6 4l14 8-14 8z"/></svg>';
   WORKS.forEach(function(w, i){
     var b = document.createElement("button");
@@ -590,27 +608,30 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     var img = b.querySelector("img");
     thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; });
     b.addEventListener("click", function(){ openPlayer(w); });
-    $("grid").appendChild(b);
+    b._w = w;
+    (w.archive ? arcGrid() : $("grid")).appendChild(b);
   });
 
-  /* ---- кнопка «все эдиты»: показывает архив (archive: true в works.js) ---- */
-  if(WORKS.some(function(w){ return w.archive; })){
+  /* ---- кнопка «все эдиты»: архив открывается порциями по 12, его можно свернуть ---- */
+  if(AG){
+    var STEP = 12, shownN = 0, cards = AG.children;
     var more = document.createElement("div"); more.className = "all-more";
-    more.innerHTML = '<button type="button" class="pill-btn lb" id="moreBtn" data-i18n="more">' + t("more") + '</button>';
-    $("grid").after(more);
-    $("moreBtn").addEventListener("click", function(){
-      var on = !$("grid").classList.contains("all");
-      $("grid").classList.toggle("all", on);
-      this.setAttribute("data-i18n", on ? "less" : "more"); this.textContent = t(on ? "less" : "more");
-      if(on){
-        var k = 0;
-        Array.prototype.forEach.call($("grid").querySelectorAll(".card.arc"), function(c){
-          if(k < 24 && c.animate && c.getBoundingClientRect().top < innerHeight * 1.6) c.animate([{ opacity: 0, transform: "translateY(24px)", filter: "blur(6px)" }, { opacity: 1, transform: "none", filter: "none" }], { duration: 600, delay: (k++ % 12) * 45, easing: "cubic-bezier(.2,.7,.2,1)", fill: "backwards" });
-        });
-        track("all edits");
-      } else {
-        $("moreBtn").scrollIntoView({ block: "center" });
-      }
+    more.innerHTML = '<button type="button" class="pill-btn lb" id="moreBtn" data-i18n="more">' + t("more") + '</button><button type="button" class="pill-btn ghost lb" id="lessBtn" data-i18n="less" hidden>' + t("less") + '</button>';
+    AG.after(more);
+    function reveal(n){
+      var from = shownN; shownN = Math.min(cards.length, n);
+      Array.prototype.forEach.call(cards, function(c, i){ c.classList.toggle("later", i >= shownN); });
+      AG.hidden = shownN === 0;
+      $("lessBtn").hidden = shownN === 0;
+      $("moreBtn").hidden = shownN >= cards.length;
+      $("moreBtn").setAttribute("data-i18n", shownN ? "more2" : "more"); $("moreBtn").textContent = t(shownN ? "more2" : "more");
+      for(var i = from; i < shownN; i++) if(cards[i].animate) cards[i].animate([{ opacity: 0, transform: "translateY(20px)", filter: "blur(6px)" }, { opacity: 1, transform: "none", filter: "none" }], { duration: 550, delay: (i - from) * 40, easing: "cubic-bezier(.2,.7,.2,1)", fill: "backwards" });
+    }
+    $("moreBtn").addEventListener("click", function(){ reveal(shownN + STEP); if(shownN <= STEP) track("all edits"); });
+    $("lessBtn").addEventListener("click", function(){
+      var y = AG.getBoundingClientRect().top + scrollY - 120;
+      reveal(0);
+      if(scrollY > y) window.scrollTo({ top: y, behavior: "smooth" });
     });
   }
 
@@ -625,7 +646,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
       if(tag === "*"){ f.className = "on"; f.setAttribute("data-i18n", "all"); }
       f.addEventListener("click", function(){
         $("filter").querySelectorAll("button").forEach(function(x){ x.classList.toggle("on", x === f); });
-        Array.prototype.forEach.call($("grid").children, function(c, i){ c.classList.toggle("out", tag !== "*" && (WORKS[i].tags||[]).indexOf(tag) < 0); });
+        document.querySelectorAll("#grid .card, #arcGrid .card").forEach(function(c){ c.classList.toggle("out", tag !== "*" && (c._w.tags||[]).indexOf(tag) < 0); });
       });
       $("filter").appendChild(f);
     });
