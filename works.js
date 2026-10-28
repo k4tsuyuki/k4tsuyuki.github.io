@@ -39,6 +39,7 @@ window.WORKS = [
   { title: "Spokoynaya Noch",            year: "2026", link: "https://youtu.be/oNwfnxYTpaw", tags: ["AMV", "4K"] },
   { title: "I'm God",                    year: "2026", link: "https://youtu.be/38tOSZbfzXk", tags: ["AMV", "4K"] },
   { title: "Missing Textures",           year: "2026", link: "https://youtu.be/wH6_dg3BL80", tags: ["AMV", "4K"] },
+  { title: "Golden Brown",               year: "2025", link: "https://youtu.be/HWC5Qk6dwaw", tags: ["AMV", "4K"] },
   { title: "Transgender",                year: "2025", link: "https://youtu.be/hvh8QtzKZQA", tags: ["AMV", "4K"], badge: "Flxwery's pick" },
   { title: "Just Ur Doll",               year: "2025", link: "https://youtu.be/TWAUvWGPW7k", tags: ["AMV", "4K"] },
   { title: "Under Your Spell",           year: "2025", link: "https://youtu.be/f5h1Djyj19M", tags: ["AMV", "4K"] },
@@ -48,7 +49,6 @@ window.WORKS = [
   /* ВСЕ ОСТАЛЬНЫЕ ЭДИТЫ С КАНАЛА (archive: true). На главной они спрятаны
      и появляются по кнопке "All edits". Чтобы эдит показывался сразу, убери у него archive: true.
      file: "id" — у эдита есть проектный файл в магазине (кнопка в плеере). */
-  { title: "Golden Brown", year: "2025", link: "https://youtu.be/HWC5Qk6dwaw", tags: ["AMV", "4K"], archive: true },
   { title: "Nights Like This (practice)", year: "2025", link: "https://youtu.be/GseRHE5oLoM", tags: ["AMV", "4K"], archive: true },
   { title: "Khaos Emerald 2HC", year: "2025", link: "https://youtu.be/JgGGKiL8cQ8", tags: ["AMV"], archive: true },
   { title: "Hangar.", year: "2024", link: "https://youtu.be/HCQEiuEP324", tags: ["AMV"], archive: true },
@@ -123,8 +123,8 @@ window.WORKS = [
   { title: "Damage #h1pp3xsoc1", year: "2022", link: "https://youtu.be/ycx2Z4UgZ48", tags: ["AMV"], archive: true, file: "damage" },
   { title: "1HC scrap", year: "2022", link: "https://youtu.be/OocaGwMQ3oI", tags: ["AMV"], archive: true },
   { title: "First Woe — Demon Slayer", year: "2022", link: "https://youtu.be/etx8ngmnO7A", tags: ["AMV"], archive: true },
-  { title: "квик высер", year: "2022", link: "https://youtu.be/2wr1O4HoFdo", tags: ["AMV"], archive: true },
-  { title: "типа закос под флов #явантуз", year: "2022", link: "https://youtu.be/QtpwFrCsWyM", tags: ["AMV"], archive: true },
+  { title: "Turn It Up", year: "2022", link: "https://youtu.be/2wr1O4HoFdo", tags: ["AMV"], archive: true },
+  { title: "Talk (flow edit)", year: "2022", link: "https://youtu.be/QtpwFrCsWyM", tags: ["AMV"], archive: true },
   { title: "Insomnia", year: "2022", link: "https://youtu.be/Csb6mem6T7Y", tags: ["AMV"], archive: true, file: "insomnia" },
   { title: "Stand Out (part)", year: "2022", link: "https://youtu.be/PeO6T-SPUPo", tags: ["AMV", "Collab part"], archive: true },
   { title: "Skat", year: "2022", link: "https://youtu.be/zIHyqK_Seu4", tags: ["AMV"], archive: true },
