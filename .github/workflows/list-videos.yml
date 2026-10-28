@@ -20,10 +20,11 @@ jobs:
             --print '%(id)s	%(timestamp)s	%(duration)s	%(title)s' \
             "https://www.youtube.com/@k4tsuyuki/videos" > .github/all-videos.tsv 2> .github/all-videos.log || true
           wc -l .github/all-videos.tsv
+      - run: python3 .github/scripts/video_dates.py
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
           git pull -q
-          git add .github/all-videos.tsv .github/all-videos.log
+          git add .github/all-videos.tsv .github/all-videos.log .github/video-dates.tsv
           git commit -m "List all YouTube videos" && git push || true
