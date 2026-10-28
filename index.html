@@ -239,6 +239,20 @@ footer .jp{font-size:24px}
 .poster{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:#000;transition:opacity .4s}
 .poster .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(1) brightness(.4)}
 .poster.hide{opacity:0;pointer-events:none}
+/* меню после конца видео: ещё раз или выбрать следующий эдит (само ничего не включает) */
+.endm{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(12px,3vw,24px);padding:16px;background:rgba(0,0,0,.72);opacity:0;pointer-events:none;transition:opacity .4s}
+.endm.on{opacity:1;pointer-events:auto}
+.endm .again{display:flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--paper);border-radius:999px;color:#eeebe5;background:none}
+.endm .again:hover{background:#eeebe5;color:#000}
+.endm .again svg{width:16px;height:16px}
+.endm .nx{width:min(100%,640px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.endm .nx-h{grid-column:1/-1;color:#8a8780;margin:0}
+.endm .nc{display:flex;flex-direction:column;gap:6px;text-align:left;color:#eeebe5;background:none;border:0;padding:0;cursor:pointer;min-width:0}
+.endm .nc span{display:block;aspect-ratio:16/9;background:#111 center/cover;filter:grayscale(1) brightness(.75);transition:filter .6s}
+.endm .nc:hover span,.endm .nc:focus-visible span{filter:none}
+.endm .nc b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:760px){.endm .nx{grid-template-columns:repeat(2,minmax(0,1fr))}.endm .nc:nth-of-type(3){display:none}}
+@media (max-width:420px){.endm{gap:10px}.endm .nx-h{display:none}.endm .nx{width:150px;grid-template-columns:1fr;gap:4px}.endm .nc:nth-of-type(2){display:none}.endm .nc b{font-size:11px}}
 .poster .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;padding:16px;text-align:center}
 .big-play{width:76px;height:76px;border-radius:50%;border:1px solid var(--paper);display:grid;place-items:center;background:var(--veil);transition:background .3s,color .3s}
 .big-play:hover{background:var(--paper);color:var(--void)}
@@ -451,6 +465,7 @@ footer .jp{font-size:24px}
         <p class="p-note lb" id="pNote" hidden></p>
       </div>
     </div>
+    <div class="endm" id="endm"><button class="again lb" id="pAgain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 108-8H7"/><path d="M9 1L6 4l3 3"/></svg><span data-i18n="again">Watch again</span></button><div class="nx" id="endNx"></div></div>
   </div>
   <div class="bar lb" id="bar">
     <button class="ctl" id="pToggle" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor" id="icToggle"><path d="M6 4l14 8-14 8z"/></svg></button>
@@ -499,13 +514,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", upnext:"More edits", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Проєкти / Файли", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", nt_new:"Нова новина", nt_read:"Читати", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", upnext:"Інші едіти", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", nt_new:"Нова новина", nt_read:"Читати", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -829,7 +844,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     /* заставка в максимальном качестве (та же картинка, что в списке работ, обычно уже в кэше) */
     $("posterBg").style.backgroundImage = "none";
     if(w.id){ var pi = new Image(); thumb(w, pi, function(){}); pi.addEventListener("load", function(){ if(cur === w && pi.naturalWidth > 120) $("posterBg").style.backgroundImage = "url(" + pi.src + ")"; }); }
-    poster.classList.remove("hide"); note(""); setIcon(false); progress(0,0);
+    poster.classList.remove("hide"); $("endm").classList.remove("on"); note(""); setIcon(false); progress(0,0);
     if(switching){ yp.loadVideoById(w.id); return; }
     P.hidden = false; requestAnimationFrame(function(){ P.classList.add("show"); });
     document.body.style.overflow = "hidden";
@@ -850,19 +865,31 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
       });
     });
   }
-  /* следующее видео в том же порядке, что на сайте (включается само после конца ролика) */
+  /* следующее видео в том же порядке, что на сайте (только стрелками ←/→) */
   function step(d){ var i = WORKS.indexOf(cur) + d; if(cur && i >= 0 && i < WORKS.length) openPlayer(WORKS[i]); }
   function onState(e){
     var s = e.data;
     if(s === 1){ poster.classList.add("hide"); setIcon(true); note(""); startTimer(); } else setIcon(false);
     if(s === 2 || s === 0 || s === 5) poster.classList.remove("hide");
-    if(s === 0){
-      /* видео закончилось: через пару секунд включается следующее */
-      var i = WORKS.indexOf(cur), ended = cur;
-      if(i >= 0 && i < WORKS.length - 1) setTimeout(function(){ if(cur === ended && yp && yp.getPlayerState && yp.getPlayerState() === 0) step(1); }, 1500);
-      else note(t("again"));
-    }
+    if(s === 0) endMenu(); else if(s === 1 || s === 3) $("endm").classList.remove("on");
   }
+  /* конец видео: меню «ещё раз» + три следующих эдита по порядку сайта; переход только по клику */
+  function endMenu(){
+    var i = WORKS.indexOf(cur), nx = $("endNx"); nx.innerHTML = "";
+    var h = document.createElement("p"); h.className = "nx-h lb"; h.textContent = t("upnext"); nx.appendChild(h);
+    for(var k = 1; k <= 3 && WORKS.length > 1; k++){
+      var w = WORKS[(i + k) % WORKS.length]; if(w === cur || !w.id) continue;
+      (function(w){
+        var b = document.createElement("button"), sp = document.createElement("span"), bt = document.createElement("b");
+        b.className = "nc"; bt.textContent = w.title; b.appendChild(sp); b.appendChild(bt);
+        var im = new Image(); thumb(w, im, function(){}); im.addEventListener("load", function(){ if(im.naturalWidth > 120) sp.style.backgroundImage = "url(" + im.src + ")"; });
+        b.addEventListener("click", function(){ $("endm").classList.remove("on"); openPlayer(w); });
+        nx.appendChild(b);
+      })(w);
+    }
+    $("endm").classList.add("on");
+  }
+  $("pAgain").addEventListener("click", function(){ $("endm").classList.remove("on"); if(yp && yp.seekTo){ yp.seekTo(0, true); yp.playVideo(); } });
   function startTimer(){ clearInterval(timer); timer = setInterval(function(){ if(yp && yp.getDuration && !dragging) progress(yp.getCurrentTime(), yp.getDuration()); }, 250); }
   function progress(c, d){
     var p = d ? c/d*100 : 0;
