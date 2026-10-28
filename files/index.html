@@ -324,37 +324,44 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   }
 
   /* карусель */
+  /* карусель идёт по кругу (если проектов хотя бы 4): слева от первого стоит последний */
   var at = 0, flowEls = [], flowItems = [];
+  function loop(){ return flowItems.length >= 4; }
+  function mod(i){ var n = flowItems.length; return ((i % n) + n) % n; }
+  function wrap(d){ var n = flowItems.length; if(!loop()) return d; d = ((d % n) + n) % n; return d >= n / 2 ? d - n : d; }
+  function clampAt(v, lo, hi){ return loop() ? v : Math.max(lo, Math.min(hi, v)); }
   function drawFlow(shown){
-    flowItems = shown; at = Math.max(0, Math.min(at, shown.length - 1));
+    flowItems = shown; at = loop() ? at : Math.max(0, Math.min(at, shown.length - 1));
     var st = document.createElement("div"); st.className = "flow";
     st.innerHTML = '<div class="stage"></div><div class="f-info" aria-live="polite"></div><div class="f-nav lb"><button type="button" class="tgl" data-d="-1" aria-label="Previous">←</button><span class="m" id="fPos"></span><button type="button" class="tgl" data-d="1" aria-label="Next">→</button></div>';
     list.appendChild(st);
     var stage = st.querySelector(".stage");
     flowEls = shown.map(function(p, i){
       var c = document.createElement("button"); c.type = "button"; c.className = "fc"; c.setAttribute("aria-label", p.title); c.innerHTML = cover(p);
-      c.addEventListener("click", function(){ if(Math.round(at) === i) open(p); else go(i); });
+      c.addEventListener("click", function(){ if(mod(Math.round(at)) === i) open(p); else go(Math.round(at) + Math.round(wrap(i - at))); });
       stage.appendChild(c); return c;
     });
     st.querySelectorAll("[data-d]").forEach(function(b){ b.addEventListener("click", function(){ go(Math.round(at) + +b.getAttribute("data-d")); }); });
     var sx = null, sa = 0, moved = false;
     stage.addEventListener("pointerdown", function(e){ sx = e.clientX; sa = at; moved = false; });
     stage.addEventListener("click", function(e){ if(moved){ e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
-    var wt; stage.addEventListener("wheel", function(e){ var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY; if(Math.abs(d) < 2) return; e.preventDefault(); at = Math.max(0, Math.min(flowItems.length - 1, at + d / 300)); lay(true); clearTimeout(wt); wt = setTimeout(function(){ go(Math.round(at)); }, 140); }, { passive: false });
-    flowDrag = function(e){ if(sx === null) return; var d = (sx - e.clientX) / 140; if(Math.abs(d) > .05) moved = true; at = Math.max(-.4, Math.min(flowItems.length - .6, sa + d)); lay(true); };
+    var wt; stage.addEventListener("wheel", function(e){ var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY; if(Math.abs(d) < 2) return; e.preventDefault(); at = clampAt(at + d / 300, 0, flowItems.length - 1); lay(true); clearTimeout(wt); wt = setTimeout(function(){ go(Math.round(at)); }, 140); }, { passive: false });
+    flowDrag = function(e){ if(sx === null) return; var d = (sx - e.clientX) / 140; if(Math.abs(d) > .05) moved = true; at = clampAt(sa + d, -.4, flowItems.length - .6); lay(true); };
     flowUp = function(){ if(sx === null) return; sx = null; go(Math.round(at)); };
     go(Math.round(at));
   }
   var flowDrag = null, flowUp = null;
   addEventListener("pointermove", function(e){ if(flowDrag) flowDrag(e); });
   addEventListener("pointerup", function(){ if(flowUp) flowUp(); });
-  function go(i){ at = Math.max(0, Math.min(flowItems.length - 1, i)); lay(false); }
+  function go(i){ at = clampAt(i, 0, flowItems.length - 1); lay(false); }
   function lay(live){
     if(!flowEls.length) return;
-    var w = list.clientWidth, sp = Math.min(150, w / 6), cur = Math.round(at);
+    var w = list.clientWidth, sp = Math.min(150, w / 6), cur = mod(Math.round(at)), n = flowItems.length;
     flowEls.forEach(function(c, i){
-      var d = i - at, a = Math.max(-1, Math.min(1, d));
-      c.style.transition = live ? "none" : "";
+      var d = wrap(i - at), a = Math.max(-1, Math.min(1, d));
+      /* карточка перескочила с одного края круга на другой: без анимации, чтобы не пролетала через центр */
+      var jump = c._d != null && Math.abs(d - c._d) > n / 2; c._d = d;
+      c.style.transition = live || jump ? "none" : "";
       c.style.transform = "translateX(" + (d * sp + a * sp * .9) + "px) translateZ(" + (-Math.abs(a) * 220 - Math.abs(d) * 20) + "px) rotateY(" + (-a * 58) + "deg)";
       c.style.zIndex = 100 - Math.round(Math.abs(d) * 2);
       c.style.opacity = Math.abs(d) > 7 ? 0 : 1;
