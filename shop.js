@@ -6,7 +6,6 @@
    Чтобы кнопка "Project file" появилась в плеере у работы, в works.js этой работе ставится file: "id товара".
    Сами файлы (ссылки на Google Диск) лежат НЕ здесь, а в Google Таблице, лист "Files". */
 window.SHOP = [
-  {"id": "altyn-oyasumi-punpun", "title": "ALTYN — Oyasumi Punpun", "price": 0, "pwyw": true, "tags": ["Animation"], "cover": "img/files/altyn-oyasumi-punpun.jpg"},
   {"id": "souvenir", "title": "souvenir", "price": 0, "pwyw": true, "cover": "img/files/souvenir.jpg"},
   {"id": "fashion-x-naobito", "title": "Fashion × Naobito", "price": 0, "pwyw": true, "cover": "img/files/fashion-x-naobito.jpg"},
   {"id": "nicotine", "title": "nicotine", "price": 0, "pwyw": true, "cover": "img/files/nicotine.jpg"},
@@ -30,7 +29,6 @@ window.SHOP = [
   {"id": "fetti", "title": "Fetti. (ft. @samurai)", "price": 0, "pwyw": true, "cover": "img/files/fetti.jpg"},
   {"id": "murder-on-my-mind", "title": "Murder On My Mind — Demon Slayer", "price": 0, "tags": ["AMV"], "cover": "yt:L7xx0WRq13M"},
   {"id": "fly-by-midnight", "title": "Fly By Midnight (Milka × Zemzo)", "price": 0, "tags": ["AMV"], "cover": "img/files/fly-by-midnight.jpg"},
-  {"id": "tell-em", "title": "Tell Em — Demon Slayer (ft. @odixkks)", "price": 0, "cover": ""},
   {"id": "part-for", "title": "part for ???", "price": 0, "tags": ["Collab part"], "cover": "img/files/part-for.jpg"},
   {"id": "damage", "title": "Damage #h1pp3xsoc1", "price": 2, "old": 3, "cover": "img/files/damage.jpg"},
   {"id": "insomnia", "title": "Insomnia", "price": 0, "cover": "yt:Csb6mem6T7Y"}
