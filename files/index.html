@@ -179,6 +179,8 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     <div class="b-price lb"><span><span data-en>Price</span><span data-uk>Ціна</span></span><span class="v" id="bPrice"></span></div>
     <label class="field lb" id="bAmt" hidden><span><span><span data-en>Your price</span><span data-uk>Ваша ціна</span></span><span class="m" id="bMin"></span></span>
       <span class="amt"><b>€</b><input type="number" inputmode="decimal" id="bAmount" min="0" step="0.5"></span></label>
+    <label class="field lb"><span><span data-en>Your email</span><span data-uk>Ваша пошта</span></span>
+      <span class="amt"><input type="email" id="bEmail" autocomplete="email" inputmode="email" placeholder="name@mail.com" maxlength="120"></span></label>
     <div id="pp" hidden></div>
     <div class="b-foot"><span class="b-msg lb" id="bMsg"></span><button class="btn solid lb" type="button" id="bFree" hidden><span data-en>Download</span><span data-uk>Завантажити</span></button></div>
   </div>
@@ -276,6 +278,9 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   /* окно покупки */
   function msg(t, err){ $("bMsg").textContent = t || ""; $("bMsg").classList.toggle("err", !!err); }
   function amount(){ var v = parseFloat(String($("bAmount").value).replace(",", ".")); return isNaN(v) ? 0 : Math.round(v * 100) / 100; }
+  function email(){ return String($("bEmail").value).trim(); }
+  function goodMail(){ return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email()); }
+  function needMail(){ msg(uk() ? "Вкажіть пошту, туди прийде копія файлу." : "Enter your email, a copy of the file will be sent there.", true); $("bEmail").focus(); }
   function mode(){
     /* 0 € — кнопка Download, от 1 € — PayPal */
     var a = cur.pwyw ? amount() : cur.price, free = a <= 0 && !cur.price;
@@ -291,6 +296,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     $("bCover").outerHTML = cover(p, "bCover");
     $("bTitle").textContent = p.title; $("bTags").innerHTML = tags(p);
     $("bPrice").innerHTML = priceText(p);
+    try{ $("bEmail").value = $("bEmail").value || localStorage.getItem("mail") || ""; }catch(e){ }
     $("bAmt").hidden = !p.pwyw; $("bAmount").min = p.price; $("bAmount").value = p.price || "";
     $("bAmount").placeholder = p.price ? String(p.price) : "0";
     $("bMin").innerHTML = p.price ? both("min ", "мін. ") + eur(p.price) : both("0 = free", "0 = безкоштовно");
@@ -310,19 +316,22 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   box.addEventListener("click", function(e){ if(e.target === box) close(); });
   $("bClose").addEventListener("click", close); $("bClose2").addEventListener("click", close);
   $("bAmount").addEventListener("input", mode);
+  $("bEmail").addEventListener("input", function(){ if(goodMail()) mode(); });
 
   function call(o){
     return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) })
       .then(function(r){ return r.json(); }).then(function(j){ if(!j.ok || !j.url) throw new Error(j.error || "no link"); return j; });
   }
-  function done(url, mailed){
+  function done(url){
+    try{ localStorage.setItem("mail", email()); }catch(e){ }
     $("bLink").href = url; $("bIn").hidden = true; $("bDone").hidden = false;
-    $("bDoneTxt").textContent = mailed ? (uk() ? "Посилання також надіслано на пошту вашого PayPal." : "The link was also sent to your PayPal email.") : "";
+    $("bDoneTxt").textContent = (uk() ? "Копію також надіслано на " : "A copy was also sent to ") + email() + ".";
   }
   $("bFree").addEventListener("click", function(){
     if(!ENDPOINT){ msg(uk() ? "Завантаження ще налаштовується." : "Downloads are being set up.", true); return; }
+    if(!goodMail()){ needMail(); return; }
     var b = this; b.disabled = true; msg(uk() ? "Готую файл…" : "Preparing the file…");
-    call({ action: "free", id: cur.id }).then(function(j){ track("files: download " + cur.title); done(j.url, false); })
+    call({ action: "free", id: cur.id, email: email(), lang: uk() ? "UA" : "EN" }).then(function(j){ track("files: download " + cur.title); done(j.url); })
       .catch(function(){ msg(uk() ? "Не вдалося. Спробуйте ще раз." : "Something went wrong. Please try again.", true); })
       .then(function(){ b.disabled = false; });
   });
@@ -349,6 +358,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
         onClick: function(d, actions){
           var a = p.pwyw ? amount() : p.price;
           if(a < p.price || a <= 0){ mode(); return actions.reject(); }
+          if(!goodMail()){ needMail(); return actions.reject(); }
           return actions.resolve();
         },
         createOrder: function(d, actions){
@@ -362,8 +372,8 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
           msg(uk() ? "Перевіряю оплату…" : "Checking the payment…");
           return actions.order.capture().then(function(o){
             track("files: paid " + p.title);
-            return call({ action: "sale", id: p.id, orderID: o.id, lang: uk() ? "UA" : "EN" });
-          }).then(function(j){ done(j.url, true); })
+            return call({ action: "sale", id: p.id, orderID: o.id, email: email(), lang: uk() ? "UA" : "EN" });
+          }).then(function(j){ done(j.url); })
             .catch(function(){ msg(uk() ? "Оплата пройшла, але файл не відкрився. Напишіть мені, я надішлю його вручну." : "Paid, but the file didn't open. Write to me and I'll send it by hand.", true); });
         },
         onError: function(){ msg(uk() ? "PayPal не відповів. Спробуйте ще раз." : "PayPal didn't respond. Please try again.", true); }
