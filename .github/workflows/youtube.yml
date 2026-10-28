@@ -16,12 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 .github/scripts/sync_youtube.py
+      - run: python3 .github/scripts/build_pages.py   # link-preview pages w/<edit>/
       - name: Commit if something changed
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
-            git add works.js .github/youtube-seen.json
+            git add works.js .github/youtube-seen.json w
             git commit -m "Add new YouTube videos"
             git push
           fi
