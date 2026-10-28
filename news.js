@@ -16,9 +16,9 @@ window.NEWS = [
   {
     date: "2026-10-28",
     title: "A new chapter for the site",
-    text: "Everything I do now lives in one place.\n\nFiles. My project files and packs, sold right here, no Payhip in between. Free ones download for your email, the rest through PayPal.\nOrder. Commission an edit: pick a format and see the price and the earliest date I can deliver.\nWorks. The full archive, every edit from my channel since 2022.\n\nThanks for being here.",
+    text: "Everything I do now lives in one place.\n\nPFS. My project files and packs, sold right here, no Payhip in between. Free ones download for your email, the rest through PayPal.\nOrder. Commission an edit: pick a format and see the price and the earliest date I can deliver.\nWorks. The full archive, every edit from my channel since 2022.\n\nThanks for being here.",
     link: "/files/",
-    button: "Open Files"
+    button: "Open PFS"
   },
   {
     date: "2026-10-18",

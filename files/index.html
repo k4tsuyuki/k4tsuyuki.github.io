@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Files · Katsuyuki</title>
+<title>PFS · Katsuyuki</title>
 <link rel="icon" type="image/png" href="/img/favicon.png">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <meta name="description" content="After Effects project files and packs by Katsuyuki.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Katsuyuki">
-<meta property="og:title" content="Files · Katsuyuki">
+<meta property="og:title" content="PFS · Katsuyuki">
 <meta property="og:description" content="After Effects project files and packs. Payment via PayPal.">
 <meta property="og:url" content="https://katsuyuki.studio/files/">
 <meta property="og:image" content="https://katsuyuki.studio/img/og.png">
@@ -186,7 +186,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 
 <main class="wrap">
   <div class="lb m"><span data-en>Project files / Packs</span><span data-uk>Проєктні файли / Паки</span></div>
-  <h1><span data-en>Files</span><span data-uk>Файли</span></h1>
+  <h1>PFS</h1>
   <div class="intro">
     <div class="chips lb" id="chips">
       <button class="chip on" type="button" data-f="all"><span data-en>All</span><span data-uk>Усі</span></button>
@@ -228,7 +228,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 (function(){
   var root = document.documentElement;
   function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
-  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Файли" : "Files") + " · Katsuyuki"; }
+  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = "PFS" + " · Katsuyuki"; }
   function morph(fn, cls, after){
     var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     if(!document.startViewTransition || reduce){ fn(); return; }
