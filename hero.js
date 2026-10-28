@@ -1,7 +1,7 @@
-/* ЧЕРНОВИК: пробные варианты первого экрана. Подключается только на страницах /drafts/<вариант>/.
-   Вариант задаётся атрибутом data-v у тега <script>: poster, stories, marquee, mask. */
+/* ПЕРВЫЙ ЭКРАН (вариант Poster): последний эдит на весь экран, логотип поверх, ниже лента недавних.
+   Старый разворот (.spread) остаётся в разметке скрытым: из него сюда переносятся логотип и строка статуса. */
 (function(){
-  var V = document.currentScript.getAttribute("data-v");
+  var V = "poster";
   var root = document.documentElement;
   var uk = function(){ return root.lang === "uk"; };
   var L = {
@@ -26,16 +26,17 @@
   }
 
   var css = '' +
-    '.spread{display:none!important}.ntf{display:none!important}' +
+    
     '.dh{position:relative;color:#eeebe5;--ink:#eeebe5}' +
     '.dh .bw{filter:grayscale(1) contrast(1.05)}' +
     '.dh .lbx{font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:12px}' +
     '.dh .mu{opacity:.6}' +
-    '.dh-full{position:relative;height:calc(100svh - var(--th,57px));min-height:520px;max-height:900px;overflow:hidden;background:#000}' +
+    '.dh-full{--paper:#eeebe5;--logo:drop-shadow(0 6px 34px rgba(0,0,0,.55));--hair:rgba(238,235,229,.18);position:relative;height:calc(100svh - var(--th,57px));min-height:520px;max-height:900px;overflow:hidden;background:#000}' +
     '.dh-full>img.cv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}' +
-    '.dh-full::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,6,.35) 0%,rgba(6,6,6,.08) 38%,rgba(6,6,6,.92) 88%);pointer-events:none}' +
+    '.dh-full::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,6,.45) 0%,rgba(6,6,6,.25) 40%,rgba(6,6,6,.92) 88%);pointer-events:none}' +
     '.dh-logo{position:absolute;z-index:2;left:50%;top:40%;transform:translate(-50%,-50%);width:min(86%,640px);filter:none!important;pointer-events:none}' +
-    '.dh-info{position:absolute;z-index:3;left:max(16px,4vw);right:max(16px,4vw);bottom:72px;display:grid;gap:12px}' +
+    '.dh-info{position:absolute;z-index:3;left:max(16px,4vw);right:max(16px,4vw);bottom:22px;display:grid;gap:12px}' +
+    '.dh-logo .name{margin:0;font-size:inherit;line-height:0;display:block}.dh-logo .logo-img{width:100%;display:block}.dh-full .status{margin:0;border-top:1px solid var(--hair);border-bottom:0;padding:12px 0 0}' +
     '.dh-play{display:flex;align-items:center;gap:14px;background:none;border:0;color:inherit;cursor:pointer;padding:0;text-align:left;font:inherit}' +
     '.dh-play .c{width:54px;height:54px;border-radius:50%;border:1px solid #eeebe5;display:grid;place-items:center;flex:none;transition:background .25s}' +
     '.dh-play .c::before{content:"";border-left:13px solid #eeebe5;border-top:8px solid transparent;border-bottom:8px solid transparent;margin-left:4px;transition:border-color .25s}' +
@@ -111,7 +112,7 @@
   var spread = document.querySelector(".spread"); if(!spread) return;
   function th(){ var t = document.querySelector(".top"); if(t) root.style.setProperty("--th", t.offsetHeight + "px"); }
   th(); addEventListener("resize", th);
-  var hero = document.createElement("div"); hero.className = "dh dh-" + V; spread.before(hero);
+  var hero = document.getElementById("dh"); if(!hero){ hero = document.createElement("div"); hero.className = "dh dh-poster"; spread.before(hero); }
   var w0 = W[0];
   function status(){ return '<div class="dh-st lbx"><span class="dh-dot"><i></i><span data-t="open"></span></span><a href="order/" data-t="order"></a></div>'; }
   function info(w, withMeta){ return '<div class="dh-info">' + (withMeta ? '<div class="lbx mu dh-meta"></div>' : '') + '<button class="dh-play" type="button"><span class="c"></span><h2></h2></button>' + status() + '</div>'; }
@@ -119,74 +120,15 @@
   if(V === "poster"){
     hero.innerHTML = '<div class="dh-full"></div><div class="dh-rh lbx"><span data-t="recent"></span><span class="mu dh-sw" data-t="swipe"></span></div><div class="dh-strip"></div>';
     var full = hero.querySelector(".dh-full"), cv = img(w0); cv.className = "cv bw"; full.appendChild(cv);
-    full.insertAdjacentHTML("beforeend", '<img class="dh-logo" src="img/logo.png" alt="Katsuyuki">' + info(w0, true));
+    full.insertAdjacentHTML("beforeend", '<div class="dh-logo hero-mark"></div>' + info(w0, true));
+    var name = document.getElementById("heroName"); if(name) full.querySelector(".dh-logo").appendChild(name);
+    var siteSt = document.querySelector(".spread .status"), myStatus = full.querySelector(".dh-st");
+    if(siteSt){ siteSt.classList.add("dh-st"); myStatus.replaceWith(siteSt); }
     full.querySelector(".dh-meta").textContent = tx("latest") + " · " + meta(w0);
     full.querySelector("h2").textContent = w0.title;
     full.querySelector(".dh-play").onclick = function(){ play(w0); };
     var strip = hero.querySelector(".dh-strip");
     W.slice(1, 5).forEach(function(w){ var b = document.createElement("button"); b.type = "button"; var i = img(w); i.className = "bw"; b.appendChild(i); b.insertAdjacentHTML("beforeend", '<span class="lbx"></span>'); b.lastChild.textContent = w.title; b.onclick = function(){ play(w); }; strip.appendChild(b); });
-  }
-
-  if(V === "stories"){
-    var S = W.slice(0, 5);
-    hero.innerHTML = '<div class="dh-full"><div class="dh-bars"></div></div>';
-    var f = hero.firstChild, bars = f.firstChild, si = 0, imgs = [];
-    S.forEach(function(w){ var i = img(w); i.className = "dh-st-img bw"; f.insertBefore(i, bars); imgs.push(i); bars.insertAdjacentHTML("beforeend", "<i><b></b></i>"); });
-    f.insertAdjacentHTML("beforeend", '<img class="dh-logo" src="img/logo.png" alt="Katsuyuki"><div class="dh-tap l"></div><div class="dh-tap r"></div>' + info(w0, true));
-    var bi = bars.querySelectorAll("i");
-    function story(n){
-      si = (n + S.length) % S.length;
-      imgs.forEach(function(im, k){ im.classList.toggle("on", k === si); });
-      bi.forEach(function(b, k){ b.classList.remove("run"); b.classList.toggle("done", k < si); });
-      void f.offsetWidth; bi[si].classList.add("run");
-      f.querySelector("h2").textContent = S[si].title;
-      f.querySelector(".dh-meta").textContent = (si === 0 ? tx("latest") + " · " : "") + meta(S[si]);
-    }
-    bi.forEach(function(b){ b.firstChild.addEventListener("animationend", function(){ if(b.classList.contains("run")) story(si + 1); }); });
-    f.querySelector(".dh-play").onclick = function(){ play(S[si]); };
-    [["l", -1], ["r", 1]].forEach(function(p){
-      var t = f.querySelector(".dh-tap." + p[0]), down = 0;
-      t.addEventListener("pointerdown", function(){ down = Date.now(); f.classList.add("hold"); });
-      t.addEventListener("pointerup", function(){ f.classList.remove("hold"); if(Date.now() - down < 250) story(si + p[1]); });
-      t.addEventListener("pointerleave", function(){ f.classList.remove("hold"); });
-    });
-    story(0);
-  }
-
-  if(V === "marquee"){
-    var M = W.slice(0, 8), sel = w0;
-    hero.innerHTML = '<div class="dh-mq"><img class="lg logo-img" src="img/logo.png" alt="Katsuyuki"><div class="dh-row dh-imgs"><div class="dh-track"></div></div><div class="dh-row dh-words"><div class="dh-track rev"></div></div>' +
-      '<div class="dh-now"><span class="lbx mu" data-t="tap"></span><button class="dh-play" type="button"><span class="c"></span><h2></h2></button></div>' + status() + '</div>';
-    var tr = hero.querySelector(".dh-imgs .dh-track"), words = hero.querySelector(".dh-words .dh-track"), line = M.map(function(w){ return w.title; }).join(" ✦ ") + " ✦ ";
-    [0, 1].forEach(function(){
-      M.forEach(function(w){ var b = document.createElement("button"); b.type = "button"; b._w = w; var i = img(w); i.className = "bw"; b.appendChild(i);
-        b.onclick = function(){ sel = w; hero.querySelectorAll(".dh-imgs button").forEach(function(x){ x.classList.toggle("sel", x._w === w); }); hero.querySelector(".dh-now h2").textContent = w.title; };
-        tr.appendChild(b); });
-      var s = document.createElement("span"); s.textContent = line + " "; words.appendChild(s);
-    });
-    hero.querySelector(".dh-now h2").textContent = w0.title;
-    hero.querySelector(".dh-now .dh-play").onclick = function(){ play(sel); };
-    hero.querySelectorAll(".dh-row").forEach(function(r){
-      r.addEventListener("pointerdown", function(){ r.classList.add("hold"); });
-      ["pointerup", "pointerleave", "pointercancel"].forEach(function(ev){ r.addEventListener(ev, function(){ r.classList.remove("hold"); }); });
-    });
-  }
-
-  if(V === "mask"){
-    hero.innerHTML = '<div class="dh-run"><div class="dh-stick"><div class="dh-mk"></div><div class="dh-hint lbx" data-t="scroll"></div>' + info(w0, true) + '</div></div>';
-    var run = hero.firstChild, stick = run.firstChild, mk = stick.firstChild, inf = stick.querySelector(".dh-info"), hint = stick.querySelector(".dh-hint");
-    var probe = img(w0); probe.onload = function(){ if(probe.naturalWidth <= 120){ probe.src = cover(w0, 1); return; } mk.style.backgroundImage = "url(" + probe.src + ")"; };
-    stick.querySelector(".dh-meta").textContent = tx("latest") + " · " + meta(w0);
-    stick.querySelector("h2").textContent = w0.title;
-    stick.querySelector(".dh-play").onclick = function(){ play(w0); };
-    function tick(){
-      var th, r = run.getBoundingClientRect(), range = run.offsetHeight - stick.offsetHeight, th = document.querySelector('.top').offsetHeight, p = Math.max(0, Math.min(1, (th - r.top) / range)), e = p * p * p;
-      var base = innerWidth > 760 ? 52 : 88;
-      mk.style.setProperty("--ms", (base + e * 2600) + "%");
-      stick.style.setProperty("--sh", Math.max(0, (p - .6) / .4));
-      inf.classList.toggle("on", p > .75); hint.style.opacity = p > .04 ? 0 : 1;
-    }
-    addEventListener("scroll", tick, { passive: true }); addEventListener("resize", tick); tick();
   }
 
   /* меню-гамбургер на телефоне */
@@ -204,11 +146,6 @@
     menu.querySelectorAll("nav a").forEach(function(a){ a.addEventListener("click", close); });
     menu.querySelectorAll("[data-p]").forEach(function(b){ b.onclick = function(){ var t = document.getElementById(b.dataset.p); if(t) t.click(); }; });
   }
-
-  /* плашка внизу: какой вариант открыт, переход между вариантами */
-  var flag = document.createElement("div"); flag.className = "dh-flag lbx";
-  flag.innerHTML = '<span class="mu">Draft</span>' + ["poster", "stories", "marquee", "mask"].map(function(v){ return '<a href="drafts/' + v + '/" class="' + (v === V ? "on" : "") + '">' + v + '</a>'; }).join("");
-  document.body.appendChild(flag);
 
   function texts(){
     document.querySelectorAll(".dh [data-t], .dh-menu [data-t]").forEach(function(el){ el.textContent = tx(el.getAttribute("data-t")); });

@@ -346,6 +346,8 @@ footer .jp{font-size:24px}
 #navNews.new::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--acc,var(--paper));margin-left:5px;vertical-align:super}
 @media(max-width:760px){.ntf{left:12px;right:12px;width:auto;bottom:auto;top:calc(env(safe-area-inset-top,0px) + 64px);transform:translateY(calc(-100% - 90px))}}
 @media(prefers-reduced-motion:reduce){.ntf{transition:opacity .3s}}
+.spread{display:none!important}
+#dh:empty{height:calc(100svh - 58px);min-height:520px;max-height:900px;background:#000}
 </style>
 </head>
 <body>
@@ -359,7 +361,9 @@ footer .jp{font-size:24px}
 </header>
 
 <main id="top">
-  <!-- РАЗВОРОТ -->
+  <!-- ПЕРВЫЙ ЭКРАН: заполняется из hero.js -->
+  <div class="dh dh-poster" id="dh"></div>
+  <!-- старый разворот: скрыт, из него hero.js берёт логотип и строку статуса -->
   <div class="wrap spread">
     <div class="sheet">
       <button class="cover" id="cover" aria-label="Play latest work">
@@ -960,5 +964,6 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   if(wanted) openPlayer(wanted); else if(want) setUrl(null);
 })();
 </script>
+<script src="hero.js"></script>
 </body>
 </html>
