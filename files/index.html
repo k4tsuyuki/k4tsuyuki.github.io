@@ -305,7 +305,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     if(box.showModal) box.showModal(); else box.setAttribute("open", "");
     try{ history.replaceState(null, "", "?" + (/[?&]test\b/.test(location.search) ? "test&" : "") + "f=" + p.id); }catch(e){}
   }
-  function shut(){ box.classList.remove("closing"); if(box.close) box.close(); else box.removeAttribute("open"); try{ history.replaceState(null, "", location.pathname); }catch(e){} }
+  function shut(){ box.classList.remove("closing"); if(box.close) box.close(); else box.removeAttribute("open"); try{ history.replaceState(null, "", location.pathname + (/[?&]test\b/.test(location.search) ? "?test" : "")); }catch(e){} }
   function close(){
     if(!box.open || box.classList.contains("closing")) return;
     if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches){ shut(); return; }
