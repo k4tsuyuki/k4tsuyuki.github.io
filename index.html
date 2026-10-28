@@ -281,12 +281,12 @@ footer .jp{font-size:24px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 /* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
 @view-transition{navigation:auto;types:page}
-:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .25s cubic-bezier(.4,0,1,1) both}
-:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .4s cubic-bezier(0,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .35s cubic-bezier(.4,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .55s cubic-bezier(.4,0,.2,1) .22s both}
 :root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
 /* на компьютере без размытия: блюр на весь большой экран тормозит, остаются затухание и зум */
-@keyframes pg-out{to{opacity:0;transform:scale(.99)}}
-@keyframes pg-in{from{opacity:0;transform:scale(1.01)}}
+@keyframes pg-out{to{opacity:0}}
+@keyframes pg-in{from{opacity:0}}
 @keyframes bl-out{to{opacity:0}}
 @keyframes bl-in{from{opacity:0}}
 @media (max-width:760px){
