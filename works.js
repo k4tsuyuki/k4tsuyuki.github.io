@@ -44,7 +44,6 @@ window.WORKS = [
   { title: "Just Ur Doll",               year: "2025", link: "https://youtu.be/TWAUvWGPW7k", tags: ["AMV", "4K"] },
   { title: "Under Your Spell",           year: "2025", link: "https://youtu.be/f5h1Djyj19M", tags: ["AMV", "4K"] },
   { title: "Can't Feel Myself",          year: "2024", link: "https://youtu.be/xg8joSFOHxU", tags: ["MMV", "4K"] },
-  { title: "Hand Outs",                  year: "2023", link: "https://youtu.be/kV8l_27O9sE", tags: ["AMV", "4K"] },
 
   /* ВСЕ ОСТАЛЬНЫЕ ЭДИТЫ С КАНАЛА (archive: true). На главной они спрятаны
      и появляются по кнопке "All edits". Чтобы эдит показывался сразу, убери у него archive: true.
@@ -63,6 +62,7 @@ window.WORKS = [
   { title: "Swan Dive", year: "2024", link: "https://youtu.be/yPjcYOFGEGY", tags: ["AMV"], archive: true },
   { title: "Fashion × Naobito", year: "2024", link: "https://youtu.be/UJYsT7Rh6zc", tags: ["AMV"], archive: true, file: "fashion-x-naobito" },
   { title: "Never Let Go — Jujutsu Kaisen", year: "2024", link: "https://youtu.be/-BDQ1kl-0v8", tags: ["AMV", "4K"], archive: true },
+  { title: "Hand Outs", year: "2023", link: "https://youtu.be/kV8l_27O9sE", tags: ["AMV", "4K"], archive: true },
   { title: "All The Stars 2HC", year: "2023", link: "https://youtu.be/nHbwl5nyaRA", tags: ["AMV"], archive: true, file: "all-the-stars-2hc" },
   { title: "Systëm — Jujutsu Kaisen", year: "2023", link: "https://youtu.be/iy1-ky8pHHw", tags: ["AMV", "4K"], archive: true },
   { title: "AINT READY (ft. @fxizvisualz)", year: "2023", link: "https://youtu.be/F7KMm9wvblA", tags: ["AMV"], archive: true, file: "aint-ready" },
