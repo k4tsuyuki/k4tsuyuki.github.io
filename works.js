@@ -9,7 +9,7 @@ window.SITE = {
   software: "After Effects / Photoshop",
   /* контакты: если ссылки нет (url: ""), рядом будет кнопка Copy */
   contacts: [
-    { label: "Email",   value: "vplisetskyi@gmail.com", url: "mailto:vplisetskyi@gmail.com" },
+    { label: "Email",   value: "katsuyukiadmin@gmail.com", url: "mailto:katsuyukiadmin@gmail.com" },
     { label: "YouTube", value: "@k4tsuyuki",            url: "https://www.youtube.com/@k4tsuyuki" },
     { label: "Telegram",  value: "katsuyuk1",           url: "https://t.me/katsuyuk1" },
     { label: "Instagram", value: "koyomifanboy",        url: "https://www.instagram.com/koyomifanboy/" },
