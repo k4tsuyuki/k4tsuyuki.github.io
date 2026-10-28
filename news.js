@@ -14,6 +14,13 @@
 
 window.NEWS = [
   {
+    date: "2026-10-28",
+    title: "Site update",
+    text: "Files: project files and packs, now sold right here. Free ones download with just your email, paid ones go through PayPal.\nOrder: commission an edit, with prices and the earliest deadline.\nWorks: all my edits from YouTube, under the All edits button.",
+    link: "/files/",
+    button: "Open Files"
+  },
+  {
     date: "2026-10-18",
     title: "New address",
     text: "The site now lives at katsuyuki.studio.",
