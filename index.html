@@ -22,12 +22,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap">
-<link rel="preload" href="/fonts/narrow-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/narrow-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* шрифт: настоящий Arial Narrow, если он есть на устройстве; иначе его копия Liberation Sans Narrow с сайта (те же размеры и форма букв), чтобы на телефоне было так же, как на компьютере */
-@font-face{font-family:"KN";src:local("Arial Narrow"),local("ArialNarrow"),url(/fonts/narrow-Regular.woff2) format("woff2");font-weight:400;font-display:block}
-@font-face{font-family:"KN";src:local("Arial Narrow Bold"),local("ArialNarrow-Bold"),url(/fonts/narrow-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+/* шрифт: Arial (обычной ширины), если он есть на устройстве; иначе его копия Liberation Sans с сайта (те же размеры и форма букв), чтобы везде было одинаково */
+@font-face{font-family:"KN";src:local("Arial"),local("ArialMT"),url(/fonts/sans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Bold"),local("Arial-BoldMT"),url(/fonts/sans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
 
 /* Layout: two editorial "sheets" on black, like a printed spread; tiny bold caps labels on a grid, one oversized name. */
 :root{
@@ -41,7 +41,7 @@
   --edge:rgba(238,235,229,.06);
   --logo:none;           /* лого белое; в светлой теме инвертируется в чёрное */
 
-  --f:"KN","Arial Narrow","Liberation Sans Narrow","Helvetica Neue",Arial,sans-serif;
+  --f:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif;
   --f-jp:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
 
   --gl:max(16px, env(safe-area-inset-left, 0px));
@@ -64,7 +64,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;background:var(--void)}
-body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);font-stretch:condensed;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:var(--paper);color:var(--void)}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0;text-align:inherit}

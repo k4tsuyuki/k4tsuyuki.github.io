@@ -7,19 +7,19 @@
 <link rel="icon" type="image/png" href="/img/favicon.png">
 <meta name="robots" content="noindex">
 <script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light");if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
-<link rel="preload" href="/fonts/narrow-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/narrow-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* шрифт: настоящий Arial Narrow, если он есть на устройстве; иначе его копия Liberation Sans Narrow с сайта (те же размеры и форма букв), чтобы на телефоне было так же, как на компьютере */
-@font-face{font-family:"KN";src:local("Arial Narrow"),local("ArialNarrow"),url(/fonts/narrow-Regular.woff2) format("woff2");font-weight:400;font-display:block}
-@font-face{font-family:"KN";src:local("Arial Narrow Bold"),local("ArialNarrow-Bold"),url(/fonts/narrow-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+/* шрифт: Arial (обычной ширины), если он есть на устройстве; иначе его копия Liberation Sans с сайта (те же размеры и форма букв), чтобы везде было одинаково */
+@font-face{font-family:"KN";src:local("Arial"),local("ArialMT"),url(/fonts/sans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Bold"),local("Arial-BoldMT"),url(/fonts/sans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
 
 :root{--void:#060606;--sheet:#101010;--paper:#eeebe5;--ash:#85827c;--hair:rgba(238,235,229,.16);--logo:none;color-scheme:dark;
-  --f:"KN","Arial Narrow","Liberation Sans Narrow","Helvetica Neue",Arial,sans-serif}
+  --f:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif}
 :root[data-theme="light"]{--void:#e9e7e2;--sheet:#f6f5f1;--paper:#111;--ash:#6f6c66;--hair:rgba(17,17,17,.16);--logo:invert(1);color-scheme:light}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);font-stretch:condensed;-webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);-webkit-font-smoothing:antialiased;
   display:flex;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
 .sheet{flex:1;background:var(--sheet);border:1px solid var(--hair);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(18px,3vw,32px);min-height:0}
 .lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
