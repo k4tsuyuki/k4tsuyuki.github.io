@@ -4,7 +4,7 @@
    Отключить праздники совсем: AUTO = false.
    ===================================================================== */
 (function(){
-  var AUTO = false;
+  var AUTO = true;
   var SEASONS = [
     { id: "valentine", from: "02-13", to: "02-15" },
     { id: "aprilfools", from: "04-01", to: "04-01" },
