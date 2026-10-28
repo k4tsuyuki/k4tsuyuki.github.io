@@ -97,7 +97,7 @@
     '.dh-menu{position:fixed;inset:0;z-index:90;background:var(--void);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 16px) 22px calc(env(safe-area-inset-bottom,0px) + 28px);opacity:0;pointer-events:none;transition:opacity .3s;color:var(--paper)}' +
     '.dh-menu.on{opacity:1;pointer-events:auto}' +
     '.dh-menu .mh{display:flex;justify-content:space-between;align-items:center}.dh-menu .mh img{height:26px}' +
-    '.dh-menu .x{width:36px;height:36px;border:1px solid var(--hair);border-radius:50%;background:none;color:var(--paper);font-size:16px;cursor:pointer}' +
+    '.dh-menu .x{width:36px;height:36px;padding:0;display:grid;place-items:center;border:1px solid var(--hair);border-radius:50%;background:none;color:var(--paper);cursor:pointer;-webkit-appearance:none;appearance:none}.dh-menu .x svg{width:14px;height:14px;display:block}' +
     '.dh-menu nav{margin-top:auto;display:grid;gap:4px}' +
     '.dh-menu nav a{font-size:44px;font-weight:700;letter-spacing:-.03em;text-transform:uppercase;color:var(--paper);transform:translateY(18px);opacity:0;transition:transform .5s cubic-bezier(.2,.9,.2,1),opacity .4s}' +
     '.dh-menu.on nav a{transform:none;opacity:1}' +
@@ -136,7 +136,7 @@
   if(nav){
     var bg = document.createElement("button"); bg.className = "dh-burger"; bg.type = "button"; bg.setAttribute("aria-label", "Menu"); bg.innerHTML = "<i></i>"; nav.appendChild(bg);
     var menu = document.createElement("div"); menu.className = "dh-menu"; menu.setAttribute("aria-hidden", "true");
-    menu.innerHTML = '<div class="mh"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"><button class="x" type="button" aria-label="Close">✕</button></div>' +
+    menu.innerHTML = '<div class="mh"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"><button class="x" type="button" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div>' +
       '<nav><a href="#works" data-t="works"></a><a href="#news" data-t="news"></a><a href="#contact" data-t="contact"></a><a href="files/">PFS</a></nav>' +
       '<div class="row lbx"><button type="button" data-p="langBtn"></button><button type="button" data-p="themeBtn">◐</button></div>';
     document.body.appendChild(menu);
