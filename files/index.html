@@ -81,6 +81,8 @@ h1{font-weight:400;font-size:clamp(56px,10vw,150px);line-height:.85;letter-spaci
 .btn.solid{background:var(--paper);color:var(--void)}
 .btn.solid:hover{background:none;color:var(--paper)}
 .r .btn{justify-self:end;min-width:96px}
+.soon{padding:clamp(40px,7vw,96px) 0;display:grid;gap:14px}
+.soon p{margin:0;font-size:clamp(28px,4vw,56px);line-height:1;letter-spacing:-.02em;max-width:18ch}
 .empty{padding:40px 0;color:var(--ash)}
 
 /* окно покупки */
@@ -227,6 +229,8 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
    PAYPAL_CLIENT_ID: публичный Client ID из PayPal Developer (Apps & Credentials → Live). Секретный ключ сюда НЕ вставляется, он только в Google Apps Script.
    ENDPOINT: тот же адрес Google Apps Script, что и в форме заказа. Он проверяет оплату в PayPal и выдаёт ссылку на файл. */
 (function(){
+  /* MAINTENANCE: true — вместо списка надпись, что магазин скоро заработает */
+  var MAINTENANCE = true;
   var PAYPAL_CLIENT_ID = "";
   var ENDPOINT = "";
   var root = document.documentElement, uk = function(){ return root.lang === "uk"; };
@@ -367,6 +371,12 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     }).catch(function(){ msg(uk() ? "PayPal не завантажився." : "PayPal didn't load.", true); });
   }
 
+  if(MAINTENANCE){
+    document.getElementById("chips").hidden = true;
+    list.innerHTML = '<div class="soon"><div class="lb m">' + both("Under maintenance", "Технічні роботи") + '</div>' +
+      '<p>' + both("The shop is being updated and will be back soon.", "Магазин оновлюється і скоро знову запрацює.") + '</p></div>';
+    return;
+  }
   draw();
   var want = new URLSearchParams(location.search).get("f");
   if(want){ var w = SHOP.find(function(x){ return x.id === want; }); if(w) open(w); }
