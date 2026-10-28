@@ -161,6 +161,10 @@ section{padding-block:clamp(56px,8vw,120px);border-top:1px solid var(--hair)}
 .filter button:hover{border-color:var(--paper)}
 .filter button.on{background:var(--paper);color:var(--void);border-color:var(--paper)}
 .card.out,.card.big.out{display:none}
+.grid:not(.all) .card.arc{display:none}
+.all-more{display:flex;justify-content:center;margin-top:clamp(28px,4vw,48px)}
+.pill-btn{display:inline-flex;align-items:center;height:40px;padding:0 22px;border:1px solid var(--paper);border-radius:999px;transition:background .3s,color .3s}
+.pill-btn:hover{background:var(--paper);color:var(--void)}
 .totop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:40;width:40px;height:40px;border-radius:50%;display:none;place-items:center;background:var(--bar);border:1px solid var(--hair);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}
 .totop.show{opacity:1;transform:none;pointer-events:auto}
 .totop svg{width:14px;height:14px}
@@ -462,13 +466,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"Files", all:"All", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"Files", all:"All", more:"All edits ↓︎", less:"Fewer edits ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Проєкти / Файли", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"Файли", all:"Усі", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"Файли", all:"Усі", more:"Усі едіти ↓︎", less:"Менше ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }
@@ -528,8 +532,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     return m ? m[1] : (/^[A-Za-z0-9_-]{11}$/.test(url) ? url : "");
   }
   WORKS.forEach(function(w, i){ w.id = ytId(w.link); w.vertical = /\/shorts\//.test(w.link||""); w._i = i; });
-  /* новые годы всегда выше; внутри одного года порядок как в works.js */
-  WORKS.sort(function(a, b){ return (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0) || a._i - b._i; });
+  /* сначала основные работы, потом архив (archive: true); новые годы выше; внутри года порядок как в works.js */
+  WORKS.sort(function(a, b){ return (a.archive ? 1 : 0) - (b.archive ? 1 : 0) || (parseInt(b.year, 10) || 0) - (parseInt(a.year, 10) || 0) || a._i - b._i; });
   /* у каждого эдита свой адрес: katsuyuki.studio/?w=dove-doll-4hc */
   WORKS.forEach(function(w){
     var base = String(w.title || "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || w.id || "work", slug = base, n = 2;
@@ -569,7 +573,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   var PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10" style="margin-right:6px"><path d="M6 4l14 8-14 8z"/></svg>';
   WORKS.forEach(function(w, i){
     var b = document.createElement("button");
-    b.className = "card" + (i===0 ? " big" : "");
+    b.className = "card" + (i===0 ? " big" : "") + (w.archive ? " arc" : "");
     b.setAttribute("aria-label", "Watch " + w.title);
     b.innerHTML = '<div class="frame"><img alt="" loading="lazy"><div class="ph" hidden></div><span class="pill play">'+PLAY+'<span data-i18n="watch">Watch</span></span></div>'+
       '<div class="c-meta lb"><span class="m"><span data-i18n="no">No.</span> '+pad(i+1)+'</span><span class="t"></span><span class="m yr"></span><div class="tags c-tags"></div></div>';
@@ -589,10 +593,31 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     $("grid").appendChild(b);
   });
 
+  /* ---- кнопка «все эдиты»: показывает архив (archive: true в works.js) ---- */
+  if(WORKS.some(function(w){ return w.archive; })){
+    var more = document.createElement("div"); more.className = "all-more";
+    more.innerHTML = '<button type="button" class="pill-btn lb" id="moreBtn" data-i18n="more">' + t("more") + '</button>';
+    $("grid").after(more);
+    $("moreBtn").addEventListener("click", function(){
+      var on = !$("grid").classList.contains("all");
+      $("grid").classList.toggle("all", on);
+      this.setAttribute("data-i18n", on ? "less" : "more"); this.textContent = t(on ? "less" : "more");
+      if(on){
+        var k = 0;
+        Array.prototype.forEach.call($("grid").querySelectorAll(".card.arc"), function(c){
+          if(k < 24 && c.animate && c.getBoundingClientRect().top < innerHeight * 1.6) c.animate([{ opacity: 0, transform: "translateY(24px)", filter: "blur(6px)" }, { opacity: 1, transform: "none", filter: "none" }], { duration: 600, delay: (k++ % 12) * 45, easing: "cubic-bezier(.2,.7,.2,1)", fill: "backwards" });
+        });
+        track("all edits");
+      } else {
+        $("moreBtn").scrollIntoView({ block: "center" });
+      }
+    });
+  }
+
   /* ---- фильтр по меткам (только те, что есть не у всех работ, т.е. без 4K) ---- */
-  var TAGS = [];
-  WORKS.forEach(function(w){ (w.tags||[]).forEach(function(t){ if(TAGS.indexOf(t) < 0) TAGS.push(t); }); });
-  TAGS = TAGS.filter(function(t){ return WORKS.some(function(w){ return (w.tags||[]).indexOf(t) < 0; }); });
+  var TAGS = [], MAIN = WORKS.filter(function(w){ return !w.archive; });
+  MAIN.forEach(function(w){ (w.tags||[]).forEach(function(t){ if(TAGS.indexOf(t) < 0) TAGS.push(t); }); });
+  TAGS = TAGS.filter(function(t){ return MAIN.some(function(w){ return (w.tags||[]).indexOf(t) < 0; }); });
   if(TAGS.length > 1){
     $("filter").hidden = false;
     ["*"].concat(TAGS).forEach(function(tag){
