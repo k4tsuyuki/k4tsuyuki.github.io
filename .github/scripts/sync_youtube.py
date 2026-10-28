@@ -3,8 +3,12 @@
 Runs from .github/workflows/youtube.yml. Only videos the script has not seen
 before are added, so works removed from works.js by hand never come back.
 Shorts are skipped.
+
+It also looks up each video's frame size once. Edits that are not 16:9
+(for example 1920x1440 or 1920x800) get ratio: "1920x1440" in works.js,
+so the site's player takes that shape.
 """
-import json, re, sys, urllib.request, urllib.error, xml.etree.ElementTree as ET
+import json, math, re, sys, time, urllib.request, urllib.error, xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -59,6 +63,44 @@ def is_short(vid):
     return status == 200
 
 
+def frame_size(vid):
+    """Largest video format of the upload as (width, height), or None if YouTube didn't say."""
+    try:
+        _, html = get(f"https://www.youtube.com/watch?v={vid}&hl=en")
+    except Exception:
+        return None
+    i = html.find('"adaptiveFormats"')
+    if i < 0:
+        return None
+    sizes = [(int(w), int(h)) for w, h in re.findall(r'"width":(\d+),"height":(\d+)', html[i:i + 200000])]
+    return max(sizes, key=lambda s: s[0] * s[1]) if sizes else None
+
+
+def add_ratios(text, state):
+    """Writes ratio: "WxH" into works.js lines of videos that aren't 16:9. Each video is checked once."""
+    sized = set(state.get("sized", []))
+    lines = text.split("\n")
+    budget = 25  # a few per run, so a blocked YouTube page doesn't slow every run down
+    for n, line in enumerate(lines):
+        m = re.search(r'link:\s*"[^"]*(?:youtu\.be/|v=|/embed/)([\w-]{11})', line)
+        if not m or m.group(1) in sized or "ratio:" in line or budget == 0:
+            continue
+        budget -= 1
+        size = frame_size(m.group(1))
+        time.sleep(1)
+        if not size:
+            continue
+        sized.add(m.group(1))
+        w, h = size
+        if h and w > h and abs(w / h - 16 / 9) > 0.05:
+            g = math.gcd(w, h)
+            # 2880x2160 and 1920x1440 are the same shape; keep the size he'd recognise when it's a common one
+            shape = {(4, 3): "1920x1440", (12, 5): "1920x800"}.get((w // g, h // g), f"{w}x{h}")
+            lines[n] = re.sub(r"\s*\}(,?)\s*$", f', ratio: "{shape}" }}\\1', line)
+            print("Ratio", shape, "for", m.group(1))
+    return "\n".join(lines), sorted(sized)
+
+
 def js(s):
     return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ").strip()
 
@@ -85,7 +127,9 @@ def main():
                 js(v["title"]), v["published"][:4], v["id"], DEFAULT_TAGS)
             text = text.replace("window.WORKS = [\n", "window.WORKS = [\n" + line, 1)
             added.append(v["title"])
-    if added:
+    before = WORKS.read_text(encoding="utf-8")
+    text, sized = add_ratios(text, state)
+    if text != before:
         WORKS.write_text(text, encoding="utf-8")
 
     today = datetime.now(timezone.utc).date().isoformat()
@@ -93,6 +137,7 @@ def main():
     new_state = {
         "channel_id": cid,
         "seen": sorted(seen | {v["id"] for v in videos}),
+        "sized": sized,
         # touched about once a month so GitHub keeps the scheduled check switched on
         "checked": today if added or first_run or checked[:7] != today[:7] else checked,
     }

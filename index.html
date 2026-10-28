@@ -224,11 +224,12 @@ footer .jp{font-size:24px}
 .player.show .stage{transform:none;filter:none}
 @media (prefers-reduced-motion:reduce){.player .stage{transform:none;filter:none;transition:none}}
 .p-close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));display:flex;gap:8px;align-items:center}
-.stage{position:relative;width:min(100%,calc((100vh - 230px) * 16 / 9));aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
+/* --ar: формат видео (16/9, 4/3 для 1920x1440, 12/5 для 1920x800, 9/16 для шортсов) */
+.player{--ar:16/9;--arb:16/9}
+.stage{position:relative;width:min(100%,calc((100vh - 230px) * var(--ar)));aspect-ratio:var(--ar);max-width:100%;background:#000;overflow:hidden;container-type:size}
 /* полный экран: на весь экран идёт весь плеер, панель управления остаётся поверх видео */
 .player.fs{padding:0;background:#000}
-.player.fs .stage{width:min(100vw,calc(100dvh * 16 / 9))!important;max-height:100dvh}
-.player.fs.vert .stage{width:min(100vw,calc(100dvh * 9 / 16))!important}
+.player.fs .stage{width:min(100vw,calc(100dvh * var(--ar)));max-height:100dvh}
 .player.fs .p-title{display:none}
 .player.fs .bar{position:absolute;left:0;right:0;bottom:0;width:auto;z-index:5;padding:28px max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(transparent,rgba(0,0,0,.8))}
 .player.fs .p-close{z-index:6;padding:8px 12px;background:rgba(0,0,0,.55);border-radius:999px}
@@ -251,15 +252,17 @@ footer .jp{font-size:24px}
 .endm .nc span{display:block;aspect-ratio:16/9;background:#111 center/cover;filter:grayscale(1) brightness(.75);transition:filter .6s}
 .endm .nc:hover span,.endm .nc:focus-visible span{filter:none}
 .endm .nc b{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:760px){.endm .nx{grid-template-columns:repeat(2,minmax(0,1fr))}.endm .nc:nth-of-type(3){display:none}}
-@media (max-width:420px){.endm{gap:10px}.endm .nx-h{display:none}.endm .nx{width:150px;grid-template-columns:1fr;gap:4px}.endm .nc:nth-of-type(2){display:none}.endm .nc b{font-size:11px}}
+/* меню подстраивается под размер кадра: в узком или низком (широкоформатном) кадре меньше обложек */
+@container (max-width:600px){.endm .nx{grid-template-columns:repeat(2,minmax(0,1fr))}.endm .nc:nth-of-type(3){display:none}}
+@container (max-width:420px) or (max-height:330px){.endm{gap:10px}.endm .nx-h{display:none}.endm .nx{width:150px;grid-template-columns:1fr;gap:4px}.endm .nc:nth-of-type(n+2){display:none}.endm .nc b{font-size:11px}}
+@container (max-height:200px){.endm .nx{display:none}}
 .poster .inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;padding:16px;text-align:center}
 .big-play{width:76px;height:76px;border-radius:50%;border:1px solid var(--paper);display:grid;place-items:center;background:var(--veil);transition:background .3s,color .3s}
 .big-play:hover{background:var(--paper);color:var(--void)}
 .big-play svg{width:20px;height:20px;margin-left:4px}
 .p-note{max-width:40ch;color:var(--ash);margin:0}
 .p-note a{color:var(--paper);text-decoration:underline}
-.bar,.p-title{width:min(100%,calc((100vh - 230px) * 16 / 9))}
+.bar,.p-title{width:min(100%,calc((100vh - 230px) * var(--arb)))}
 .bar{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto auto auto;gap:14px;align-items:center}
 .ctl{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--hair);border-radius:50%}
 .ctl:hover{border-color:var(--paper)}
@@ -827,6 +830,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   function setIcon(p){ $("icToggle").innerHTML = p ? IC_PAUSE : IC_PLAY; $("pToggle").setAttribute("aria-label", p ? "Pause" : "Play"); }
   function ytLink(w){ return '<a href="https://youtu.be/'+w.id+'" target="_blank" rel="noopener">' + t("onyt") + '</a>'; }
 
+  /* формат из works.js: ratio: "1920x1440" или "4:3"; без него 16:9 */
+  function ratioOf(w){ var m = String(w.ratio || "").match(/([\d.]+)\s*[x:×\/]\s*([\d.]+)/); return m && +m[1] > 0 && +m[2] > 0 ? m[1] + "/" + m[2] : "16/9"; }
   function fileOf(w){ return w.file ? (window.SHOP || []).find(function(p){ return p.id === w.file; }) : null; }
   function openPlayer(w){
     var switching = !!(cur && yp && yp.loadVideoById && w.id && !P.hidden);
@@ -838,8 +843,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     if(pf){ pfa.href = "files/?f=" + encodeURIComponent(pf.id); pfa.textContent = (lang === "uk" ? "Проєктний файл" : "Project file") + " · " + (pf.price ? "€" + pf.price + (pf.pwyw ? "+" : "") : (lang === "uk" ? "безкоштовно" : "free")); }
     txt("pMeta", [w.client, w.year].concat((w.tags||[]).slice(0,2)).filter(Boolean).join(" / "));
     var vert = !!w.vertical;
-    stage.style.aspectRatio = vert ? "9/16" : "";
-    stage.style.width = vert ? "min(100%, calc((100vh - 230px) * 9 / 16))" : "";
+    var ar = vert ? "9/16" : ratioOf(w);
+    P.style.setProperty("--ar", ar); P.style.setProperty("--arb", vert ? "16/9" : ar);
     P.classList.toggle("vert", vert);
     /* заставка в максимальном качестве (та же картинка, что в списке работ, обычно уже в кэше) */
     $("posterBg").style.backgroundImage = "none";
