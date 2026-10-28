@@ -346,7 +346,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
    ENDPOINT: адрес Google Apps Script (см. ЗАКАЗЫ-НАСТРОЙКА.md): заказ пишется в Google Таблицу,
    тебе приходит письмо, заказчику автоответ. Пока ENDPOINT пустой, заявки идут через Web3Forms (ACCESS_KEY). */
 (function(){
-  var ENDPOINT = "";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
   var ACCESS_KEY = "85ba0e45-6828-488d-bd69-4b0272a62e0b";
   var PLANS = { short:{ name:"Short", min:20, max:20 }, standard:{ name:"Standard", min:50, max:50 }, long:{ name:"Long", min:150, max:150 }, choice:{ name:"Your choice", min:50, max:300 } };
   /* минимальный срок каждого формата в днях; эдиты делаются по очереди, поэтому дни складываются */
