@@ -241,6 +241,8 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   var SHOP = window.SHOP || [], list = document.getElementById("list"), box = document.getElementById("buyBox");
   var $ = function(id){ return document.getElementById(id); };
   var cur = null, filter = "all";
+  /* от новых к старым по полю date */
+  SHOP = SHOP.slice().sort(function(a, b){ return (b.date || "").localeCompare(a.date || ""); });
   function track(p){ try{ window.goatcounter.count({ path: p, title: p, event: true }); }catch(e){} }
   function eur(n){ return "€" + (n % 1 ? n.toFixed(2) : n); }
   function both(en, ua){ return '<span data-en>' + en + '</span><span data-uk>' + ua + '</span>'; }
