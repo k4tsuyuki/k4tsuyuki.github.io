@@ -17,12 +17,18 @@
 <meta name="theme-color" content="#060606">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;700&family=Shippori+Mincho:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap">
 <script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light");if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
+<link rel="preload" href="/fonts/narrow-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/narrow-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* шрифт: настоящий Arial Narrow, если он есть на устройстве; иначе его копия Liberation Sans Narrow с сайта (те же размеры и форма букв), чтобы на телефоне было так же, как на компьютере */
+@font-face{font-family:"KN";src:local("Arial Narrow"),local("ArialNarrow"),url(/fonts/narrow-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Narrow Bold"),local("ArialNarrow-Bold"),url(/fonts/narrow-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+
 /* те же цвета и шрифты, что на главной */
 :root{--void:#060606;--sheet:#101010;--paper:#eeebe5;--ash:#85827c;--hair:rgba(238,235,229,.16);--bar:rgba(6,6,6,.82);--logo:none;color-scheme:dark;
-  --f:"Arial Narrow","Archivo Narrow","PT Sans Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+  --f:"KN","Arial Narrow","Liberation Sans Narrow","Helvetica Neue",Arial,sans-serif;
   --f-jp:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
   --gl:max(16px,env(safe-area-inset-left,0px));--gr:max(16px,env(safe-area-inset-right,0px))}
 :root[data-theme="light"]{--void:#e9e7e2;--sheet:#f6f5f1;--paper:#111;--ash:#6f6c66;--hair:rgba(17,17,17,.16);--bar:rgba(233,231,226,.85);--logo:invert(1);color-scheme:light}
