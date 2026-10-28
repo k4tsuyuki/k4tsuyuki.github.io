@@ -9,12 +9,12 @@ window.SITE = {
   software: "After Effects / Photoshop",
   /* контакты: если ссылки нет (url: ""), рядом будет кнопка Copy */
   contacts: [
-    { label: "Discord",   value: "k4tsuyuk1",           url: "" },
     { label: "Email",   value: "katsuyukiadmin@gmail.com", url: "mailto:katsuyukiadmin@gmail.com" },
+    { label: "Discord",   value: "k4tsuyuk1",           url: "" },
     { label: "YouTube", value: "@k4tsuyuki",            url: "https://www.youtube.com/@k4tsuyuki" },
+    { label: "Instagram", value: "koyomifanboy",        url: "https://www.instagram.com/koyomifanboy/" },
     { label: "Telegram",  value: "katsuyuk1",           url: "https://t.me/katsuyuk1" },
     { label: "Payhip",    value: "koyomifanboy",        url: "https://payhip.com/koyomifanboy" },
-    { label: "Instagram", value: "koyomifanboy",        url: "https://www.instagram.com/koyomifanboy/" },
     { label: "Steam",     value: "k4tsuyuki",           url: "https://steamcommunity.com/id/k4tsuyuki/" }
   ]
 };
