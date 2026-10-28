@@ -138,9 +138,8 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 .amt input{flex:1;min-width:0;font:inherit;font-size:18px;color:var(--paper);background:none;border:0;padding:10px 12px 10px 6px;outline:none}
 #pp{min-height:48px;color-scheme:light;background:none}
 #pp iframe{color-scheme:light;background:transparent}
-/* когда PayPal раскрывает форму карты (тёмный текст), под неё подкладывается светлая плашка */
-#pp{transition:background .3s,padding .3s;border-radius:14px}
-#pp.card{background:#f6f5f1;padding:14px 10px}
+/* PayPal пишет тёмным текстом (форма карты, ошибки, «18 years»), поэтому кнопки всегда стоят на светлой плашке */
+#pp:not(:empty){background:#f6f5f1;padding:12px;border-radius:14px}
 .b-msg{color:var(--ash)}
 .b-msg.err{color:var(--paper)}
 .b-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -455,11 +454,8 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     });
     return sdk;
   }
-  /* форма карты PayPal высокая: если блок вырос, делаем под ним светлый фон, чтобы текст читался */
-  if(window.ResizeObserver) new ResizeObserver(function(){ var el = $("pp"); el.classList.toggle("card", el.offsetHeight > (el.classList.contains("card") ? 170 : 150)); }).observe($("pp"));
   function paypal(){
     var el = $("pp"); el.innerHTML = "";
-    el.classList.remove("card");
     if(!PAYPAL_CLIENT_ID || (!cur.price && !cur.pwyw)) return;
     var p = cur;
     loadSdk().then(function(){
