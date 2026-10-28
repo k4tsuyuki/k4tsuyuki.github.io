@@ -252,6 +252,10 @@ footer .jp{font-size:24px}
 .seek .fill{position:absolute;left:0;top:10px;height:1px;background:var(--paper);width:0}
 .seek .knob{position:absolute;top:6px;width:9px;height:9px;margin-left:-4px;background:var(--paper);border-radius:50%;left:0}
 .p-title{display:flex;justify-content:space-between;gap:16px;align-items:baseline;flex-wrap:wrap}
+.p-side{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.pf{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:999px;background:var(--paper);color:var(--void);transition:opacity .2s}
+.pf:hover{opacity:.85}
+.frame .pfm{position:absolute;right:10px;top:10px;z-index:2;display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;background:var(--veil);border:1px solid var(--hair);font-size:11px;font-weight:700;text-transform:uppercase;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .p-title h3{margin:0;font-weight:400;font-size:clamp(26px,3vw,42px);line-height:1;letter-spacing:-.02em}
 
 @media (max-width:980px){
@@ -421,7 +425,7 @@ footer .jp{font-size:24px}
     <button class="ctl" id="pFs" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <a class="ctl yt-link" id="pYt" href="#" target="_blank" rel="noopener" title="Open on YouTube (choose quality there)" aria-label="Open on YouTube">YT</a>
   </div>
-  <div class="p-title"><h3 id="pTitle"></h3><span class="lb m" id="pMeta"></span></div>
+  <div class="p-title"><h3 id="pTitle"></h3><span class="p-side"><span class="lb m" id="pMeta"></span><a class="pf lb" id="pFile" href="files/" hidden></a></span></div>
 </div>
 
 <script>
@@ -441,6 +445,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 </script>
 <button class="totop" id="toTop" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <script src="works.js"></script>
+<script src="shop.js"></script>
 <script src="news.js"></script>
 <script>
 (function(){
@@ -574,6 +579,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     (w.tags||[]).forEach(function(t, k){ var s = document.createElement("span"); s.className = "pill" + (k ? " o" : ""); s.textContent = t; tg.appendChild(s); });
     /* плашка поверх обложки, например "Flxwery's pick" (поле badge в works.js) */
     if(w.badge){ var bd = document.createElement("span"); bd.className = "badge"; bd.textContent = w.badge; b.querySelector(".frame").appendChild(bd); }
+    /* у работы есть проектный файл в магазине (поле file в works.js = id из shop.js) */
+    if(fileOf(w)){ var pm = document.createElement("span"); pm.className = "pfm"; pm.textContent = "+ Project file"; b.querySelector(".frame").appendChild(pm); }
     if(w.note){ var n = document.createElement("span"); n.className = "c-note"; n.textContent = w.note; b.querySelector(".c-meta").appendChild(n); }
     b.querySelector(".ph").textContent = w.title;
     var img = b.querySelector("img");
@@ -708,12 +715,15 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   function setIcon(p){ $("icToggle").innerHTML = p ? IC_PAUSE : IC_PLAY; $("pToggle").setAttribute("aria-label", p ? "Pause" : "Play"); }
   function ytLink(w){ return '<a href="https://youtu.be/'+w.id+'" target="_blank" rel="noopener">' + t("onyt") + '</a>'; }
 
+  function fileOf(w){ return w.file ? (window.SHOP || []).find(function(p){ return p.id === w.file; }) : null; }
   function openPlayer(w){
     var switching = !!(cur && yp && yp.loadVideoById && w.id && !P.hidden);
     cur = w;
     track("video: " + w.title);
     setUrl(w);
     txt("pTitle", w.title);
+    var pf = fileOf(w), pfa = $("pFile"); pfa.hidden = !pf;
+    if(pf){ pfa.href = "files/?f=" + encodeURIComponent(pf.id); pfa.textContent = (lang === "uk" ? "Проєктний файл" : "Project file") + " · " + (pf.price ? "€" + pf.price + (pf.pwyw ? "+" : "") : (lang === "uk" ? "безкоштовно" : "free")); }
     txt("pMeta", [w.client, w.year].concat((w.tags||[]).slice(0,2)).filter(Boolean).join(" / "));
     var vert = !!w.vertical;
     stage.style.aspectRatio = vert ? "9/16" : "";
