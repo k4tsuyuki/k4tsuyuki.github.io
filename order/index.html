@@ -89,14 +89,18 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 input[type=text],input[type=email],textarea{width:100%;font:inherit;font-size:16px;color:var(--paper);background:var(--void);border:1px solid var(--hair);border-radius:0;padding:10px 12px;transition:border-color .2s}
 input:focus,textarea:focus{outline:none;border-color:var(--paper)}
 textarea{min-height:96px;resize:vertical}
-.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.opts label{position:relative;cursor:pointer}
-.opts input{position:absolute;opacity:0;pointer-events:none}
-.opts label > span{display:grid;gap:4px;border:1px solid var(--hair);padding:10px;height:100%;transition:border-color .2s,background .2s,color .2s}
-.opts label > span i{font-style:normal;color:var(--ash)}
-.opts input:checked + span{background:var(--paper);color:var(--void);border-color:var(--paper)}
-.opts input:checked + span i{color:var(--void);opacity:.6}
-.opts input:focus-visible + span{outline:1px solid var(--paper);outline-offset:2px}
+.cart{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ci{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--hair);padding:8px 8px 8px 12px;transition:border-color .2s,background .2s,color .2s}
+.ci-n{display:grid;gap:3px}
+.ci-n i{font-style:normal;color:var(--ash)}
+.ci.on{background:var(--paper);color:var(--void);border-color:var(--paper)}
+.ci.on .ci-n i{color:var(--void);opacity:.6}
+.qty{display:flex;align-items:center;gap:2px}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid currentColor;opacity:.55;font-size:16px;line-height:1;display:grid;place-items:center;transition:opacity .2s}
+.qty button:hover{opacity:1}
+.qty b{min-width:22px;text-align:center;font-size:14px}
+.sum{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:4px}
+.sum b{font-weight:700}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .f-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .f-msg{color:var(--ash)}
@@ -111,7 +115,7 @@ textarea{min-height:96px;resize:vertical}
   .plans{grid-template-columns:minmax(0,1fr)}
   .plan{min-height:0}
   .how{grid-template-columns:minmax(0,1fr)}
-  .opts{grid-template-columns:1fr 1fr}
+  .cart{grid-template-columns:minmax(0,1fr)}
   .two{grid-template-columns:minmax(0,1fr)}
   .top .who .m{display:none}
 }
@@ -192,13 +196,14 @@ textarea{min-height:96px;resize:vertical}
       <button class="tgl lb" type="button" id="fClose" aria-label="Close">✕</button>
     </div>
 
-    <div class="field lb"><span><span data-en>Option</span><span data-uk>Варіант</span></span>
-      <div class="opts">
-        <label><input type="radio" name="plan" value="short" required><span><span data-en>Short</span><span data-uk>Короткий</span><i>€20</i></span></label>
-        <label><input type="radio" name="plan" value="standard"><span><span data-en>Standard</span><span data-uk>Звичайний</span><i>€50</i></span></label>
-        <label><input type="radio" name="plan" value="long"><span><span data-en>Long</span><span data-uk>Довгий</span><i>€150</i></span></label>
-        <label><input type="radio" name="plan" value="choice"><span><span data-en>Your choice</span><span data-uk>На ваш вибір</span><i>€100–300</i></span></label>
+    <div class="field lb"><span><span data-en>Edits</span><span data-uk>Едіти</span><span class="m"><span data-en>You can pick several</span><span data-uk>Можна кілька</span></span></span>
+      <div class="cart" id="cart">
+        <div class="ci" data-k="short"><span class="ci-n"><span data-en>Short</span><span data-uk>Короткий</span><i>€20</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+        <div class="ci" data-k="standard"><span class="ci-n"><span data-en>Standard</span><span data-uk>Звичайний</span><i>€50</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+        <div class="ci" data-k="long"><span class="ci-n"><span data-en>Long</span><span data-uk>Довгий</span><i>€150</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+        <div class="ci" data-k="choice"><span class="ci-n"><span data-en>Your choice</span><span data-uk>На ваш вибір</span><i>€100–300</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
       </div>
+      <div class="sum" id="sum" hidden><span><span data-en>Total</span><span data-uk>Разом</span> <b id="sTotal"></b></span><span class="m"><span data-en>Deposit 50%</span><span data-uk>Передоплата 50%</span> <b id="sDep"></b></span></div>
     </div>
 
     <label class="field lb"><span><span data-en>What do you want?</span><span data-uk>Що ви хочете?</span></span>
@@ -230,7 +235,7 @@ textarea{min-height:96px;resize:vertical}
   <div class="done" id="fDone" hidden>
     <div class="lb m"><span data-en>Sent</span><span data-uk>Надіслано</span></div>
     <h2><span data-en>Thank you!</span><span data-uk>Дякую!</span></h2>
-    <p><span data-en>I'll reply to your email soon.</span><span data-uk>Я скоро відповім вам на пошту.</span></p>
+    <p><span data-en>I'll reply to your email within a few hours.</span><span data-uk>Я відповім вам на пошту протягом кількох годин.</span></p>
     <button class="btn lb" type="button" id="fOk">OK</button>
   </div>
 </dialog>
@@ -267,18 +272,38 @@ textarea{min-height:96px;resize:vertical}
 })();
 </script>
 <script>
-/* форма заказа: заявка уходит на почту через Web3Forms (web3forms.com).
-   ACCESS_KEY выдаёт сам Web3Forms, к нему привязана почта, куда приходят заявки. */
+/* форма заказа (корзина).
+   ENDPOINT: адрес Google Apps Script (см. ЗАКАЗЫ-НАСТРОЙКА.md): заказ пишется в Google Таблицу,
+   тебе приходит письмо, заказчику автоответ. Пока ENDPOINT пустой, заявки идут через Web3Forms (ACCESS_KEY). */
 (function(){
+  var ENDPOINT = "";
   var ACCESS_KEY = "78b58813-6ebb-461f-b2c6-14b312b4aceb";
+  var PLANS = { short:{ name:"Short", min:20, max:20 }, standard:{ name:"Standard", min:50, max:50 }, long:{ name:"Long", min:150, max:150 }, choice:{ name:"Your choice", min:100, max:300 } };
   var root = document.documentElement, box = document.getElementById("orderBox"), form = document.getElementById("orderForm");
   var uk = function(){ return root.lang === "uk"; };
-  var NAMES = { short:"Short (€20)", standard:"Standard (€50)", long:"Long (€150)", choice:"Your choice (€100–300)" };
+  var qty = { short:0, standard:0, long:0, choice:0 };
+  function eur(a, b){ return "€" + (a === b ? a : a + "–" + b); }
+  function totals(){
+    var mn = 0, mx = 0; Object.keys(qty).forEach(function(k){ mn += qty[k] * PLANS[k].min; mx += qty[k] * PLANS[k].max; });
+    return { min:mn, max:mx, text:eur(mn, mx), dep:eur(Math.round(mn / 2), Math.round(mx / 2)) };
+  }
+  function items(){ return Object.keys(qty).filter(function(k){ return qty[k]; }).map(function(k){ return qty[k] + " × " + PLANS[k].name + " (" + eur(PLANS[k].min, PLANS[k].max) + ")"; }); }
+  function draw(){
+    document.querySelectorAll(".ci").forEach(function(r){ var k = r.getAttribute("data-k"); r.querySelector("b").textContent = qty[k]; r.classList.toggle("on", qty[k] > 0); });
+    var t = totals(); document.getElementById("sum").hidden = !t.max;
+    document.getElementById("sTotal").textContent = t.text; document.getElementById("sDep").textContent = t.dep;
+  }
+  document.querySelectorAll(".ci").forEach(function(r){
+    var k = r.getAttribute("data-k");
+    r.querySelector(".up").addEventListener("click", function(){ if(qty[k] < 9) qty[k]++; draw(); msg(""); });
+    r.querySelector(".dn").addEventListener("click", function(){ if(qty[k] > 0) qty[k]--; draw(); });
+  });
   function placeholders(){ form.querySelectorAll("[data-ph-en]").forEach(function(el){ el.placeholder = el.getAttribute(uk() ? "data-ph-uk" : "data-ph-en"); }); }
   function msg(t, err){ var m = document.getElementById("fMsg"); m.textContent = t || ""; m.classList.toggle("err", !!err); }
   function open(plan){
     placeholders(); msg("");
-    if(plan){ var r = form.querySelector('input[name=plan][value="' + plan + '"]'); if(r) r.checked = true; }
+    if(plan && !qty[plan]) qty[plan] = 1;
+    draw();
     form.hidden = false; document.getElementById("fDone").hidden = true;
     if(box.showModal) box.showModal(); else box.setAttribute("open", "");
     try{ window.goatcounter.count({ path: "order form: open", title: "order form: open", event: true }); }catch(e){}
@@ -291,33 +316,41 @@ textarea{min-height:96px;resize:vertical}
   form.addEventListener("input", function(){ msg(""); });
   document.getElementById("langBtn").addEventListener("click", placeholders);
 
+  function viaScript(o){
+    /* text/plain: так браузер не делает лишний предварительный запрос, Apps Script это принимает */
+    return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) })
+      .then(function(r){ return r.json(); }).then(function(j){ if(!j.ok) throw new Error(j.error); });
+  }
+  function viaWeb3(o){
+    var body = {
+      access_key: ACCESS_KEY,
+      subject: "New order: " + o.items.join(", ") + " from " + o.name,
+      from_name: "katsuyuki.studio", replyto: o.email,
+      "Edits": o.items.join("\n"), "Total": o.total, "Deposit 50%": o.deposit,
+      "Name": o.name, "Email": o.email, "Discord / Telegram": o.handle || "-", "Deadline": o.deadline || "-",
+      "What they want": o.idea, "Examples": o.examples || "-", "Site language": o.lang
+    };
+    return fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(body) })
+      .then(function(r){ return r.json(); }).then(function(j){ if(!j.success) throw new Error(j.message); });
+  }
+
   form.addEventListener("submit", function(e){
     e.preventDefault();
-    var d = new FormData(form), plan = d.get("plan");
-    if(!plan){ msg(uk() ? "Оберіть варіант" : "Choose an option", true); return; }
+    var d = new FormData(form), t = totals();
+    if(!t.max){ msg(uk() ? "Додайте хоча б один едіт" : "Add at least one edit", true); return; }
     var bad = ["idea", "name", "email"].filter(function(k){ return !form.elements[k].checkValidity() || !String(d.get(k)).trim(); });
     if(bad.length){ msg(uk() ? "Заповніть обовʼязкові поля" : "Please fill in the required fields", true); form.elements[bad[0]].focus(); return; }
     if(d.get("botcheck")) return;
     var btn = document.getElementById("fSend"); btn.disabled = true; msg(uk() ? "Надсилаю…" : "Sending…");
-    var body = {
-      access_key: ACCESS_KEY,
-      subject: "New order: " + NAMES[plan] + " from " + d.get("name"),
-      from_name: "katsuyuki.studio",
-      replyto: d.get("email"),
-      "Option": NAMES[plan],
-      "Name": d.get("name"),
-      "Email": d.get("email"),
-      "Discord / Telegram": d.get("handle") || "-",
-      "Deadline": d.get("deadline") || "-",
-      "What they want": d.get("idea"),
-      "Examples": d.get("examples") || "-",
-      "Site language": uk() ? "UA" : "EN"
+    var o = {
+      items: items(), qty: qty, total: t.text, deposit: t.dep,
+      name: String(d.get("name")).trim(), email: String(d.get("email")).trim(), handle: d.get("handle") || "",
+      deadline: d.get("deadline") || "", idea: d.get("idea"), examples: d.get("examples") || "", lang: uk() ? "UA" : "EN", website: d.get("botcheck") || ""
     };
-    fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(body) })
-      .then(function(r){ return r.json(); })
-      .then(function(j){
-        if(!j.success) throw new Error(j.message);
-        form.reset(); form.hidden = true; document.getElementById("fDone").hidden = false;
+    (ENDPOINT ? viaScript(o) : viaWeb3(o))
+      .then(function(){
+        form.reset(); Object.keys(qty).forEach(function(k){ qty[k] = 0; }); draw();
+        form.hidden = true; document.getElementById("fDone").hidden = false;
         try{ window.goatcounter.count({ path: "order form: sent", title: "order form: sent", event: true }); }catch(e){}
       })
       .catch(function(){ msg(uk() ? "Не вдалося надіслати. Спробуйте ще раз або напишіть на пошту." : "Couldn't send. Try again or write to my email.", true); })
