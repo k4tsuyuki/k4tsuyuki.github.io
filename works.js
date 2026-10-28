@@ -33,9 +33,9 @@ window.SITE = {
 window.WORKS = [
   { title: "Archetype 3HC",              year: "2026", link: "https://www.youtube.com/watch?v=YSs2BbX69Fo", tags: ["AMV", "4K"] },
   { title: "Sing Me to Sleep",           year: "2026", link: "https://youtu.be/gpQxpaTkwDQ", tags: ["AMV", "4K"] },
+  { title: "Dove Doll 4HC",              year: "2026", link: "https://youtu.be/7wK3X0X2X90", tags: ["AMV", "4K"] },
   { title: "Save Me × Legendary Lovers", year: "2026", link: "https://youtu.be/_Asoua2qE_0", tags: ["AMV", "4K"] },
   { title: "Transgender 2",              year: "2026", link: "https://youtu.be/xv_AfLaNKWQ", tags: ["AMV", "Collab", "4K"] },
-  { title: "Dove Doll 4HC",              year: "2026", link: "https://youtu.be/7wK3X0X2X90", tags: ["AMV", "4K"] },
   { title: "Spokoynaya Noch",            year: "2026", link: "https://youtu.be/oNwfnxYTpaw", tags: ["AMV", "4K"] },
   { title: "I'm God",                    year: "2026", link: "https://youtu.be/38tOSZbfzXk", tags: ["AMV", "4K"] },
   { title: "Missing Textures",           year: "2026", link: "https://youtu.be/wH6_dg3BL80", tags: ["AMV", "4K"] },
