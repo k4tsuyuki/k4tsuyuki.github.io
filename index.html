@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <base href="/">
 <script src="/maint.js"></script>
+<script>/* пока не показалась заставка с логотипом (первое открытие во вкладке), сайт скрыт, чтобы не мелькал */try{if(!sessionStorage.getItem("kz-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("kzi");setTimeout(function(){document.documentElement.classList.remove("kzi")},4000)}}catch(e){}</script>
+<style>html.kzi,html.kzi body{background:#050505}html.kzi body>*{visibility:hidden}</style>
+</head>
+<body>
+
 <title>Katsuyuki</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" type="image/png" href="img/favicon.png">
@@ -371,9 +376,6 @@ footer .jp{font-size:24px}
 .spread{display:none!important}
 #dh:empty{height:calc(100svh - 58px);min-height:520px;max-height:900px;background:#000}
 </style>
-</head>
-<body>
-
 
 <header class="top">
   <div class="wrap lb">
