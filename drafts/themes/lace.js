@@ -1,4 +1,4 @@
-/* Готика «Кружево»: вензеля по углам обложек, узорный разделитель под заголовками, кружевная кайма под шапкой, дым внизу первого экрана */
+/* Готика «Кружево»: вензеля по углам обложек, узорный разделитель под заголовками, дым внизу первого экрана */
 (function(){
   var G = 'html[data-style="goth"] ';
   var CORNER = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60' fill='none' stroke='%23e9e5dd' stroke-width='1.1' stroke-linecap='round'><path d='M3 57V20C3 10 10 3 20 3H57'/><path d='M9 50V24C9 15 15 9 24 9H50' stroke-opacity='.5'/><path d='M14 3C14 10 20 14 26 12C31 10 30 4 25 4C21 4 21 9 24 9'/><path d='M3 14C10 14 14 20 12 26C10 31 4 30 4 25C4 21 9 21 9 24'/><circle cx='17' cy='17' r='2.2' fill='%23e9e5dd'/></svg>";
@@ -13,7 +13,6 @@
     G + ".card:hover .frame::before," + G + ".card:hover .frame::after{opacity:.25}" +
     G + ".s-head>div:first-child::after{content:'';display:block;width:min(240px,60vw);height:24px;margin-top:14px;background:url(\"data:image/svg+xml;utf8," + FLOUR + "\") left center/contain no-repeat}" +
     G + "section::after{content:''!important;width:120px;height:24px;transform:translate(-50%,-50%)!important;background:var(--void) url(\"data:image/svg+xml;utf8," + FLOUR.replace("viewBox='0 0 240 24'", "viewBox='60 0 120 24'") + "\") center/contain no-repeat}" +
-    G + ".top::after{content:'';position:absolute;left:0;right:0;bottom:-10px;height:10px;background:url(\"data:image/svg+xml;utf8," + LACE + "\") repeat-x 0 0/24px 10px;pointer-events:none}" +
     G + ".g-smoke{display:block;position:absolute;left:0;right:0;bottom:0;height:60%;z-index:1;pointer-events:none}" +
     G + "body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9996;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.5) 100%)}";
   document.head.appendChild(css);
