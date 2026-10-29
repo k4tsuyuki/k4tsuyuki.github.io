@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Katsuyuki</title>
+<link rel="icon" type="image/png" href="/img/favicon.png">
+<meta name="robots" content="noindex">
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light");if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
+<link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* шрифт: Arial (обычной ширины), если он есть на устройстве; иначе его копия Liberation Sans с сайта (те же размеры и форма букв), чтобы везде было одинаково */
+@font-face{font-family:"KN";src:local("Arial"),local("ArialMT"),url(/fonts/sans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Bold"),local("Arial-BoldMT"),url(/fonts/sans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+
+:root{--void:#060606;--sheet:#101010;--paper:#eeebe5;--ash:#85827c;--hair:rgba(238,235,229,.16);--logo:none;color-scheme:dark;
+  --f:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif}
+:root[data-theme="light"]{--void:#e9e7e2;--sheet:#f6f5f1;--paper:#111;--ash:#6f6c66;--hair:rgba(17,17,17,.16);--logo:invert(1);color-scheme:light}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);-webkit-font-smoothing:antialiased;
+  display:flex;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.sheet{flex:1;background:var(--sheet);border:1px solid var(--hair);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(18px,3vw,32px);min-height:0}
+.lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
+.m{color:var(--ash)}
+.top{display:flex;justify-content:space-between;gap:16px}
+.mid{text-align:center}
+.mid img{width:min(70%,420px);height:auto;margin:0 auto 28px;display:block;filter:var(--logo)}
+.code{font-size:clamp(72px,16vw,180px);line-height:.85;letter-spacing:-.04em;margin:0 0 18px}
+h1{font-size:clamp(22px,3vw,30px);font-weight:400;margin:0 0 8px}
+p{margin:0 0 26px;color:var(--ash)}
+.btn{display:inline-block;border:1px solid var(--paper);border-radius:999px;padding:9px 18px;color:var(--paper);text-decoration:none;background:none;font:inherit;cursor:pointer;transition:background .3s,color .3s}
+.btn:hover{background:var(--paper);color:var(--void)}
+[data-uk]{display:none}
+html[lang="uk"] [data-en]{display:none}
+html[lang="uk"] [data-uk]{display:inline}
+html[lang="uk"] p[data-uk],html[lang="uk"] h1[data-uk]{display:block}
+/* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
+@view-transition{navigation:auto;types:page}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .35s cubic-bezier(.4,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .55s cubic-bezier(.4,0,.2,1) .22s both}
+:root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
+/* на компьютере без размытия: блюр на весь большой экран тормозит, остаются затухание и зум */
+@keyframes pg-out{to{opacity:0}}
+@keyframes pg-in{from{opacity:0}}
+@keyframes bl-out{to{opacity:0}}
+@keyframes bl-in{from{opacity:0}}
+@media (max-width:760px){
+  @keyframes pg-out{to{opacity:0;filter:blur(12px);transform:scale(.985)}}
+  @keyframes pg-in{from{opacity:0;filter:blur(12px);transform:scale(1.015)}}
+  @keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+  @keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+}
+::view-transition-old(root),::view-transition-new(root),::view-transition-group(logo){will-change:opacity,transform}
+.vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
+.vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <div class="top lb"><span>Katsuyuki</span><span class="m"><span data-en>Maintenance</span><span data-uk>Технічні роботи</span></span></div>
+  <div class="mid">
+    <img src="/img/logo.png" alt="Katsuyuki">
+    <h1 data-en>The site is under maintenance</h1><h1 data-uk>На сайті технічні роботи</h1>
+    <p data-en>Back soon. For orders, write to my email.</p><p data-uk>Скоро повернусь. Щодо замовлень пишіть на пошту.</p>
+    <a class="btn" href="mailto:katsuyukiadmin@gmail.com">katsuyukiadmin@gmail.com</a>
+  </div>
+  <div class="top lb m"><span>katsuyuki.studio</span><a href="https://www.youtube.com/@k4tsuyuki" target="_blank" rel="noopener">YouTube</a></div>
+</main>
+</body>
+</html>
