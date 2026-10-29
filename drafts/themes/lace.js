@@ -12,7 +12,7 @@
     G + ".grid .frame::after{right:8px;bottom:8px;transform:rotate(180deg)}" +
     G + ".card:hover .frame::before," + G + ".card:hover .frame::after{opacity:.25}" +
     G + "section::after{content:''!important;width:120px;height:24px;transform:translate(-50%,-50%)!important;background:var(--void) url(\"data:image/svg+xml;utf8," + FLOUR.replace("viewBox='0 0 240 24'", "viewBox='60 0 120 24'") + "\") center/contain no-repeat}" +
-    G + ".g-smoke{display:block;position:absolute;left:0;right:0;bottom:0;height:60%;z-index:1;pointer-events:none}" +
+    G + ".g-smoke{display:block;position:absolute;left:0;right:0;bottom:0;width:100%;height:60%;z-index:1;pointer-events:none}" +
     G + "body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9996;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.5) 100%)}";
   document.head.appendChild(css);
   /* дым: мягкие серые клубы медленно поднимаются от низа первого экрана */
