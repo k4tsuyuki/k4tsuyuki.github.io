@@ -1,4 +1,4 @@
-/* Готика «Терновник»: ветка с шипами прорастает под заголовками, при наведении на работу из углов ползут шипастые побеги, вокруг кнопки Play кольцо из терна */
+/* Готика «Терновник»: при наведении на работу из углов ползут шипастые побеги, вокруг кнопки Play кольцо из терна */
 (function(){
   var G = 'html[data-style="goth"] ', NS = "http://www.w3.org/2000/svg";
   /* ветка: волнистая линия по точкам + шипы, торчащие наружу по нормали */
@@ -52,10 +52,6 @@
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }); }, { threshold: .6 });
   var CORNER = corner(), SIDE = side();
   function scan(){
-    [].forEach.call(document.querySelectorAll(".s-head>div:first-child"), function(h){
-      if(h.querySelector(".g-thorn")) return;
-      var s = svg("g-thorn", "0 0 300 28", [line(300)], true); h.appendChild(s); io.observe(s);
-    });
     [].forEach.call(document.querySelectorAll(".grid .frame"), function(f){
       if(f.querySelector(".g-tv")) return;
       /* левый нижний угол и, повёрнутый, правый верхний */

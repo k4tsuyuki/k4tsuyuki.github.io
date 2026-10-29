@@ -69,7 +69,7 @@
 
   var st2 = document.createElement("style"); st2.textContent = css2; document.head.appendChild(st2);
 
-  /* пепел: редкие серые частицы медленно падают */
+  /* пепел: редкие серые частицы медленно падают (только при html[data-style=goth]) */
   if(!reduce){
     var c = document.createElement("canvas"); c.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9997";
     document.body.appendChild(c);
@@ -80,6 +80,8 @@
     var N = Math.round(Math.min(46, W * H / 30000)); for(var i = 0; i < N; i++) P.push(mk());
     (function tick(){
       x.clearRect(0, 0, W, H);
+      /* пепел только в готической теме */
+      if(document.documentElement.getAttribute("data-style") !== "goth"){ requestAnimationFrame(tick); return; }
       var light = document.documentElement.getAttribute("data-theme") === "light";
       P.forEach(function(p, i){
         p.ph += .01; p.y += p.vy; p.x += Math.sin(p.ph) * .25;
