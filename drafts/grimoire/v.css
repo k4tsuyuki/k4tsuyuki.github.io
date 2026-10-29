@@ -1,0 +1,13 @@
+/* Вариант «Гримуар»: книжная антиква, главы с римскими номерами, обложки в тонких рамках, буквица в новостях */
+:root{--void:#0a0908;--sheet:#11100e;--paper:#ece4d4;--ash:#8f8676;--hair:rgba(236,228,212,.16);--f:"Cormorant Garamond",Georgia,serif;--g-head:"Cormorant Garamond",Georgia,serif}
+body{font-size:18px}
+.lb{font-family:"KN",Arial,sans-serif;letter-spacing:.18em;font-size:11px}
+.s-head h2{font-family:var(--g-head);font-style:italic;font-weight:500;letter-spacing:-.01em;font-size:clamp(64px,10vw,160px)}
+.s-head h2 .jp{display:none}
+.c-meta .t,.card.big .c-meta .t{font-family:var(--g-head);font-style:italic;font-weight:500;text-transform:none;letter-spacing:0;font-size:clamp(20px,1.7vw,26px)}
+.card.big .c-meta .t{font-size:clamp(36px,4.4vw,68px)}
+.c-meta > .m:first-child{font-family:"UnifrakturCook",serif;font-size:22px;text-transform:none;letter-spacing:0;color:var(--paper)}
+.frame::after{content:"";position:absolute;inset:8px;border:1px solid rgba(236,228,212,.4);pointer-events:none;z-index:2}
+.frame::before{content:"\2720";position:absolute;z-index:3;top:2px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(236,228,212,.8);background:transparent}
+#news article p:first-of-type::first-letter,#news .n-row p::first-letter{font-family:"UnifrakturCook",serif;float:left;font-size:3.4em;line-height:.85;margin:.04em .1em 0 0}
+.pill-btn,.nav-cta,.btn,.pill{border-radius:2px!important}

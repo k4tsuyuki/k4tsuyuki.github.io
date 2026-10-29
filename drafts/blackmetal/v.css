@@ -1,0 +1,14 @@
+/* Вариант «Блэк-метал»: чистый чёрный и белый, резкие обложки, огромные готические заголовки, квадратные кнопки */
+:root{--void:#000;--sheet:#050505;--paper:#fff;--ash:#9a9a9a;--hair:rgba(255,255,255,.22);--g-head:"Pirata One","UnifrakturCook",serif}
+.lb{letter-spacing:.32em;font-size:11px}
+.s-head h2{font-family:var(--g-head);font-weight:400;letter-spacing:.01em;font-size:clamp(84px,15vw,250px);line-height:.8}
+.s-head h2 .jp{display:none}
+.card.big .c-meta .t{font-family:var(--g-head);letter-spacing:.01em;font-size:clamp(44px,5.4vw,84px)}
+.frame img{filter:grayscale(1) contrast(1.55) brightness(.78)!important}
+.card:hover .frame img{filter:grayscale(1) contrast(1.9) brightness(.9) invert(1)!important;transition:filter .15s steps(2)!important}
+.dh .bw{filter:grayscale(1) contrast(1.5) brightness(.75)}
+.pill-btn,.nav-cta,.btn,.pill,.ctl,.tgl,.dh-play .c{border-radius:0!important}
+section{border-top:0!important;position:relative}
+section::before{content:"";position:absolute;top:-6px;left:0;right:0;height:12px;background:var(--paper);opacity:.85;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='12'><path d='M0 6 L8 2 L14 9 L22 4 L30 7 L37 1 L45 8 L52 3 L60 6 L60 7 L52 4 L45 9 L37 2 L30 8 L22 5 L14 10 L8 3 L0 7Z' fill='black'/></svg>") repeat-x center/60px 12px;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='12'><path d='M0 6 L8 2 L14 9 L22 4 L30 7 L37 1 L45 8 L52 3 L60 6 L60 7 L52 4 L45 9 L37 2 L30 8 L22 5 L14 10 L8 3 L0 7Z' fill='black'/></svg>") repeat-x center/60px 12px}
+.fx-grain{opacity:.16!important}
+.s-head button,.s-head .pill,.ntf a,.ntf button{border-radius:0!important}
