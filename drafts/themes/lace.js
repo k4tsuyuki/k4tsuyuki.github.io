@@ -7,7 +7,7 @@
   var css = document.createElement("style");
   css.textContent =
     ".g-smoke{display:none}" +
-    G + ".grid .frame::before,.grid .frame::after{content:'';position:absolute;z-index:2;width:clamp(34px,4vw,56px);aspect-ratio:1;pointer-events:none;background:url(\"data:image/svg+xml;utf8," + CORNER + "\") center/contain no-repeat;opacity:.85;transition:opacity .6s}" +
+    G + ".grid .frame::before," + G + ".grid .frame::after{content:'';position:absolute;z-index:2;width:clamp(34px,4vw,56px);aspect-ratio:1;pointer-events:none;background:url(\"data:image/svg+xml;utf8," + CORNER + "\") center/contain no-repeat;opacity:.85;transition:opacity .6s}" +
     G + ".grid .frame::before{left:8px;top:8px}" +
     G + ".grid .frame::after{right:8px;bottom:8px;transform:rotate(180deg)}" +
     G + ".card:hover .frame::before," + G + ".card:hover .frame::after{opacity:.25}" +
