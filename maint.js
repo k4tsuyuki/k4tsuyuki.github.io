@@ -2,7 +2,7 @@
    Чтобы самому видеть сайт, один раз открой katsuyuki.studio/?preview (запомнится в этом браузере),
    выключить просмотр: katsuyuki.studio/?nopreview */
 (function(){
-  var ON = true;
+  var ON = false;
   try{
     if(/[?&]nopreview\b/.test(location.search)) localStorage.removeItem("kz-preview");
     else if(/[?&]preview\b/.test(location.search)) localStorage.setItem("kz-preview", "1");
