@@ -52,7 +52,9 @@
     '.dh-strip::-webkit-scrollbar{display:none}' +
     '.dh-strip button{flex:0 0 72%;scroll-snap-align:start;background:none;border:0;padding:0;color:var(--paper);text-align:left;cursor:pointer;font:inherit}' +
     '.dh-strip img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;transition:filter 1.6s}' +
-    '.dh-strip button:hover img{filter:none}' +
+    '@media (hover:hover){.dh-strip button:hover img{filter:none}}' +
+    /* долгое нажатие на телефоне: без меню «Сохранить фото» и без цветного превью картинки */
+    '.dh img{-webkit-touch-callout:none;-webkit-user-drag:none;-webkit-user-select:none;user-select:none}.dh-full>img.cv{pointer-events:none}.dh-strip button,.dh-row button{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}' +
     '.dh-strip span{display:block;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
     '@media(min-width:761px){.dh-strip button{flex:0 0 calc(25% - 8px)}.dh-strip{overflow:hidden}.dh-sw{display:none}}' +
     /* stories */
@@ -75,7 +77,7 @@
     '@keyframes dhmq{to{transform:translateX(-50%)}}' +
     '.dh-row button{flex:none;width:clamp(200px,24vw,340px);margin-right:10px;background:none;border:0;padding:0;cursor:pointer;transition:transform .3s}' +
     '.dh-row button img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;transition:filter 1.6s}' +
-    '.dh-row button:hover{transform:translateY(-4px)}.dh-row button:hover img,.dh-row button.sel img{filter:none}' +
+    '@media (hover:hover){.dh-row button:hover{transform:translateY(-4px)}.dh-row button:hover img{filter:none}}.dh-row button.sel img{filter:none}' +
     '.dh-row button.sel img{outline:1px solid var(--paper);outline-offset:3px}' +
     '.dh-words span{white-space:nowrap;font-size:clamp(40px,6vw,84px);font-weight:700;text-transform:uppercase;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px var(--paper);opacity:.5}' +
     '.dh-now{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:18px max(16px,4vw) 0}' +
