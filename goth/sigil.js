@@ -37,20 +37,21 @@
     G + ".card:hover .frame::before{animation:g-twitch .5s steps(2) 1}" +
     "@keyframes g-twitch{30%{transform:translate(1px,-1px)}60%{transform:translate(-1px,0)}}" +
     G + "section::after{width:40px!important;height:40px!important;background:var(--void) " + uri("0 0 100 100", STAR, "#cfcac1") + " center/contain no-repeat!important}" +
-    G + ".nav-cta{position:relative;isolation:isolate;border:0!important;border-radius:0!important;background:none!important;padding:5px 18px!important;margin-inline:14px;color:var(--paper)!important;letter-spacing:.08em;transition:color .3s}" +
+    G + ".nav-cta{position:relative;isolation:isolate;border-color:transparent!important;border-radius:0!important;background:none!important;color:var(--paper)!important;transition:color .3s}" +
     G + ".nav-cta::before," + G + ".nav-cta::after{content:'';position:absolute;inset:0;z-index:-1;clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,9px 100%,0 50%);transition:opacity .3s,transform .3s}" +
     G + ".nav-cta::before{background:var(--paper)}" +
     G + ".nav-cta::after{inset:1px;background:var(--void)}" +
     G + ".nav-cta .g-sp{position:absolute;top:50%;width:22px;height:22px;pointer-events:none;background:" + uri("0 0 100 100", SPIKE, "#e9e5dd") + " center/contain no-repeat;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}" +
     G + ".nav-cta .g-sp.l{right:100%;transform:translate(4px,-50%)}" +
     G + ".nav-cta .g-sp.r{left:100%;transform:translate(-4px,-50%) scaleX(-1)}" +
+    "@media (max-width:760px){" + G + ".nav-cta .g-sp.r{display:none}}" +
     G + ".nav-cta:hover{color:var(--void)!important}" +
     G + ".nav-cta:hover::after{opacity:0}" +
     G + ".nav-cta:hover .g-sp.l{transform:translate(-2px,-50%)}" +
     G + ".nav-cta:hover .g-sp.r{transform:translate(2px,-50%) scaleX(-1)}" +
     ".g-sp{display:none}" + G + ".g-sp{display:block}" +
     /* кнопки: острый шестигранник вместо таблетки */
-    G + ".btn{position:relative;isolation:isolate;border:0!important;border-radius:0!important;background:none!important;padding:0 20px;color:var(--paper)!important;transition:color .3s}" +
+    G + ".btn{position:relative;isolation:isolate;border-color:transparent!important;border-radius:0!important;background:none!important;color:var(--paper)!important;transition:color .3s}" +
     G + ".btn::before," + G + ".btn::after{content:'';position:absolute;inset:0;z-index:-1;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%);transition:opacity .3s}" +
     G + ".btn::before{background:var(--paper)}" +
     G + ".btn::after{inset:1px;background:var(--void)}" +

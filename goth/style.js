@@ -3,7 +3,7 @@
 (function(){
   var root = document.documentElement, KEY = "kz-style";
   function apply(on){ if(on) root.setAttribute("data-style", "goth"); else root.removeAttribute("data-style"); try{ sessionStorage.setItem(KEY, on ? "goth" : ""); }catch(e){} sync(); }
-  /* переход: новая тема проступает кругом от кнопки, старая уходит в размытие и темноту */
+  /* переход: новая тема раскрывается кругом от кнопки; старая стоит неподвижно, без размытия, чтобы шапка не дёргалась */
   function set(on, btn){
     if(!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches){ apply(on); return; }
     var r = btn && btn.getBoundingClientRect(), x = r ? r.left + r.width / 2 : innerWidth / 2, y = r ? r.top + r.height / 2 : 0;
@@ -33,11 +33,9 @@
   }
   var css = document.createElement("style");
   css.textContent = "#styleBtn svg{width:14px;height:14px}#styleBtn.on{background:var(--paper);color:var(--void)}.dh-menu .row .st.on{background:var(--paper);color:var(--void)}" +
-    ".vt-goth::view-transition-group(root){animation-duration:1s}" +
-    ".vt-goth::view-transition-old(root){animation:g-vt-out 1s cubic-bezier(.5,0,.3,1) both;mix-blend-mode:normal}" +
-    ".vt-goth::view-transition-new(root){animation:g-vt-in 1s cubic-bezier(.6,0,.2,1) both;mix-blend-mode:normal}" +
-    "@keyframes g-vt-in{from{clip-path:circle(0 at var(--vtx) var(--vty));filter:blur(8px)}60%{filter:blur(0)}to{clip-path:circle(var(--vtr) at var(--vtx) var(--vty))}}" +
-    "@keyframes g-vt-out{to{filter:blur(6px) brightness(.45);transform:scale(1.02)}}";
+    ".vt-goth::view-transition-old(root){animation:none;mix-blend-mode:normal}" +
+    ".vt-goth::view-transition-new(root){animation:g-vt-in .9s cubic-bezier(.65,0,.25,1) both;mix-blend-mode:normal}" +
+    "@keyframes g-vt-in{from{clip-path:circle(0 at var(--vtx) var(--vty))}to{clip-path:circle(var(--vtr) at var(--vtx) var(--vty))}}";
   document.head.appendChild(css);
   add(); setTimeout(add, 500); setTimeout(add, 1500);
 })();
