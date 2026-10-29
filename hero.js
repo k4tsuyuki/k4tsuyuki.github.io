@@ -50,6 +50,7 @@
     '.dh-rh{display:flex;justify-content:space-between;padding:22px max(16px,4vw) 10px;color:var(--paper)}' +
     '.dh-strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 max(16px,4vw) 8px;scrollbar-width:none}' +
     '.dh-strip::-webkit-scrollbar{display:none}' +
+    '.dh-fr{position:relative;display:block;overflow:hidden;background:#111}.dh-fr img{position:relative}' +
     '.dh-strip button{flex:0 0 72%;scroll-snap-align:start;background:none;border:0;padding:0;color:var(--paper);text-align:left;cursor:pointer;font:inherit}' +
     '.dh-strip img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;transition:filter 1.6s}' +
     '@media (hover:hover){.dh-strip button:hover img{filter:none}}' +
@@ -121,7 +122,7 @@
 
   if(V === "poster"){
     hero.innerHTML = '<div class="dh-full"></div><div class="dh-rh lbx"><span data-t="recent"></span><span class="mu dh-sw" data-t="swipe"></span></div><div class="dh-strip"></div>';
-    var full = hero.querySelector(".dh-full"), cv = img(w0); cv.className = "cv bw"; full.appendChild(cv);
+    var full = hero.querySelector(".dh-full"), cv = img(w0); cv.className = "cv bw"; full.appendChild(cv); if(window.ytBlur) ytBlur(cv, w0.id);
     full.insertAdjacentHTML("beforeend", '<div class="dh-logo hero-mark"></div>' + info(w0, true));
     var name = document.getElementById("heroName"); if(name) full.querySelector(".dh-logo").appendChild(name);
     var siteSt = document.querySelector(".spread .status"), myStatus = full.querySelector(".dh-st");
@@ -130,7 +131,7 @@
     full.querySelector("h2").textContent = w0.title;
     full.querySelector(".dh-play").onclick = function(){ play(w0); };
     var strip = hero.querySelector(".dh-strip");
-    W.slice(1, 5).forEach(function(w){ var b = document.createElement("button"); b.type = "button"; var i = img(w); i.className = "bw"; b.appendChild(i); b.insertAdjacentHTML("beforeend", '<span class="lbx"></span>'); b.lastChild.textContent = w.title; b.onclick = function(){ play(w); }; strip.appendChild(b); });
+    W.slice(1, 5).forEach(function(w){ var b = document.createElement("button"); b.type = "button"; var i = img(w), fr = document.createElement("span"); i.className = "bw"; fr.className = "dh-fr"; fr.appendChild(i); b.appendChild(fr); if(window.ytBlur) ytBlur(i, w.id); b.insertAdjacentHTML("beforeend", '<span class="lbx"></span>'); b.lastChild.textContent = w.title; b.onclick = function(){ play(w); }; strip.appendChild(b); });
   }
 
   /* меню-гамбургер на телефоне */
