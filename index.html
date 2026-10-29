@@ -437,7 +437,7 @@ footer .jp{font-size:24px}
   <!-- НОВОСТИ (заполняются из news.js; без записей раздел скрыт) -->
   <section id="news" hidden>
     <div class="wrap">
-      <div class="s-head"><div><div class="lb m" data-i18n="news_sub">Projects / Files</div><h2><span data-i18n="h_news">News</span> <span class="jp">新着</span></h2></div></div>
+      <div class="s-head"><div><div class="lb m" data-i18n="news_sub">Updates</div><h2><span data-i18n="h_news">News</span> <span class="jp">新着</span></h2></div></div>
       <div class="news" id="newsList"></div>
       <button class="more lb" id="newsMore" type="button" hidden data-i18n="news_more">Show more</button>
     </div>
@@ -516,13 +516,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 
   /* ---- языки ---- */
   var I18N = {
-    en: { role:"Video editor", nav_works:"Works", nav_contact:"Contact", nav_news:"News", h_news:"News", news_sub:"Projects / Files", news_more:"Show more", open_link:"Open ↗︎", latest:"Latest", software:"Software",
+    en: { role:"Video editor", nav_works:"Works", nav_contact:"Contact", nav_news:"News", h_news:"News", news_sub:"Updates", news_more:"Show more", open_link:"Open ↗︎", latest:"Latest", software:"Software",
           head:"Katsuyuki / video editor", works:"Works", see_all:"See all ↓︎", contact:"Contact", click:"Click to watch",
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
           again:"Watch again", upnext:"More edits", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
-    uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Проєкти / Файли", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
+    uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Оновлення", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
@@ -1012,5 +1012,6 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 })();
 </script>
 <script src="hero.js"></script>
+<script src="/arrows.js"></script>
 </body>
 </html>
