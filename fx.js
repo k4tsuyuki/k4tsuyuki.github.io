@@ -1,4 +1,4 @@
-/* Плёночное зерно, появление заголовков, римские номера, кресты между секциями, пепел и заставка с логотипом */
+/* Плёночное зерно (сдвиги слоя не больше ±20%, иначе край слоя заезжает в кадр и верх экрана мигает), появление заголовков, римские номера, кресты между секциями, пепел и заставка с логотипом */
 (function(){
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var css = document.createElement("style");
@@ -6,7 +6,7 @@
     /* зерно: шум из SVG, дёргается 10 раз в секунду, как плёнка */
     ".fx-grain{position:fixed;inset:-50%;z-index:9998;pointer-events:none;opacity:.075;background:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\");animation:fxG 1s steps(10) infinite}" +
     "[data-theme=light] .fx-grain{opacity:.12;filter:invert(1)}" +
-    "@keyframes fxG{0%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}20%{transform:translate(-15%,5%)}30%{transform:translate(7%,-25%)}40%{transform:translate(-5%,25%)}50%{transform:translate(-15%,10%)}60%{transform:translate(15%,0)}70%{transform:translate(0,15%)}80%{transform:translate(3%,35%)}90%{transform:translate(-10%,10%)}100%{transform:translate(0,0)}}" +
+    "@keyframes fxG{0%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}20%{transform:translate(-15%,5%)}30%{transform:translate(7%,-18%)}40%{transform:translate(-5%,18%)}50%{transform:translate(-15%,10%)}60%{transform:translate(15%,0)}70%{transform:translate(0,15%)}80%{transform:translate(3%,20%)}90%{transform:translate(-10%,10%)}100%{transform:translate(0,0)}}" +
     /* заголовки выезжают снизу из-под маски, как титры */
     ".fx-l{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}" +
     ".fx-l>span{display:inline-block;transform:translateY(105%);transition:transform 1.1s cubic-bezier(.2,.7,0,1)}" +
