@@ -32,8 +32,6 @@
   var CSS = {
     halloween:
       ':root[data-season="halloween"]{--acc:#ff6b1a;--glow:#ff6b1a}' + accent("halloween") + pill("halloween") +
-      '[data-season="halloween"] .hero-mark .logo-img{animation:s-flicker 7s infinite}' +
-      '@keyframes s-flicker{0%,91%,95%,100%{opacity:1;filter:var(--logo)}92%{opacity:.25}93%{opacity:1;filter:var(--logo) drop-shadow(0 0 14px #ff6b1a)}94%{opacity:.4}}' +
       '.s-fog{position:fixed;left:-20%;right:-20%;bottom:-6vh;height:46vh;z-index:38;pointer-events:none;transition:opacity .4s}' +
       '.s-fog i{position:absolute;inset:0;background:radial-gradient(40% 55% at 20% 80%,rgba(190,190,200,.10),transparent 70%),radial-gradient(35% 50% at 55% 90%,rgba(190,190,200,.09),transparent 70%),radial-gradient(40% 60% at 85% 85%,rgba(190,190,200,.10),transparent 70%);animation:s-fog 38s ease-in-out infinite alternate}' +
       '.s-fog i+i{animation-duration:52s;animation-direction:alternate-reverse;opacity:.8;transform:scaleX(-1)}' +
@@ -205,9 +203,6 @@
     for(var i = 0; i < (touch ? 14 : 26); i++) add({ x: rnd(0, innerWidth), y: rnd(0, innerHeight), vx: rnd(-.15, .15), vy: rnd(-.9, -.35), s: rnd(.8, 2), kind: "dot", col: ember(), a: rnd(.35, .8), sw: rnd(.2, .6), tw: 1, loop: 1, rep: 1 });
     /* за курсором тлеющие угольки */
     trail(function(x, y){ add({ x: x, y: y, vx: rnd(-.6, .6), vy: rnd(-1.4, -.4), g: -.01, d: .98, s: rnd(.8, 1.8), kind: "dot", col: ember(), life: rnd(40, 80), tw: 1 }); }, 14);
-    /* редкие далёкие вспышки молнии */
-    var fl = document.createElement("div"); fl.className = "s-flash"; document.body.appendChild(fl);
-    (function storm(){ setTimeout(function(){ if(scrollY < innerHeight){ fl.classList.remove("on"); void fl.offsetWidth; fl.classList.add("on"); } storm(); }, rnd(22000, 40000)); })();
   }
 
   /* ---------- Рождество ---------- */

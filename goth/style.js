@@ -2,7 +2,17 @@
    на телефоне в меню. Сайт всегда открывается в обычной теме; выбор держится только внутри вкладки (sessionStorage). */
 (function(){
   var root = document.documentElement, KEY = "kz-style";
-  function set(on){ if(on) root.setAttribute("data-style", "goth"); else root.removeAttribute("data-style"); try{ sessionStorage.setItem(KEY, on ? "goth" : ""); }catch(e){} sync(); }
+  function apply(on){ if(on) root.setAttribute("data-style", "goth"); else root.removeAttribute("data-style"); try{ sessionStorage.setItem(KEY, on ? "goth" : ""); }catch(e){} sync(); }
+  /* переход: новая тема проступает кругом от кнопки, старая уходит в размытие и темноту */
+  function set(on, btn){
+    if(!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches){ apply(on); return; }
+    var r = btn && btn.getBoundingClientRect(), x = r ? r.left + r.width / 2 : innerWidth / 2, y = r ? r.top + r.height / 2 : 0;
+    root.style.setProperty("--vtx", x + "px"); root.style.setProperty("--vty", y + "px");
+    root.style.setProperty("--vtr", Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + "px");
+    root.classList.add("vt-goth");
+    var t = document.startViewTransition(function(){ apply(on); });
+    t.finished.then(done, done); function done(){ root.classList.remove("vt-goth"); }
+  }
   var saved = ""; try{ saved = sessionStorage.getItem(KEY) || ""; }catch(e){}
   if(saved === "goth") root.setAttribute("data-style", "goth");
   var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M6 8h12"/></svg>';
@@ -12,18 +22,22 @@
     var th = document.getElementById("themeBtn");
     if(th && !document.getElementById("styleBtn")){
       var b = document.createElement("button"); b.className = "tgl"; b.id = "styleBtn"; b.type = "button"; b.innerHTML = ICON;
-      b.onclick = function(){ set(root.getAttribute("data-style") !== "goth"); }; th.parentNode.insertBefore(b, th); btns.push(b);
+      b.onclick = function(){ set(root.getAttribute("data-style") !== "goth", b); }; th.parentNode.insertBefore(b, th); btns.push(b);
     }
     var row = document.querySelector(".dh-menu .row");
     if(row && !row.querySelector(".st")){
       var m = document.createElement("button"); m.type = "button"; m.className = "st"; m.innerHTML = "Gothic";
-      m.onclick = function(){ set(root.getAttribute("data-style") !== "goth"); }; row.appendChild(m); btns.push(m);
+      m.onclick = function(){ set(root.getAttribute("data-style") !== "goth", m); }; row.appendChild(m); btns.push(m);
     }
     sync();
   }
   var css = document.createElement("style");
   css.textContent = "#styleBtn svg{width:14px;height:14px}#styleBtn.on{background:var(--paper);color:var(--void)}.dh-menu .row .st.on{background:var(--paper);color:var(--void)}" +
-    "html{transition:none}html.st-anim *{transition:background-color .6s,color .6s,border-color .6s,opacity .6s!important}";
+    ".vt-goth::view-transition-group(root){animation-duration:1s}" +
+    ".vt-goth::view-transition-old(root){animation:g-vt-out 1s cubic-bezier(.5,0,.3,1) both;mix-blend-mode:normal}" +
+    ".vt-goth::view-transition-new(root){animation:g-vt-in 1s cubic-bezier(.6,0,.2,1) both;mix-blend-mode:normal}" +
+    "@keyframes g-vt-in{from{clip-path:circle(0 at var(--vtx) var(--vty));filter:blur(8px)}60%{filter:blur(0)}to{clip-path:circle(var(--vtr) at var(--vtx) var(--vty))}}" +
+    "@keyframes g-vt-out{to{filter:blur(6px) brightness(.45);transform:scale(1.02)}}";
   document.head.appendChild(css);
   add(); setTimeout(add, 500); setTimeout(add, 1500);
 })();
