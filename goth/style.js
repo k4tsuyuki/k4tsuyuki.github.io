@@ -1,9 +1,9 @@
-/* Пробный переключатель тем: обычная / готическая. Кнопка с крестом рядом с кнопкой светлой темы,
-   на телефоне в меню. Выбор запоминается. Какая готика, задаёт страница варианта (window.GOTH_THEME). */
+/* Переключатель тем: обычная / готическая. Кнопка с крестом рядом с кнопкой светлой темы,
+   на телефоне в меню. Выбор запоминается. По умолчанию обычная. */
 (function(){
   var root = document.documentElement, KEY = "kz-style";
   function set(on){ if(on) root.setAttribute("data-style", "goth"); else root.removeAttribute("data-style"); try{ localStorage.setItem(KEY, on ? "goth" : ""); }catch(e){} sync(); }
-  var saved = "goth"; try{ saved = localStorage.getItem(KEY); if(saved === null) saved = "goth"; }catch(e){}
+  var saved = ""; try{ saved = localStorage.getItem(KEY) || ""; }catch(e){}
   if(saved === "goth") root.setAttribute("data-style", "goth");
   var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M6 8h12"/></svg>';
   var btns = [];

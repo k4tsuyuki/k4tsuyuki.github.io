@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <base href="/">
 <script src="/maint.js"></script>
+<script>try{if(localStorage.getItem("kz-style")==="goth")document.documentElement.setAttribute("data-style","goth")}catch(e){}</script>
 <script>/* пока не показалась заставка с логотипом (первое открытие во вкладке), сайт скрыт, чтобы не мелькал */try{if(!sessionStorage.getItem("kz-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("kzi");setTimeout(function(){document.documentElement.classList.remove("kzi")},4000)}}catch(e){}</script>
 <style>html.kzi,html.kzi body{background:#050505}html.kzi body>*{visibility:hidden}</style>
 </head>
@@ -1017,5 +1018,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 <script src="hero.js"></script>
 <script src="/arrows.js"></script>
 <script src="/fx.js"></script>
+<script src="/goth/style.js"></script>
+<script src="/goth/lace.js"></script>
+<script src="/goth/sigil.js"></script>
 </body>
 </html>
