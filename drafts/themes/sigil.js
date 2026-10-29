@@ -48,7 +48,28 @@
     G + ".nav-cta:hover::after{opacity:0}" +
     G + ".nav-cta:hover .g-sp.l{transform:translate(-2px,-50%)}" +
     G + ".nav-cta:hover .g-sp.r{transform:translate(2px,-50%) scaleX(-1)}" +
-    ".g-sp{display:none}" + G + ".g-sp{display:block}";
+    ".g-sp{display:none}" + G + ".g-sp{display:block}" +
+    /* вкладки заказов и PFS: те же углы на карточках и обложках */
+    G + ".plan," + G + ".fc .frame," + G + ".b-head .frame{position:relative}" +
+    G + ".plan::before," + G + ".plan::after," + G + ".fc .frame::before," + G + ".fc .frame::after," + G + ".b-head .frame::before," + G + ".b-head .frame::after{content:'';position:absolute;z-index:3;width:clamp(40px,4.5vw,64px);aspect-ratio:1;pointer-events:none;background:" + uri("0 0 100 100", CORNER, "#ece8e0") + " center/contain no-repeat;opacity:.85;filter:drop-shadow(0 0 3px rgba(0,0,0,.8))}" +
+    G + ".plan::before," + G + ".fc .frame::before," + G + ".b-head .frame::before{left:8px;top:8px}" +
+    G + ".plan::after," + G + ".fc .frame::after," + G + ".b-head .frame::after{right:8px;bottom:8px;transform:rotate(180deg)}" +
+    "html[data-theme=light][data-style=goth] .plan::before,html[data-theme=light][data-style=goth] .plan::after{filter:invert(1)}" +
+    G + ".plan::before," + G + ".plan::after{width:34px;left:5px;top:5px}" + G + ".plan::after{left:auto;top:auto;right:5px;bottom:5px}" +
+    G + ".plan:hover::before{animation:g-twitch .5s steps(2) 1}" +
+    G + "dialog::before," + G + "dialog::after{content:'';position:absolute;z-index:5;width:56px;aspect-ratio:1;pointer-events:none;background:" + uri("0 0 100 100", CORNER, "#ece8e0") + " center/contain no-repeat;opacity:.8}" +
+    G + "dialog::before{left:6px;top:6px}" + G + "dialog::after{right:6px;bottom:6px;transform:rotate(180deg)}" +
+    "html[data-theme=light][data-style=goth] dialog::before,html[data-theme=light][data-style=goth] dialog::after{filter:invert(1)}" +
+    /* кнопки: острый шестигранник вместо таблетки */
+    G + ".btn{position:relative;isolation:isolate;border:0!important;border-radius:0!important;background:none!important;padding:0 20px;color:var(--paper)!important;transition:color .3s}" +
+    G + ".btn::before," + G + ".btn::after{content:'';position:absolute;inset:0;z-index:-1;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%);transition:opacity .3s}" +
+    G + ".btn::before{background:var(--paper)}" +
+    G + ".btn::after{inset:1px;background:var(--void)}" +
+    G + ".btn.o::before{background:var(--hair)}" +
+    G + ".btn:hover," + G + ".btn.solid{color:var(--void)!important}" +
+    G + ".btn:hover::after," + G + ".btn.solid::after{opacity:0}" +
+    G + ".btn.solid:hover{color:var(--paper)!important}" +
+    G + ".btn.solid:hover::after{opacity:1}";
   document.head.appendChild(css);
   /* шипы по бокам кнопки Order */
   function spikes(){ [].forEach.call(document.querySelectorAll(".nav-cta"), function(a){ if(a.querySelector(".g-sp")) return; ["l", "r"].forEach(function(k){ var sp = document.createElement("i"); sp.className = "g-sp " + k; sp.setAttribute("aria-hidden", "true"); a.appendChild(sp); }); }); }

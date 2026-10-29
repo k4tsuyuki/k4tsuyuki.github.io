@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<script src="/maint.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Order an edit · Katsuyuki</title>
+<link rel="icon" type="image/png" href="/img/favicon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<meta name="description" content="Order an edit from Katsuyuki: short, standard, long or your own idea.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Katsuyuki">
+<meta property="og:title" content="Order an edit · Katsuyuki">
+<meta property="og:description" content="Short €20 · Standard €50 · Long €150 · Your choice €50–300 · PayPal, 50% upfront">
+<meta property="og:url" content="https://katsuyuki.studio/order/">
+<meta property="og:image" content="https://katsuyuki.studio/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060606">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap">
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light");if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
+<link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* шрифт: Arial (обычной ширины), если он есть на устройстве; иначе его копия Liberation Sans с сайта (те же размеры и форма букв), чтобы везде было одинаково */
+@font-face{font-family:"KN";src:local("Arial"),local("ArialMT"),url(/fonts/sans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Bold"),local("Arial-BoldMT"),url(/fonts/sans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+
+/* те же цвета и шрифты, что на главной */
+:root{--void:#060606;--sheet:#101010;--paper:#eeebe5;--ash:#85827c;--hair:rgba(238,235,229,.16);--bar:rgba(6,6,6,.82);--logo:none;color-scheme:dark;
+  --f:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif;
+  --f-jp:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --gl:max(16px,env(safe-area-inset-left,0px));--gr:max(16px,env(safe-area-inset-right,0px))}
+:root[data-theme="light"]{--void:#e9e7e2;--sheet:#f6f5f1;--paper:#111;--ash:#6f6c66;--hair:rgba(17,17,17,.16);--bar:rgba(233,231,226,.85);--logo:invert(1);color-scheme:light}
+*{box-sizing:border-box}
+html{background:var(--void)}
+body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0;text-transform:inherit}
+:focus-visible{outline:1px solid var(--paper);outline-offset:3px}
+::selection{background:var(--paper);color:var(--void)}
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1480px;margin-inline:auto}
+.lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
+.m{color:var(--ash)}
+[hidden]{display:none!important}
+html:not([lang="uk"]) [data-uk],html[lang="uk"] [data-en]{display:none!important}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--void)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bar);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:12px}
+.top nav{display:flex;gap:clamp(14px,3vw,32px);align-items:center}
+.top nav a{opacity:.7;transition:opacity .2s}
+.top nav a:hover{opacity:1}
+.top .logo{height:26px;width:auto;filter:var(--logo)}
+.tgl{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;padding:0 8px;border:1px solid var(--hair);border-radius:999px;transition:border-color .3s}
+.tgl:hover{border-color:var(--paper)}
+.tgl svg{width:12px;height:12px}
+
+main{padding-block:clamp(28px,5vw,64px) clamp(48px,7vw,96px)}
+.s-head{margin-bottom:clamp(24px,3.4vw,44px)}
+h1{font-weight:400;font-size:clamp(52px,8vw,128px);line-height:.85;letter-spacing:-.035em;margin:12px 0 0;display:flex;gap:14px;align-items:flex-start}
+h1 .jp{font-family:var(--f-jp);font-weight:500;font-size:15px;writing-mode:vertical-rl;letter-spacing:.3em;color:var(--ash);margin-top:6px}
+
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.4vw,18px)}
+.plan{background:var(--sheet);border:1px solid var(--hair);padding:clamp(18px,2vw,26px);display:flex;flex-direction:column;gap:18px;min-height:340px}
+.plan .no{display:flex;justify-content:space-between}
+.plan h2{font-weight:400;font-size:clamp(30px,3vw,44px);line-height:.95;letter-spacing:-.02em;margin:0}
+.plan p{margin:6px 0 0;color:var(--ash)}
+.plan dl{margin:auto 0 0;display:grid;gap:0}
+.plan dl div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--hair)}
+.plan dd{margin:0;text-align:right}
+.plan .price{font-size:clamp(34px,3.4vw,52px);line-height:1;letter-spacing:-.03em;padding-top:14px;border-top:1px solid var(--paper)}
+
+.how{margin-top:clamp(36px,5vw,64px);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 32px;align-items:end;border-top:1px solid var(--hair);padding-top:22px}
+.how .pay{margin-top:12px}
+.how p{margin:8px 0 0;font-size:clamp(20px,2vw,26px);line-height:1.2}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;height:34px;padding:0 16px;border:1px solid var(--paper);border-radius:999px;transition:background .3s,color .3s}
+.btn:hover{background:var(--paper);color:var(--void)}
+.btn.o{border-color:var(--hair)}
+.btn.o:hover{border-color:var(--paper)}
+
+.plan .pick{align-self:stretch;justify-content:center;margin-top:-4px}
+.btn.solid{background:var(--paper);color:var(--void)}
+.btn.solid:hover{background:none;color:var(--paper)}
+
+/* окно заказа */
+dialog{border:1px solid var(--hair);background:var(--sheet);color:var(--paper);padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;font:inherit}
+dialog[open]{animation:dlg-in .4s cubic-bezier(.2,0,0,1)}
+dialog.closing{animation:dlg-out .25s cubic-bezier(.4,0,1,1) forwards}
+dialog.closing::backdrop{animation:bd-out .25s ease forwards}
+@keyframes dlg-out{to{opacity:0;transform:scale(.97);filter:blur(6px)}}
+@keyframes bd-out{to{opacity:0}}
+dialog[open]::backdrop{animation:bd-in .4s ease}
+@keyframes dlg-in{from{opacity:0;transform:scale(.97);filter:blur(8px)}}
+@keyframes bd-in{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){dialog[open],dialog[open]::backdrop,dialog.closing,dialog.closing::backdrop{animation:none}}
+.hint{color:var(--ash)}
+.two{align-items:start}
+dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.f-in{padding:clamp(20px,3vw,32px);display:grid;gap:18px}
+.f-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.f-head h2{font-weight:400;font-size:clamp(32px,4vw,48px);line-height:.95;letter-spacing:-.02em;margin:8px 0 0}
+.field{display:grid;gap:8px}
+.field > span{display:flex;justify-content:space-between;gap:12px}
+input[type=text],input[type=email],input[type=date],textarea{width:100%;font:inherit;font-size:16px;color:var(--paper);background:var(--void);border:1px solid var(--hair);border-radius:0;padding:10px 12px;transition:border-color .2s}
+input:focus,textarea:focus{outline:none;border-color:var(--paper)}
+textarea{min-height:96px;resize:vertical}
+input[type=date]{min-height:44px;-webkit-appearance:none;appearance:none;cursor:pointer}
+input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.7}
+input[type=date]::-webkit-date-and-time-value{text-align:left}
+/* пожелания: по одному блоку на каждый эдит в корзине */
+.briefs{display:grid;gap:12px}
+.briefs.multi .brief{border:1px solid var(--hair);padding:14px;display:grid;gap:14px}
+.brief{display:grid;gap:18px}
+.brief-h{display:flex;justify-content:space-between;gap:12px}
+.briefs.multi textarea{min-height:72px}
+.briefs:not(.multi) .brief-h{display:none}
+.cart{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ci{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--hair);padding:8px 8px 8px 12px;transition:border-color .2s,background .2s,color .2s}
+.ci-n{display:grid;gap:3px}
+/* один эдит: просто плитки на выбор, без − / + и итога */
+.cart.single{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cart.single .ci{cursor:pointer;padding:10px}
+.cart.single .qty{display:none}
+.more-t{text-transform:inherit;text-decoration:underline;text-underline-offset:3px}
+.more-t:hover{color:var(--paper)}
+.ci-n i{font-style:normal;color:var(--ash)}
+.ci.on{background:var(--paper);color:var(--void);border-color:var(--paper)}
+.ci.on .ci-n i{color:var(--void);opacity:.6}
+.qty{display:flex;align-items:center;gap:2px}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid currentColor;opacity:.55;font-size:16px;line-height:1;display:grid;place-items:center;transition:opacity .2s}
+.qty button:hover{opacity:1}
+.qty b{min-width:22px;text-align:center;font-size:14px}
+.sum{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:4px}
+.sum b{font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.f-msg{color:var(--ash)}
+.f-msg.err{color:var(--paper)}
+.done{padding:clamp(28px,5vw,48px) clamp(20px,3vw,32px);display:grid;gap:14px;justify-items:start}
+.done h2{font-weight:400;font-size:clamp(32px,4vw,48px);line-height:.95;margin:0}
+.done p{margin:0;color:var(--ash)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+@media (max-width:1100px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){
+  .plans{grid-template-columns:minmax(0,1fr)}
+  .plan{min-height:0}
+  .how{grid-template-columns:minmax(0,1fr)}
+  .cart{grid-template-columns:minmax(0,1fr)}
+  .cart.single{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:minmax(0,1fr)}
+  .top .who .m{display:none}
+}
+/* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
+@view-transition{navigation:auto;types:page}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .35s cubic-bezier(.4,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .55s cubic-bezier(.4,0,.2,1) .22s both}
+:root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
+/* на компьютере без размытия: блюр на весь большой экран тормозит, остаются затухание и зум */
+@keyframes pg-out{to{opacity:0}}
+@keyframes pg-in{from{opacity:0}}
+@keyframes bl-out{to{opacity:0}}
+@keyframes bl-in{from{opacity:0}}
+@media (max-width:760px){
+  @keyframes pg-out{to{opacity:0;filter:blur(12px);transform:scale(.985)}}
+  @keyframes pg-in{from{opacity:0;filter:blur(12px);transform:scale(1.015)}}
+  @keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+  @keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+}
+::view-transition-old(root),::view-transition-new(root),::view-transition-group(logo){will-change:opacity,transform}
+.vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
+.vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+.vt-theme::view-transition-old(root),.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
+</style>
+<script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/"},"eagerness":"moderate"}]}</script>
+<script src="/arrows.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap lb">
+    <a href="/drafts/themes/sigil/" class="who" style="display:flex;gap:10px;align-items:center"><img class="logo" src="/img/logo.png" alt="Katsuyuki"><span class="m"><span data-en>Video editor</span><span data-uk>Відеомонтажер</span></span></a>
+    <nav><a href="/drafts/themes/sigil/"><span data-en>← Back</span><span data-uk>← Назад</span></a><button class="tgl" id="langBtn" type="button" aria-label="Language"></button><button class="tgl" id="themeBtn" type="button" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="s-head">
+    <div class="lb m"><span data-en>Commissions</span><span data-uk>Замовлення</span></div>
+    <h1><span><span data-en>Order an edit</span><span data-uk>Замовити едіт</span></span> <span class="jp">依頼</span></h1>
+  </div>
+
+  <div class="plans">
+    <article class="plan">
+      <div class="no lb"><span class="m">01</span><span class="m">TikTok / Reels / Shorts</span></div>
+      <div><h2><span data-en>Short</span><span data-uk>Короткий</span></h2></div>
+      <dl class="lb">
+        <div><dt class="m"><span data-en>Length</span><span data-uk>Тривалість</span></dt><dd><span data-en>Up to 30 s</span><span data-uk>До 30 с</span></dd></div>
+        <div><dt class="m"><span data-en>Time</span><span data-uk>Термін</span></dt><dd><span data-en>2 days</span><span data-uk>2 дні</span></dd></div>
+      </dl>
+      <div class="price">€20</div>
+      <button class="btn pick lb" type="button" data-plan="short"><span data-en>Order</span><span data-uk>Замовити</span></button>
+    </article>
+    <article class="plan">
+      <div class="no lb"><span class="m">02</span><span class="m">YouTube</span></div>
+      <div><h2><span data-en>Standard</span><span data-uk>Звичайний</span></h2></div>
+      <dl class="lb">
+        <div><dt class="m"><span data-en>Length</span><span data-uk>Тривалість</span></dt><dd><span data-en>Up to 1 min</span><span data-uk>До 1 хв</span></dd></div>
+        <div><dt class="m"><span data-en>Time</span><span data-uk>Термін</span></dt><dd><span data-en>3–4 days</span><span data-uk>3–4 дні</span></dd></div>
+      </dl>
+      <div class="price">€50</div>
+      <button class="btn pick lb" type="button" data-plan="standard"><span data-en>Order</span><span data-uk>Замовити</span></button>
+    </article>
+    <article class="plan">
+      <div class="no lb"><span class="m">03</span><span class="m">YouTube</span></div>
+      <div><h2><span data-en>Long</span><span data-uk>Довгий</span></h2></div>
+      <dl class="lb">
+        <div><dt class="m"><span data-en>Length</span><span data-uk>Тривалість</span></dt><dd><span data-en>2–3 min</span><span data-uk>2–3 хв</span></dd></div>
+        <div><dt class="m"><span data-en>Time</span><span data-uk>Термін</span></dt><dd><span data-en>1 week</span><span data-uk>1 тиждень</span></dd></div>
+      </dl>
+      <div class="price">€150</div>
+      <button class="btn pick lb" type="button" data-plan="long"><span data-en>Order</span><span data-uk>Замовити</span></button>
+    </article>
+    <article class="plan">
+      <div class="no lb"><span class="m">04</span><span class="m"><span data-en>Anime / Films</span><span data-uk>Аніме / Фільми</span></span></div>
+      <div><h2><span data-en>Your choice</span><span data-uk>На ваш вибір</span></h2>
+        <p><span data-en>Anime or live-action footage, like films.</span><span data-uk>Аніме або реальний футаж, наприклад фільми.</span></p></div>
+      <dl class="lb">
+        <div><dt class="m"><span data-en>Length</span><span data-uk>Тривалість</span></dt><dd><span data-en>No limit</span><span data-uk>Без обмежень</span></dd></div>
+      </dl>
+      <div class="price">€50–300</div>
+      <button class="btn pick lb" type="button" data-plan="choice"><span data-en>Order</span><span data-uk>Замовити</span></button>
+    </article>
+  </div>
+
+  <div class="how">
+    <div>
+      <div class="lb m"><span data-en>How to order</span><span data-uk>Як замовити</span></div>
+      <p><span data-en>Fill in a short form. You can also write to me directly.</span><span data-uk>Заповніть коротку форму. Або напишіть мені напряму.</span></p>
+      <div class="lb m pay"><span data-en>Payment via PayPal · 50% upfront</span><span data-uk>Оплата через PayPal · передоплата 50%</span></div>
+    </div>
+    <div class="acts lb" id="acts"><button class="btn solid pick" type="button" data-plan=""><span data-en>Order form</span><span data-uk>Форма замовлення</span></button></div>
+  </div>
+</main>
+
+<dialog id="orderBox" aria-labelledby="fTitle">
+  <form class="f-in" id="orderForm" novalidate>
+    <div class="f-head">
+      <div><div class="lb m"><span data-en>Order form</span><span data-uk>Форма замовлення</span></div>
+        <h2 id="fTitle"><span data-en>Tell me about your edit</span><span data-uk>Розкажіть про едіт</span></h2></div>
+      <button class="tgl lb" type="button" id="fClose" aria-label="Close">✕</button>
+    </div>
+
+    <div class="field lb"><span><span data-en>Option</span><span data-uk>Варіант</span><button type="button" class="m more-t" id="cartToggle"><span data-en>+ Several edits</span><span data-uk>+ Кілька едітів</span></button><button type="button" class="m more-t" id="cartOne" hidden><span data-en>Just one edit</span><span data-uk>Лише один едіт</span></button></span>
+      <div class="cart single" id="cart">
+        <div class="ci" data-k="short"><span class="ci-n"><span data-en>Short</span><span data-uk>Короткий</span><i>€20</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+        <div class="ci" data-k="standard"><span class="ci-n"><span data-en>Standard</span><span data-uk>Звичайний</span><i>€50</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+        <div class="ci" data-k="long"><span class="ci-n"><span data-en>Long</span><span data-uk>Довгий</span><i>€150</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+        <div class="ci" data-k="choice"><span class="ci-n"><span data-en>Your choice</span><span data-uk>На ваш вибір</span><i>€50–300</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
+      </div>
+      <div class="sum" id="sum" hidden><span><span data-en>Total</span><span data-uk>Разом</span> <b id="sTotal"></b></span><span class="m"><span data-en>Deposit 50%</span><span data-uk>Передоплата 50%</span> <b id="sDep"></b></span></div>
+    </div>
+
+    <div class="briefs" id="briefs"></div>
+
+    <div class="two">
+      <label class="field lb"><span><span data-en>Your name</span><span data-uk>Ваше імʼя</span></span>
+        <input type="text" name="name" required maxlength="100" autocomplete="nickname"></label>
+      <label class="field lb"><span><span data-en>Deadline</span><span data-uk>Термін</span><span class="m"><span data-en>Optional</span><span data-uk>Необовʼязково</span></span></span>
+        <input type="date" name="deadline" id="fDeadline"><span class="hint" id="fEarliest"></span></label>
+    </div>
+    <div class="two">
+      <label class="field lb"><span>Email</span>
+        <input type="email" name="email" required maxlength="200" autocomplete="email"></label>
+      <label class="field lb"><span>Discord / Telegram<span class="m"><span data-en>Optional</span><span data-uk>Необовʼязково</span></span></span>
+        <input type="text" name="handle" maxlength="100"></label>
+    </div>
+    <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+    <div class="f-foot">
+      <span class="lb m" style="flex-basis:100%"><span data-en>Payment via PayPal · 50% upfront after we agree on the details</span><span data-uk>Оплата через PayPal · передоплата 50% після узгодження деталей</span></span>
+      <span class="f-msg lb" id="fMsg"></span>
+      <button class="btn solid lb" type="submit" id="fSend"><span data-en>Send</span><span data-uk>Надіслати</span></button>
+    </div>
+  </form>
+  <div class="done" id="fDone" hidden>
+    <div class="lb m"><span data-en>Sent</span><span data-uk>Надіслано</span></div>
+    <h2><span data-en>Thank you!</span><span data-uk>Дякую!</span></h2>
+    <p><span data-en>I'll reply to your email within a few hours.</span><span data-uk>Я відповім вам на пошту протягом кількох годин.</span></p>
+    <button class="btn lb" type="button" id="fOk">OK</button>
+  </div>
+</dialog>
+
+<script src="/works.js"></script>
+<script>
+(function(){
+  var root = document.documentElement;
+  function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
+  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Замовити едіт" : "Order an edit") + " · Katsuyuki"; }
+  function morph(fn, cls, after){
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!document.startViewTransition || reduce){ fn(); return; }
+    root.classList.add(cls);
+    var vt = document.startViewTransition(fn);
+    if(after) vt.ready.then(after, function(){});
+    vt.finished.then(done, done);
+    function done(){ root.classList.remove(cls); }
+  }
+  document.getElementById("langBtn").addEventListener("click", function(){
+    morph(function(){ root.lang = root.lang === "uk" ? "en" : "uk"; store("lang", root.lang); syncLang(); }, "vt-blur");
+  });
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var light = root.getAttribute("data-theme") !== "light";
+    var r = this.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    morph(function(){
+      if(light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
+      store("theme", light ? "light" : "dark");
+    }, "vt-theme", function(){
+      root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
+        { duration: 700, easing: "cubic-bezier(.65,0,.25,1)", pseudoElement: "::view-transition-new(root)" });
+    });
+  });
+  syncLang();
+
+  /* контакты берутся из works.js, как на главной */
+  var C = ((window.SITE || {}).contacts || []), acts = document.getElementById("acts");
+  ["Email", "Telegram", "Discord"].forEach(function(label, i){
+    var c = C.find(function(x){ return x.label === label; }); if(!c) return;
+    var a = document.createElement(c.url ? "a" : "button");
+    a.className = "btn" + (i ? " o" : "");
+    a.textContent = label + (c.url ? " ↗︎" : ": " + c.value);
+    if(c.url){ a.href = c.url; if(!/^mailto:/.test(c.url)){ a.target = "_blank"; a.rel = "noopener"; } }
+    else a.addEventListener("click", function(){
+      var done = function(){ var t = a.textContent; a.textContent = root.lang === "uk" ? "Скопійовано" : "Copied"; setTimeout(function(){ a.textContent = t; }, 1600); };
+      try{ navigator.clipboard.writeText(c.value).then(done, function(){}); }catch(e){}
+    });
+    a.addEventListener("click", function(){ try{ window.goatcounter.count({ path: "order contact: " + label, title: "order contact: " + label, event: true }); }catch(e){} });
+    acts.appendChild(a);
+  });
+})();
+</script>
+<script>
+/* форма заказа (корзина).
+   ENDPOINT: адрес Google Apps Script (см. ЗАКАЗЫ-НАСТРОЙКА.md): заказ пишется в Google Таблицу,
+   тебе приходит письмо, заказчику автоответ. Пока ENDPOINT пустой, заявки идут через Web3Forms (ACCESS_KEY). */
+(function(){
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
+  var ACCESS_KEY = "85ba0e45-6828-488d-bd69-4b0272a62e0b";
+  var PLANS = { short:{ name:"Short", min:20, max:20 }, standard:{ name:"Standard", min:50, max:50 }, long:{ name:"Long", min:150, max:150 }, choice:{ name:"Your choice", min:50, max:300 } };
+  /* минимальный срок каждого формата в днях; эдиты делаются по очереди, поэтому дни складываются */
+  var DAYS = { short:2, standard:3, long:7, choice:7 };
+  var freeFrom = "";   /* с какого дня я свободен (очередь из Google Таблицы, когда подключён ENDPOINT) */
+  var root = document.documentElement, box = document.getElementById("orderBox"), form = document.getElementById("orderForm");
+  var uk = function(){ return root.lang === "uk"; };
+  var qty = { short:0, standard:0, long:0, choice:0 };
+  function eur(a, b){ return "€" + (a === b ? a : a + "–" + b); }
+  function totals(){
+    var mn = 0, mx = 0; Object.keys(qty).forEach(function(k){ mn += qty[k] * PLANS[k].min; mx += qty[k] * PLANS[k].max; });
+    return { min:mn, max:mx, text:eur(mn, mx), dep:eur(Math.round(mn / 2), Math.round(mx / 2)) };
+  }
+  function items(){ return Object.keys(qty).filter(function(k){ return qty[k]; }).map(function(k){ return qty[k] + " × " + PLANS[k].name + " (" + eur(PLANS[k].min, PLANS[k].max) + ")"; }); }
+  var cartEl = document.getElementById("cart");
+  function single(){ return cartEl.classList.contains("single"); }
+  function setMode(one){
+    cartEl.classList.toggle("single", one);
+    document.getElementById("cartToggle").hidden = !one; document.getElementById("cartOne").hidden = one;
+    if(one){ var keep = Object.keys(qty).filter(function(k){ return qty[k]; })[0]; Object.keys(qty).forEach(function(k){ qty[k] = k === keep ? 1 : 0; }); }
+    draw();
+  }
+  document.getElementById("cartToggle").addEventListener("click", function(){ setMode(false); });
+  document.getElementById("cartOne").addEventListener("click", function(){ setMode(true); });
+  /* блоки пожеланий: один на каждый эдит (2 коротких = 2 блока), введённый текст сохраняется */
+  var T = {
+    want: ["What do you want?", "Що ви хочете?"], ex: ["Examples", "Приклади"], opt: ["Optional", "Необовʼязково"], edit: ["Edit", "Едіт"],
+    phIdea: ["Anime or film, characters, song, mood, length…", "Аніме чи фільм, персонажі, пісня, настрій, тривалість…"],
+    phIdeaOwn: ["Anime or your own footage (film, series), characters, song, mood…", "Аніме або ваш футаж (фільм, серіал), персонажі, пісня, настрій…"],
+    phEx: ["Links to edits you like, the song, clips (YouTube, TikTok, Google Drive…)", "Посилання на едіти, які подобаються, пісню, кліпи (YouTube, TikTok, Google Drive…)"]
+  };
+  var LOCAL = { short:"Короткий", standard:"Звичайний", long:"Довгий", choice:"На ваш вибір" };
+  var kept = [];
+  function units(){ var u = []; ["short", "standard", "long", "choice"].forEach(function(k){ for(var i = 0; i < qty[k]; i++) u.push(k); }); return u; }
+  function both(pair){ return '<span data-en>' + pair[0] + '</span><span data-uk>' + pair[1] + '</span>'; }
+  function briefs(){
+    var box = document.getElementById("briefs"), u = units();
+    box.querySelectorAll(".brief").forEach(function(b, i){ kept[i] = { idea: b.querySelector("[name=idea]").value, ex: b.querySelector("[name=examples]").value }; });
+    box.innerHTML = ""; box.classList.toggle("multi", u.length > 1);
+    (u.length ? u : [""]).forEach(function(k, i){
+      var b = document.createElement("div"); b.className = "brief";
+      b.innerHTML =
+        '<div class="brief-h lb"><span>' + both(T.edit) + ' ' + (i + 1) + '</span><span class="m"><span data-en>' + (PLANS[k] ? PLANS[k].name : "") + '</span><span data-uk>' + (LOCAL[k] || "") + '</span> · ' + (PLANS[k] ? eur(PLANS[k].min, PLANS[k].max) : "") + '</span></div>' +
+        '<label class="field lb"><span>' + both(T.want) + '</span><textarea name="idea" required maxlength="4000"></textarea></label>' +
+        '<label class="field lb"><span>' + both(T.ex) + '<span class="m">' + both(T.opt) + '</span></span><textarea name="examples" maxlength="3000"></textarea></label>';
+      var ta = b.querySelectorAll("textarea"), L = uk() ? 1 : 0;
+      ta[0].placeholder = (k === "choice" ? T.phIdeaOwn : T.phIdea)[L]; ta[1].placeholder = T.phEx[L];
+      ta[0].setAttribute("data-ph-en", (k === "choice" ? T.phIdeaOwn : T.phIdea)[0]); ta[0].setAttribute("data-ph-uk", (k === "choice" ? T.phIdeaOwn : T.phIdea)[1]);
+      ta[1].setAttribute("data-ph-en", T.phEx[0]); ta[1].setAttribute("data-ph-uk", T.phEx[1]);
+      if(kept[i]){ ta[0].value = kept[i].idea; ta[1].value = kept[i].ex; }
+      box.appendChild(b);
+    });
+  }
+  function iso(d){ return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); }
+  function earliest(){
+    var d = new Date(); d.setHours(12, 0, 0, 0);
+    if(freeFrom){ var f = new Date(freeFrom + "T12:00:00"); if(f > d) d = f; }
+    var n = 0; units().forEach(function(k){ n += DAYS[k]; });
+    d.setDate(d.getDate() + (n || DAYS.short)); return d;
+  }
+  function day(d, loc){ return d.toLocaleDateString(loc, { day: "numeric", month: "long" }); }
+  function syncDeadline(){
+    var dl = document.getElementById("fDeadline"), e = earliest(), v = iso(e);
+    dl.min = v; if(dl.value && dl.value < v) dl.value = "";
+    document.getElementById("fEarliest").innerHTML = '<span data-en>Earliest: ' + day(e, "en-GB") + '</span><span data-uk>Найраніше: ' + day(e, "uk-UA") + '</span>';
+  }
+  function queue(){
+    if(!ENDPOINT) return;
+    fetch(ENDPOINT + "?q=queue").then(function(r){ return r.json(); })
+      .then(function(j){ if(j && /^\d{4}-\d\d-\d\d$/.test(j.free || "")){ freeFrom = j.free; syncDeadline(); } }).catch(function(){});
+  }
+  function draw(){
+    briefs(); syncDeadline();
+    document.querySelectorAll(".ci").forEach(function(r){ var k = r.getAttribute("data-k"); r.querySelector("b").textContent = qty[k]; r.classList.toggle("on", qty[k] > 0); });
+    var t = totals(); document.getElementById("sum").hidden = !t.max || single();
+    document.getElementById("sTotal").textContent = t.text; document.getElementById("sDep").textContent = t.dep;
+  }
+  document.querySelectorAll(".ci").forEach(function(r){
+    var k = r.getAttribute("data-k");
+    r.addEventListener("click", function(){ if(!single()) return; Object.keys(qty).forEach(function(x){ qty[x] = x === k ? 1 : 0; }); draw(); msg(""); });
+    r.querySelector(".up").addEventListener("click", function(){ if(qty[k] < 9) qty[k]++; draw(); msg(""); });
+    r.querySelector(".dn").addEventListener("click", function(){ if(qty[k] > 0) qty[k]--; draw(); });
+  });
+  function placeholders(){ form.querySelectorAll("[data-ph-en]").forEach(function(el){ el.placeholder = el.getAttribute(uk() ? "data-ph-uk" : "data-ph-en"); }); }
+  function msg(t, err){ var m = document.getElementById("fMsg"); m.textContent = t || ""; m.classList.toggle("err", !!err); }
+  function open(plan){
+    placeholders(); msg(""); queue();
+    if(plan && !qty[plan]){ if(single()) Object.keys(qty).forEach(function(x){ qty[x] = 0; }); qty[plan] = 1; }
+    draw();
+    form.hidden = false; document.getElementById("fDone").hidden = true;
+    if(box.showModal) box.showModal(); else box.setAttribute("open", "");
+    try{ window.goatcounter.count({ path: "order form: open", title: "order form: open", event: true }); }catch(e){}
+  }
+  function shut(){ box.classList.remove("closing"); if(box.close) box.close(); else box.removeAttribute("open"); }
+  function close(){
+    if(!box.open || box.classList.contains("closing")) return;
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduce){ shut(); return; }
+    box.classList.add("closing");
+    var t = setTimeout(shut, 400);
+    box.addEventListener("animationend", function h(e){ if(e.target !== box) return; box.removeEventListener("animationend", h); clearTimeout(t); shut(); });
+  }
+  box.addEventListener("cancel", function(e){ e.preventDefault(); close(); });
+  document.querySelectorAll(".pick").forEach(function(b){ b.addEventListener("click", function(){ open(b.getAttribute("data-plan")); }); });
+  document.getElementById("fClose").addEventListener("click", close);
+  document.getElementById("fOk").addEventListener("click", close);
+  box.addEventListener("click", function(e){ if(e.target === box) close(); });
+  form.addEventListener("input", function(){ msg(""); });
+  document.getElementById("langBtn").addEventListener("click", placeholders);
+
+  function viaScript(o){
+    /* text/plain: так браузер не делает лишний предварительный запрос, Apps Script это принимает */
+    return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) })
+      .then(function(r){ return r.json(); }).then(function(j){ if(!j.ok) throw new Error(j.error); });
+  }
+  function viaWeb3(o){
+    var body = {
+      access_key: ACCESS_KEY,
+      subject: "New order: " + o.items.join(", ") + " from " + o.name,
+      from_name: "katsuyuki.studio", replyto: o.email,
+      "Edits": o.items.join("\n"), "Total": o.total, "Deposit 50%": o.deposit,
+      "Name": o.name, "Email": o.email, "Discord / Telegram": o.handle || "-", "Deadline": o.deadline || "-",
+      "What they want": o.idea, "Examples": o.examples || "-", "Site language": o.lang
+    };
+    return fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(body) })
+      .then(function(r){ return r.json(); }).then(function(j){ if(!j.success) throw new Error(j.message); });
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var d = new FormData(form), t = totals();
+    if(!t.max){ msg(uk() ? "Оберіть варіант" : "Choose an option", true); return; }
+    var ideas = Array.prototype.slice.call(form.querySelectorAll("[name=idea]")), exs = form.querySelectorAll("[name=examples]");
+    var bad = ideas.filter(function(x){ return !x.value.trim(); }).concat([form.elements.name, form.elements.email].filter(function(x){ return !x.checkValidity() || !x.value.trim(); }));
+    if(bad.length){ msg(uk() ? "Заповніть обовʼязкові поля" : "Please fill in the required fields", true); bad[0].focus(); return; }
+    var dlEl = form.elements.deadline;
+    if(dlEl.value && dlEl.value < dlEl.min){ var e0 = earliest(); msg(uk() ? "Найраніший термін: " + day(e0, "uk-UA") : "The earliest deadline is " + day(e0, "en-GB"), true); dlEl.focus(); return; }
+    var u = units(), multi = u.length > 1;
+    var list = u.map(function(k, i){ return { edit: "Edit " + (i + 1) + " · " + PLANS[k].name + " (" + eur(PLANS[k].min, PLANS[k].max) + ")", idea: ideas[i].value.trim(), examples: exs[i].value.trim() }; });
+    var ideaText = list.map(function(x){ return (multi ? x.edit + "\n" : "") + x.idea; }).join("\n\n");
+    var exText = list.filter(function(x){ return x.examples; }).map(function(x){ return (multi ? x.edit + "\n" : "") + x.examples; }).join("\n\n");
+    if(d.get("botcheck")) return;
+    var btn = document.getElementById("fSend"); btn.disabled = true; msg(uk() ? "Надсилаю…" : "Sending…");
+    var o = {
+      items: items(), qty: qty, total: t.text, deposit: t.dep,
+      name: String(d.get("name")).trim(), email: String(d.get("email")).trim(), handle: d.get("handle") || "",
+      deadline: d.get("deadline") ? new Date(d.get("deadline") + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "", idea: ideaText, examples: exText, briefs: list, lang: uk() ? "UA" : "EN", website: d.get("botcheck") || ""
+    };
+    (ENDPOINT ? viaScript(o) : viaWeb3(o))
+      .then(function(){
+        form.reset(); kept = []; Object.keys(qty).forEach(function(k){ qty[k] = 0; }); setMode(true);
+        form.hidden = true; document.getElementById("fDone").hidden = false;
+        try{ window.goatcounter.count({ path: "order form: sent", title: "order form: sent", event: true }); }catch(e){}
+      })
+      .catch(function(){ msg(uk() ? "Не вдалося надіслати. Спробуйте ще раз або напишіть на пошту." : "Couldn't send. Try again or write to my email.", true); })
+      .then(function(){ btn.disabled = false; });
+  });
+})();
+</script>
+<script>
+if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
+  var gc = document.createElement("script"); gc.async = true; gc.src = "https://gc.zgo.at/count.js";
+  gc.setAttribute("data-goatcounter", "https://katsuyuki.goatcounter.com/count"); document.head.appendChild(gc);
+}
+</script>
+<script src="/drafts/themes/style.js"></script>
+<script src="/drafts/themes/sigil.js"></script>
+<script src="/drafts/themes/gothsub.js"></script>
+</body>
+</html>

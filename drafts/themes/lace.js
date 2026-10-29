@@ -21,14 +21,14 @@
     var x = c.getContext("2d"), W, H, P = [];
     function size(){ W = c.width = c.clientWidth; H = c.height = c.clientHeight; }
     size(); addEventListener("resize", size);
-    function mk(){ return { x: Math.random() * W, y: H + 40, r: 60 + Math.random() * 120, vy: .25 + Math.random() * .35, vx: (Math.random() - .5) * .3, a: 0, life: 0, max: 500 + Math.random() * 400 }; }
+    function mk(){ return { x: Math.random() * W, y: H + 40, r: 50 + Math.random() * 100, vy: .25 + Math.random() * .35, vx: (Math.random() - .5) * .3, a: 0, life: 0, max: 500 + Math.random() * 400 }; }
     for(var i = 0, N = Math.max(14, Math.round(W / 45)); i < N; i++){ var p = mk(); p.life = Math.random() * p.max; p.y = H - p.life * p.vy; P.push(p); }
     (function tick(){
       if(document.documentElement.getAttribute("data-style") === "goth"){
         x.clearRect(0, 0, W, H);
         P.forEach(function(p, i){
           p.life++; p.y -= p.vy; p.x += p.vx; p.r += .05;
-          var k = p.life / p.max, a = Math.sin(Math.PI * Math.min(1, k)) * .13;
+          var k = p.life / p.max, a = Math.sin(Math.PI * Math.min(1, k)) * .085;
           var g = x.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r); g.addColorStop(0, "rgba(220,216,208," + a + ")"); g.addColorStop(1, "rgba(220,216,208,0)");
           x.fillStyle = g; x.beginPath(); x.arc(p.x, p.y, p.r, 0, 6.283); x.fill();
           if(p.life > p.max) P[i] = mk();
