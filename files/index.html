@@ -323,7 +323,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   function cover(p, id){
     var src = !p.cover ? "" : /^yt:/.test(p.cover) ? "https://i.ytimg.com/vi/" + p.cover.slice(3) + "/hqdefault.jpg" : "/" + p.cover;
     var a = id ? ' id="' + id + '"' : "";
-    return src ? '<div class="frame"' + a + '><img loading="lazy" alt="" src="' + src + '"></div>' : '<div class="frame blank"' + a + '><img alt="" src="/img/logo.png"></div>';
+    return src ? '<div class="frame"' + a + '><img loading="lazy" alt="' + esc(p.title || "") + '" src="' + src + '"></div>' : '<div class="frame blank"' + a + '><img alt="" src="/img/logo.png"></div>';
   }
   function tags(p){ return (p.tags || []).map(function(t){ return '<span class="pill">' + esc(t) + '</span>'; }).join(""); }
   function yr(p){ return (p.date || "").slice(0, 4); }
