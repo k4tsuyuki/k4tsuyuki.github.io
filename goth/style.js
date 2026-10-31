@@ -13,6 +13,7 @@
     var t = document.startViewTransition(function(){ apply(on); });
     t.finished.then(done, done); function done(){ root.classList.remove("vt-goth"); }
   }
+  window.kzStyle = { apply: apply, set: set };
   var saved = ""; try{ saved = sessionStorage.getItem(KEY) || ""; }catch(e){}
   if(saved === "goth") root.setAttribute("data-style", "goth");
   var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M6 8h12"/></svg>';

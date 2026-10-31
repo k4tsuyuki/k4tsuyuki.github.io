@@ -26,8 +26,8 @@ PAGE = """<!doctype html>
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{image}">
-<meta property="og:image:width" content="1280">
-<meta property="og:image:height" content="720">
+<meta property="og:image:width" content="{iw}">
+<meta property="og:image:height" content="{ih}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#060606">
 <meta http-equiv="refresh" content="0; url=/?w={slug}">
@@ -45,7 +45,7 @@ def slug_of(title, vid):
     return s or vid or "work"
 
 
-def main():
+def works_with_slugs():
     text = (ROOT / "works.js").read_text(encoding="utf-8")
     block = text[text.index("window.WORKS"):]
     works = []
@@ -62,20 +62,33 @@ def main():
     # same order and duplicate rule as index.html: newest year first, then file order
     works.sort(key=lambda w: (-(int(w["year"]) if w["year"].isdigit() else 0), w["i"]))
     used = set()
-    if OUT.exists():
-        shutil.rmtree(OUT)
     for w in works:
         base = slug_of(w["title"], w["id"]); slug = base; n = 2
         while slug in used:
             slug = f"{base}-{n}"; n += 1
         used.add(slug)
+        w["slug"] = slug
+    return works
+
+
+def main():
+    works = works_with_slugs()
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    for w in works:
+        slug = w["slug"]
         desc = " / ".join([x for x in [w["year"]] + w["tags"][:2] if x]) + " · Katsuyuki"
-        image = f"https://i.ytimg.com/vi/{w['id']}/maxresdefault.jpg" if w["id"] else SITE + "/img/og.png"
+        if (ROOT / "img" / "og" / f"{slug}.jpg").exists():  # branded card from og_images.py
+            image, iw, ih = f"{SITE}/img/og/{slug}.jpg", 1200, 630
+        elif w["id"]:
+            image, iw, ih = f"https://i.ytimg.com/vi/{w['id']}/maxresdefault.jpg", 1280, 720
+        else:
+            image, iw, ih = SITE + "/img/og.jpg", 1200, 630
         e = lambda v: html.escape(v, quote=True)
-        page = PAGE.format(title=e(w["title"]), desc=e(desc), url=f"{SITE}/w/{slug}/", image=e(image), slug=slug)
+        page = PAGE.format(title=e(w["title"]), desc=e(desc), url=f"{SITE}/w/{slug}/", image=e(image), slug=slug, iw=iw, ih=ih)
         (OUT / slug).mkdir(parents=True, exist_ok=True)
         (OUT / slug / "index.html").write_text(page, encoding="utf-8")
-    print("Pages:", len(used))
+    print("Pages:", len(works))
 
 
 if __name__ == "__main__":
