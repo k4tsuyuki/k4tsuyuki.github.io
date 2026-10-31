@@ -7,7 +7,7 @@
   var L = {
     latest: ["Latest", "Останнє"], open: ["Open for commissions", "Відкритий до замовлень"], order: ["Order →", "Замовити →"],
     recent: ["Recent", "Нещодавні"], swipe: ["Swipe →", "Гортай →"], scroll: ["Scroll ↓", "Гортай ↓"], tap: ["Tap a cover", "Обери обкладинку"],
-    works: ["Works", "Роботи"], news: ["News", "Новини"], contact: ["Contact", "Контакти"]
+    works: ["Works", "Роботи"], news: ["News", "Новини"], contact: ["Contact", "Контакти"], about: ["About", "Про мене"]
   };
   function tx(k){ return L[k][uk() ? 1 : 0]; }
 
@@ -140,7 +140,7 @@
     var bg = document.createElement("button"); bg.className = "dh-burger"; bg.type = "button"; bg.setAttribute("aria-label", "Menu"); bg.innerHTML = "<i></i>"; nav.appendChild(bg);
     var menu = document.createElement("div"); menu.className = "dh-menu"; menu.setAttribute("aria-hidden", "true");
     menu.innerHTML = '<div class="mh"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"><button class="x" type="button" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div>' +
-      '<nav><a href="#works" data-t="works"></a><a href="#news" data-t="news"></a><a href="#contact" data-t="contact"></a><a href="files/">PFS</a></nav>' +
+      '<nav><a href="#works" data-t="works"></a><a href="#news" data-t="news"></a><a href="#contact" data-t="contact"></a><a href="about/" data-t="about"></a><a href="files/">PFS</a></nav>' +
       '<div class="row lbx"><button type="button" data-p="langBtn"></button><button type="button" data-p="themeBtn">◐</button></div>';
     document.body.appendChild(menu);
     function close(){ menu.classList.remove("on"); menu.setAttribute("aria-hidden", "true"); }

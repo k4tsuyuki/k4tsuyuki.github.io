@@ -381,7 +381,7 @@ footer .jp{font-size:24px}
 <header class="top">
   <div class="wrap lb">
     <a href="#top" class="who" style="display:flex;gap:10px;align-items:center"><img class="logo logo-img" src="img/logo.png" alt="Katsuyuki"><span class="m" data-i18n="role">Video editor</span></a>
-    <nav aria-label="Sections"><a href="#works" data-i18n="nav_works">Works</a><a href="#news" id="navNews" data-i18n="nav_news">News</a><a href="#contact" data-i18n="nav_contact">Contact</a><a href="files/" data-i18n="nav_files">PFS</a><a href="order/" class="nav-cta" data-i18n="nav_order">Order</a><button class="tgl" id="langBtn" type="button" aria-label="Switch to Ukrainian">EN</button><button class="tgl" id="themeBtn" type="button" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
+    <nav aria-label="Sections"><a href="#works" data-i18n="nav_works">Works</a><a href="#news" id="navNews" data-i18n="nav_news">News</a><a href="#contact" data-i18n="nav_contact">Contact</a><a href="about/" data-i18n="nav_about">About</a><a href="files/" data-i18n="nav_files">PFS</a><a href="order/" class="nav-cta" data-i18n="nav_order">Order</a><button class="tgl" id="langBtn" type="button" aria-label="Switch to Ukrainian">EN</button><button class="tgl" id="themeBtn" type="button" aria-label="Light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
   </div>
 </header>
 
@@ -525,13 +525,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
-          again:"Watch again", upnext:"More edits", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
+          again:"Watch again", upnext:"More edits", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nav_about:"About", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Оновлення", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
-          again:"Ще раз", upnext:"Інші едіти", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", nt_new:"Нова новина", nt_read:"Читати", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
+          again:"Ще раз", upnext:"Інші едіти", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", nav_about:"Про мене", nt_new:"Нова новина", nt_read:"Читати", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
   };
   var lang = store("lang") === "uk" ? "uk" : "en";
   function t(k){ return (I18N[lang][k] != null ? I18N[lang][k] : I18N.en[k]) || ""; }

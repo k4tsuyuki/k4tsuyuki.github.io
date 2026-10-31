@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/maint.js"></script>
+<script>try{if(sessionStorage.getItem("kz-style")==="goth")document.documentElement.setAttribute("data-style","goth");localStorage.removeItem("kz-style")}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About · Katsuyuki</title>
+<link rel="icon" type="image/png" href="/img/favicon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<meta name="description" content="Katsuyuki, video editor from Ukraine, based in Berlin. Setup and collab info.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Katsuyuki">
+<meta property="og:title" content="About · Katsuyuki">
+<meta property="og:description" content="Video editor from Ukraine, based in Berlin. Setup and collab info.">
+<meta property="og:url" content="https://katsuyuki.studio/about/">
+<meta property="og:image" content="https://katsuyuki.studio/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#060606">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap">
+<script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light");if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
+<link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* шрифт: Arial (обычной ширины), если он есть на устройстве; иначе его копия Liberation Sans с сайта (те же размеры и форма букв), чтобы везде было одинаково */
+@font-face{font-family:"KN";src:local("Arial"),local("ArialMT"),url(/fonts/sans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Bold"),local("Arial-BoldMT"),url(/fonts/sans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+
+/* те же цвета и шрифты, что на главной */
+:root{--void:#060606;--sheet:#101010;--paper:#eeebe5;--ash:#85827c;--hair:rgba(238,235,229,.16);--bar:rgba(6,6,6,.82);--logo:none;color-scheme:dark;
+  --f:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif;
+  --f-jp:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --gl:max(16px,env(safe-area-inset-left,0px));--gr:max(16px,env(safe-area-inset-right,0px))}
+:root[data-theme="light"]{--void:#e9e7e2;--sheet:#f6f5f1;--paper:#111;--ash:#6f6c66;--hair:rgba(17,17,17,.16);--bar:rgba(233,231,226,.85);--logo:invert(1);color-scheme:light}
+*{box-sizing:border-box}
+html{background:var(--void)}
+body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0;text-transform:inherit}
+:focus-visible{outline:1px solid var(--paper);outline-offset:3px}
+::selection{background:var(--paper);color:var(--void)}
+.wrap{padding-left:var(--gl);padding-right:var(--gr);max-width:1480px;margin-inline:auto}
+.lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
+.m{color:var(--ash)}
+[hidden]{display:none!important}
+html:not([lang="uk"]) [data-uk],html[lang="uk"] [data-en]{display:none!important}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--void)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bar);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--hair)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:12px}
+.top nav{display:flex;gap:clamp(14px,3vw,32px);align-items:center}
+.top nav a{opacity:.7;transition:opacity .2s}
+.top nav a:hover{opacity:1}
+.top .logo{height:26px;width:auto;filter:var(--logo)}
+.tgl{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:24px;padding:0 8px;border:1px solid var(--hair);border-radius:999px;transition:border-color .3s}
+.tgl:hover{border-color:var(--paper)}
+.tgl svg{width:12px;height:12px}
+main{padding-block:clamp(28px,5vw,64px) clamp(48px,7vw,96px)}
+h2{font-weight:400;font-size:clamp(28px,3.4vw,44px);letter-spacing:-.02em;line-height:1;margin:0}
+.hero{display:flex;align-items:center;gap:clamp(18px,3vw,40px);padding-bottom:clamp(28px,4vw,48px);border-bottom:1px solid var(--hair)}
+.ava{width:clamp(96px,14vw,180px);aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);flex:none;background:#000}
+.ava img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 1.6s}.ava:hover img{filter:none}
+.hero h1{font-weight:400;font-size:clamp(48px,9vw,140px);line-height:.85;letter-spacing:-.04em;margin:8px 0 14px}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;height:30px;padding:0 12px;border:1px solid var(--hair);font-size:12px;font-weight:700;text-transform:uppercase}
+a.pill:hover{border-color:var(--paper)}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:clamp(40px,6vw,80px) 0 16px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{border:1px solid var(--hair);background:var(--sheet);padding:18px;display:flex;flex-direction:column;gap:28px;min-height:190px;justify-content:space-between}
+.tile .big{font-size:clamp(30px,3.6vw,52px);letter-spacing:-.03em;line-height:.95}
+.tile .sub{color:var(--ash);font-size:14px}
+.drives{margin-top:12px;border:1px solid var(--hair)}
+.drv{display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 18px;border-top:1px solid var(--hair);align-items:baseline}
+.drv:first-child{border-top:0}.drv .sub{color:var(--ash);font-size:14px}
+.collab{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.collab{grid-template-columns:1fr}}
+.collab .tile{min-height:150px}
+.collab .tile .v{font-size:clamp(17px,1.5vw,21px)}
+.cp{display:inline-flex;align-items:center;height:30px;padding:0 14px;background:var(--paper);color:var(--void);font-weight:700;font-size:12px;text-transform:uppercase;align-self:flex-start}
+.pill b{margin-left:6px}
+.bio{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(16px,3vw,48px);margin-top:clamp(36px,5vw,64px)}
+@media(max-width:800px){.bio{grid-template-columns:1fr}}
+.bio p{margin:0 0 .8em;font-size:clamp(19px,2vw,28px);line-height:1.3;letter-spacing:-.01em;max-width:34em}
+.bio p:last-child{margin-bottom:0}
+.bio .side .lb.m:first-child{margin-bottom:10px}
+.kv{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--hair);font-size:clamp(16px,1.4vw,19px)}
+.kv:nth-child(2){border-top:1px solid var(--hair)}
+.kv span:last-child{text-align:right}
+/* окно покупки */
+dialog{border:1px solid var(--hair);background:var(--sheet);color:var(--paper);padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;font:inherit}
+dialog[open]{animation:dlg-in .4s cubic-bezier(.2,0,0,1)}
+dialog.closing{animation:dlg-out .25s cubic-bezier(.4,0,1,1) forwards}
+dialog.closing::backdrop{animation:bd-out .25s ease forwards}
+@keyframes dlg-out{to{opacity:0;transform:scale(.97);filter:blur(6px)}}
+@keyframes bd-out{to{opacity:0}}
+dialog[open]::backdrop{animation:bd-in .4s ease}
+@keyframes dlg-in{from{opacity:0;transform:scale(.97);filter:blur(8px)}}
+@keyframes bd-in{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){dialog[open],dialog[open]::backdrop,dialog.closing,dialog.closing::backdrop{animation:none}}
+.hint{color:var(--ash)}
+.two{align-items:start}
+dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+
+/* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
+@view-transition{navigation:auto;types:page}
+:root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .35s cubic-bezier(.4,0,.2,1) both}
+:root:active-view-transition-type(page)::view-transition-new(root){animation:pg-in .55s cubic-bezier(.4,0,.2,1) .22s both}
+:root:active-view-transition-type(page) .top .logo{view-transition-name:logo}
+/* на компьютере без размытия: блюр на весь большой экран тормозит, остаются затухание и зум */
+@keyframes pg-out{to{opacity:0}}
+@keyframes pg-in{from{opacity:0}}
+@keyframes bl-out{to{opacity:0}}
+@keyframes bl-in{from{opacity:0}}
+@media (max-width:760px){
+  @keyframes pg-out{to{opacity:0;filter:blur(12px);transform:scale(.985)}}
+  @keyframes pg-in{from{opacity:0;filter:blur(12px);transform:scale(1.015)}}
+  @keyframes bl-out{to{opacity:0;filter:blur(8px)}}
+  @keyframes bl-in{from{opacity:0;filter:blur(8px)}}
+}
+::view-transition-old(root),::view-transition-new(root),::view-transition-group(logo){will-change:opacity,transform}
+.vt-blur::view-transition-old(root){animation:bl-out .25s ease both}
+.vt-blur::view-transition-new(root){animation:bl-in .4s ease both}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+.vt-theme::view-transition-old(root),.vt-theme::view-transition-new(root){animation:none;mix-blend-mode:normal}
+</style>
+<script type="speculationrules">{"prefetch":[{"where":{"href_matches":"/"},"eagerness":"moderate"}]}</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap lb">
+    <a href="/" class="who" style="display:flex;gap:10px;align-items:center"><img class="logo" src="/img/logo.png" alt="Katsuyuki"><span class="m"><span data-en>Video editor</span><span data-uk>Відеомонтажер</span></span></a>
+    <nav><a href="/"><span data-en>← Back</span><span data-uk>← Назад</span></a><button class="tgl" id="langBtn" type="button" aria-label="Language"></button><button class="tgl" id="themeBtn" type="button" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></svg></button></nav>
+  </div>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <div class="ava"><img src="/img/avatar.png" alt="Katsuyuki"></div>
+    <div>
+      <div class="lb m"><span data-en>About</span><span data-uk>Про мене</span></div>
+      <h1>Katsuyuki</h1>
+      <div class="facts">
+        <a class="pill" href="/order/"><span data-en>Commissions open ↗</span><span data-uk>Замовлення відкриті ↗</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="bio">
+    <div class="side">
+      <div class="lb m"><span data-en>In short</span><span data-uk>Коротко</span></div>
+      <div class="kv"><span class="lb m"><span data-en>Age</span><span data-uk>Вік</span></span><span class="age" data-born="2008-12-17">17</span></div>
+      <div class="kv"><span class="lb m"><span data-en>From</span><span data-uk>Звідки</span></span><span><span data-en>Ukraine</span><span data-uk>Україна</span></span></div>
+      <div class="kv"><span class="lb m"><span data-en>Based in</span><span data-uk>Живу</span></span><span><span data-en>Berlin, Germany</span><span data-uk>Берлін, Німеччина</span></span></div>
+      <div class="kv"><span class="lb m"><span data-en>Study</span><span data-uk>Навчання</span></span><span><span data-en>Film faculty</span><span data-uk>Факультет кіно</span></span></div>
+      <div class="kv"><span class="lb m">After Effects</span><span><span data-en>since 2021</span><span data-uk>з 2021</span></span></div>
+      <div class="kv"><span class="lb m"><span data-en>Style</span><span data-uk>Стиль</span></span><span><span data-en>Gothic, dark, sharp</span><span data-uk>Готика, темрява, гострі форми</span></span></div>
+    </div>
+    <div>
+      <p><span data-en>I was born in Ukraine. Now I live in Berlin and study at a film faculty. I've been working in After Effects since 2021. There were long breaks, but I came back and plan to work in this field.</span><span data-uk>Я народився в Україні. Зараз живу в Берліні й навчаюся на факультеті кіно. Працюю в After Effects з 2021 року. Були довгі перерви, але я повернувся і планую працювати в цій сфері.</span></p>
+      <p><span data-en>Most of my edits so far are anime. Now I'm moving toward live footage and learning to work with real cameras and film.</span><span data-uk>Більшість моїх едітів поки що аніме. Зараз я переходжу до живого відео й вчуся працювати з реальними камерами та плівкою.</span></p>
+      <p><span data-en>My style, in life and in edits, is fully alternative: gothic, sharp shapes and darkness.</span><span data-uk>Мій стиль, і в житті, і в едітах, повністю альтернативний: готика, гострі форми й темрява.</span></p>
+      <p><span data-en>Open to collabs, any kind of work together and commissions of any format.</span><span data-uk>Відкритий до колабів, будь-якої співпраці та замовлень у будь-якому форматі.</span></p>
+    </div>
+  </div>
+
+  <div class="head"><h2><span data-en>Setup</span><span data-uk>Сетап</span></h2><span class="lb m">Windows 11 Pro</span></div>
+  <div class="tiles">
+    <div class="tile"><span class="lb m">CPU</span><div><div class="big">i9-10900F</div><div class="sub">Intel Core · 2.8 GHz</div></div></div>
+    <div class="tile"><span class="lb m">GPU</span><div><div class="big">RTX 3060</div><div class="sub">NVIDIA · 12 GB</div></div></div>
+    <div class="tile"><span class="lb m">RAM</span><div><div class="big">32 GB</div><div class="sub">2667 MT/s</div></div></div>
+    <div class="tile"><span class="lb m">Storage</span><div><div class="big">3.2 TB</div><div class="sub"><span data-en>3 drives</span><span data-uk>3 диски</span></div></div></div>
+  </div>
+  <div class="drives">
+    <div class="drv"><span>Lexar NQ790</span><span class="sub">NVMe SSD · 1 TB</span></div>
+    <div class="drv"><span>WD Red Plus</span><span class="sub">HDD · 2 TB</span></div>
+    <div class="drv"><span>SSDPR S25A</span><span class="sub">SATA SSD · 240 GB</span></div>
+  </div>
+
+  <div class="head"><h2><span data-en>Collabs</span><span data-uk>Колаби</span></h2></div>
+  <div class="collab">
+    <div class="tile"><span class="lb m"><span data-en>Credit me as</span><span data-uk>Вказуйте мене як</span></span><div class="v">Katsuyuki · youtube.com/@k4tsuyuki</div><button class="cp" type="button"><span data-en>Copy</span><span data-uk>Копіювати</span></button></div>
+    <div class="tile"><span class="lb m">YouTube / TikTok</span><div class="v"><span data-en>Tag @k4tsuyuki in the description. My logo is not for free use, ask first.</span><span data-uk>Позначте @k4tsuyuki в описі. Моє лого не для вільного використання, спершу запитайте.</span></div></div>
+    <div class="tile"><span class="lb m"><span data-en>Write to</span><span data-uk>Пишіть</span></span><div class="v"><a href="mailto:katsuyukiadmin@gmail.com">katsuyukiadmin@gmail.com</a></div></div>
+  </div>
+</main>
+<script>(function(){var e=document.querySelector(".age");if(!e)return;var b=new Date(e.dataset.born+"T00:00:00"),n=new Date(),a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;e.textContent=a;})();</script>
+<script>
+(function(){
+  var root = document.documentElement;
+  function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
+  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Про мене" : "About") + " · Katsuyuki"; }
+  function morph(fn, cls, after){
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!document.startViewTransition || reduce){ fn(); return; }
+    root.classList.add(cls);
+    var vt = document.startViewTransition(fn);
+    if(after) vt.ready.then(after, function(){});
+    vt.finished.then(done, done);
+    function done(){ root.classList.remove(cls); }
+  }
+  document.getElementById("langBtn").addEventListener("click", function(){
+    morph(function(){ root.lang = root.lang === "uk" ? "en" : "uk"; store("lang", root.lang); syncLang(); }, "vt-blur");
+  });
+  document.getElementById("themeBtn").addEventListener("click", function(){
+    var light = root.getAttribute("data-theme") !== "light";
+    var r = this.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    morph(function(){
+      if(light) root.setAttribute("data-theme", "light"); else root.removeAttribute("data-theme");
+      store("theme", light ? "light" : "dark");
+    }, "vt-theme", function(){
+      root.animate({ clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + end + "px at " + x + "px " + y + "px)"] },
+        { duration: 700, easing: "cubic-bezier(.65,0,.25,1)", pseudoElement: "::view-transition-new(root)" });
+    });
+  });
+  syncLang();
+
+})();
+</script>
+<script>
+
+</script>
+<script>
+if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
+  var gc = document.createElement("script"); gc.async = true; gc.src = "https://gc.zgo.at/count.js";
+  gc.setAttribute("data-goatcounter", "https://katsuyuki.goatcounter.com/count"); document.head.appendChild(gc);
+}
+</script>
+<script src="/goth/style.js"></script>
+<script src="/goth/sigil.js"></script>
+<script src="/goth/egg.js"></script>
+<script src="/goth/gothsub.js"></script>
+</body>
+</html>

@@ -1,11 +1,14 @@
 /* =====================================================================
    ПРАЗДНИЧНОЕ ОФОРМЛЕНИЕ. Включается само по датам ниже (если AUTO = true).
-   Посмотреть заранее: katsuyuki.studio/?season=halloween (christmas, newyear, valentine, aprilfools, sakura).
+   Посмотреть заранее: katsuyuki.studio/?season=halloween (christmas, newyear, valentine, aprilfools, sakura, birthday, anniversary).
+   День рождения: каждый раз один из трёх видов; конкретный можно открыть так: ?season=birthday&v=1 (2, 3).
    Отключить праздники совсем: AUTO = false.
    ===================================================================== */
 (function(){
   var AUTO = true;
   var SEASONS = [
+    { id: "birthday",  from: "12-17", to: "12-17" },  /* день рождения, только чёрное и белое */
+    { id: "anniversary", from: "10-18", to: "10-18" }, /* годовщина сайта (запущен 18.10.2026) */
     { id: "valentine", from: "02-13", to: "02-15" },
     { id: "aprilfools", from: "04-01", to: "04-01" },
     { id: "sakura",    from: "03-25", to: "04-10" },
@@ -21,6 +24,8 @@
   if(!cur) return;
 
   var root = document.documentElement, uk = function(){ return root.lang === "uk"; };
+  var YEARS = Math.max(1, now.getFullYear() - 2026), AGE = now.getFullYear() - 2008;
+  function roman(n){ var r = "", v = [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]]; v.forEach(function(p){ while(n >= p[0]){ r += p[1]; n -= p[0]; } }); return r; }
   var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var touch = window.matchMedia && matchMedia("(hover: none)").matches;
   var light = function(){ return root.getAttribute("data-theme") === "light"; };
@@ -29,6 +34,8 @@
   /* ---------- стили ---------- */
   function accent(sel){ return '[data-season="' + sel + '"] .status .on i{background:var(--acc);box-shadow:0 0 10px var(--acc)}'; }
   function pill(sel){ return '[data-season="' + sel + '"] .top nav a.nav-cta{border-color:var(--acc);color:var(--acc)}[data-season="' + sel + '"] .top nav a.nav-cta:hover{background:var(--acc);color:#000}'; }
+  /* огромная контурная цифра за лого (день рождения, годовщина) */
+  var NUM = ':root[data-season] .hero-mark>.s-num{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);font-size:min(40vw,540px);line-height:.8;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px var(--acc);opacity:.5;pointer-events:none;z-index:0!important;white-space:nowrap}';
   var CSS = {
     halloween:
       ':root[data-season="halloween"]{--acc:#ff6b1a;--glow:#ff6b1a}' + accent("halloween") + pill("halloween") +
@@ -68,7 +75,17 @@
       'html.s-rgb main{transform:translateX(-3px) skewX(-1deg)}',
     sakura:
       ':root[data-season="sakura"]{--acc:#f4a7c0;--glow:#f4a7c0}' + accent("sakura") +
-      ':root[data-theme="light"][data-season="sakura"]{--acc:#cc5f86}'
+      ':root[data-theme="light"][data-season="sakura"]{--acc:#cc5f86}',
+    birthday:
+      ':root[data-season="birthday"]{--acc:#eeebe5;--glow:#eeebe5}:root[data-theme="light"][data-season="birthday"]{--acc:#111;--glow:#111}' + accent("birthday") + pill("birthday") + NUM +
+      '[data-bday="3"] .dh-full{filter:invert(1) grayscale(1)}',
+    anniversary:
+      ':root[data-season="anniversary"]{--acc:#eeebe5;--glow:#eeebe5}:root[data-theme="light"][data-season="anniversary"]{--acc:#111;--glow:#111}' + accent("anniversary") + pill("anniversary") + NUM +
+      '.s-mq{position:relative;z-index:40;overflow:hidden;background:var(--paper);color:var(--void);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em}' +
+      '.s-mq div{display:flex;gap:22px;white-space:nowrap;padding:9px 0;width:max-content;animation:s-mq 40s linear infinite}' +
+      '@keyframes s-mq{to{transform:translateX(-50%)}}' +
+      '.s-ann{position:fixed;inset:0;z-index:2147482000;background:#000;color:#eeebe5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:16px;cursor:pointer;transition:opacity .8s ease}' +
+      '.s-ann.out{opacity:0;pointer-events:none}.s-ann .n{font-size:min(50vh,420px);line-height:.8;letter-spacing:-.05em}.s-ann .t{font-size:clamp(28px,4vw,56px);letter-spacing:-.02em}.s-ann .lb{color:#85827c}'
   };
   var st = document.createElement("style");
   st.textContent = CSS[cur.id] +
@@ -92,7 +109,9 @@
       christmas: ["Merry Christmas", "З Різдвом"],
       valentine: ["Happy Valentine's Day", "З Днем святого Валентина"],
       aprilfools: ["Happy April Fools'", "З 1 квітня"],
-      sakura: ["Sakura season", "Сезон сакури"]
+      sakura: ["Sakura season", "Сезон сакури"],
+      birthday: ["Happy birthday, Katsuyuki", "З днем народження, Katsuyuki"],
+      anniversary: [YEARS === 1 ? "One year of katsuyuki.studio" : YEARS + " years of katsuyuki.studio", YEARS === 1 ? "Рік katsuyuki.studio" : YEARS + " роки katsuyuki.studio"]
     }[cur.id];
     if(t) el.textContent = t[uk() ? 1 : 0];
     if(cur.id === "newyear"){
@@ -177,6 +196,7 @@
       ctx.moveTo(0, s * .35); ctx.bezierCurveTo(-s * 1.1, -s * .35, -s * .5, -s * 1.1, 0, -s * .45); ctx.bezierCurveTo(s * .5, -s * 1.1, s * 1.1, -s * .35, 0, s * .35); ctx.fill(); ctx.restore(); },
     petal: function(p){ var r = p.s; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(1, Math.abs(Math.cos(p.ph * 1.7)) * .7 + .3); ctx.beginPath(); ctx.moveTo(0, -r);
       ctx.bezierCurveTo(r * .9, -r * .6, r * .8, r * .6, 0, r); ctx.bezierCurveTo(-r * .8, r * .6, -r * .9, -r * .6, 0, -r); ctx.fill(); ctx.restore(); },
+    shard: function(p){ var s = p.s; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.beginPath(); ctx.moveTo(0, -s); ctx.lineTo(s * .28, s * .5); ctx.lineTo(-s * .28, s * .5); ctx.closePath(); ctx.fill(); ctx.restore(); },
     trail: function(p){ ctx.lineWidth = p.s; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx * 4, p.y - p.vy * 4); ctx.stroke(); }
   };
   function rnd(a, b){ return a + Math.random() * (b - a); }
@@ -320,10 +340,56 @@
     });
   }
 
+  /* ---------- День рождения (17.12): только чёрное и белое, один из трёх видов ---------- */
+  function num(text){
+    var m = document.querySelector(".hero-mark"); if(!m) return;
+    var n = document.createElement("div"); n.className = "s-num"; n.setAttribute("aria-hidden", "true"); n.textContent = text; m.insertBefore(n, m.firstChild);
+  }
+  function birthday(){
+    var v = +((location.search.match(/[?&]v=(\d)/) || [])[1]) || 1 + Math.floor(Math.random() * 3);
+    root.setAttribute("data-bday", v);
+    if(v === 2) num(roman(AGE));                 /* XVIII, XIX… */
+    if(v !== 1) return;
+    shine("rgba(255,255,255,.9)");
+    if(calm) return;
+    engine();
+    /* белые острые звёзды медленно плывут вниз */
+    for(var i = 0; i < (touch ? 20 : 40); i++) add({ x: rnd(0, innerWidth), y: rnd(0, innerHeight), vx: 0, vy: rnd(.12, .35), s: rnd(3.5, 8), kind: "star", col: ink(1), a: rnd(.35, .9), vr: rnd(-.01, .01), sw: .2, tw: 1, loop: 1, rep: 1 });
+    trail(function(x, y){ add({ x: x + rnd(-5, 5), y: y + rnd(-5, 5), vx: rnd(-.3, .3), vy: rnd(.1, .6), s: rnd(1.5, 3), kind: "star", col: ink(1), life: rnd(30, 55), vr: .04, tw: 1 }); }, 20);
+  }
+
+  /* ---------- Годовщина сайта (18.10) ---------- */
+  function anniversary(){
+    /* заставка при первом заходе в этот день (один раз за вкладку) */
+    var seen = ""; try{ seen = sessionStorage.getItem("kz-ann") || ""; }catch(e){}
+    if(seen !== String(now.getFullYear())){
+      try{ sessionStorage.setItem("kz-ann", String(now.getFullYear())); }catch(e){}
+      var o = document.createElement("div"); o.className = "s-ann";
+      o.innerHTML = '<div class="lb">18.10.2026 — 18.10.' + (2026 + YEARS) + '</div><div class="n">' + roman(YEARS) + '</div><div class="t">' + (uk() ? (YEARS === 1 ? "Рік katsuyuki.studio" : YEARS + " роки katsuyuki.studio") : (YEARS === 1 ? "One year of katsuyuki.studio" : YEARS + " years of katsuyuki.studio")) + '</div><div class="lb">' + (uk() ? "Дякую, що дивитесь" : "Thank you for watching") + '</div>';
+      document.body.appendChild(o);
+      var hide = function(){ o.classList.add("out"); setTimeout(function(){ o.remove(); }, 900); };
+      o.addEventListener("click", hide); setTimeout(hide, calm ? 1500 : 3200);
+    }
+    /* бегущая строка под шапкой */
+    var h = document.querySelector("header");
+    if(h){
+      var s = "";
+      for(var i = 0; i < 10; i++) s += "<span>18.10.2026 → 18.10." + (2026 + YEARS) + "</span><span>†</span><span>" + (YEARS === 1 ? "One year of katsuyuki.studio" : YEARS + " years of katsuyuki.studio") + "</span><span>†</span>";
+      var mq = document.createElement("div"); mq.className = "s-mq"; mq.setAttribute("aria-hidden", "true"); mq.innerHTML = "<div>" + s + s + "</div>"; h.after(mq);
+    }
+    num(String(YEARS));
+    shine("rgba(255,255,255,.9)");
+    if(calm) return;
+    engine();
+    /* падают острые белые осколки */
+    for(var j = 0; j < (touch ? 24 : 50); j++) add({ x: rnd(0, innerWidth), y: rnd(0, innerHeight), vx: rnd(-.1, .1), vy: rnd(.4, 1), s: rnd(4, 12), kind: "shard", col: ink(1), a: rnd(.3, .85), vr: rnd(-.03, .03), sw: .3, loop: 1, rep: 1 });
+    onClick(".hero-mark", function(x, y){ for(var i = 0; i < 18; i++){ var a = rnd(0, 6.3), v = rnd(1.5, 4); add({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, g: .06, d: .97, s: rnd(4, 9), kind: "shard", col: ink(1), life: rnd(50, 80), vr: rnd(-.1, .1) }); } });
+  }
+
   function start(){
     label();
     setInterval(label, 1000);
-    ({ halloween: halloween, christmas: christmas, newyear: newyear, valentine: valentine, aprilfools: aprilfools, sakura: sakura })[cur.id]();
+    ({ halloween: halloween, christmas: christmas, newyear: newyear, valentine: valentine, aprilfools: aprilfools, sakura: sakura, birthday: birthday, anniversary: anniversary })[cur.id]();
   }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();
