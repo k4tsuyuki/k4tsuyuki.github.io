@@ -1,6 +1,6 @@
 /* Если интернета нет, вместо ошибки браузера показывается offline.html.
    Сам сайт не кэшируется, поэтому обновления видны сразу. */
-var CACHE = "offline-v7";
+var CACHE = "offline-v8";
 var FILES = ["/offline.html", "/img/logo.png", "/img/favicon.png", "/fonts/sans-Regular.woff2", "/fonts/sans-Bold.woff2"];
 
 self.addEventListener("install", function(e){

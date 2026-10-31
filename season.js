@@ -83,13 +83,17 @@
       ':root[data-season="anniversary"]{--acc:#eeebe5;--glow:#eeebe5}:root[data-theme="light"][data-season="anniversary"]{--acc:#111;--glow:#111}' + accent("anniversary") + pill("anniversary") + NUM +
       '.s-mq{position:relative;z-index:40;overflow:hidden;background:var(--paper);color:var(--void);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em}' +
       '.s-mq div{display:flex;gap:22px;white-space:nowrap;padding:9px 0;width:max-content;animation:s-mq 40s linear infinite}' +
-      '@keyframes s-mq{to{transform:translateX(-50%)}}' +
-      '.s-ann{position:fixed;inset:0;z-index:2147482000;background:#000;color:#eeebe5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:16px;cursor:pointer;transition:opacity .8s ease}' +
-      '.s-ann.out{opacity:0;pointer-events:none}.s-ann .n{font-size:min(50vh,420px);line-height:.8;letter-spacing:-.05em}.s-ann .t{font-size:clamp(28px,4vw,56px);letter-spacing:-.02em}.s-ann .lb{color:#85827c}'
+      '@keyframes s-mq{to{transform:translateX(-50%)}}'
   };
   var st = document.createElement("style");
   st.textContent = CSS[cur.id] +
     '.s-tag{display:inline-flex;align-items:center;gap:6px;color:var(--acc)}' +
+    '.s-ann{position:fixed;inset:0;z-index:2147482000;background:#000;color:#eeebe5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:16px;cursor:pointer;transition:opacity .9s ease}' +
+    '.s-ann canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.s-ann>div{position:relative}' +
+    '.s-ann.out{opacity:0;pointer-events:none}.s-ann .n{font-size:min(46vh,400px,calc((100vw - 32px) / 1.9));white-space:nowrap;line-height:.8;letter-spacing:-.05em}.s-ann .t{font-size:clamp(28px,4vw,56px);letter-spacing:-.02em}.s-ann .lb{color:#85827c;letter-spacing:.2em}' +
+    '.s-ann .a1,.s-ann .a2,.s-ann .a3,.s-ann .a4{opacity:0;animation:s-in 1s cubic-bezier(.2,.8,.2,1) forwards}.s-ann .a2{animation-name:s-num;animation-duration:1.4s;animation-delay:.15s}.s-ann .a3{animation-delay:.6s}.s-ann .a4{animation-delay:.9s}' +
+    '@keyframes s-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@keyframes s-num{from{opacity:0;letter-spacing:.25em;filter:blur(12px)}to{opacity:1;letter-spacing:-.05em;filter:none}}' +
+    '@media (prefers-reduced-motion: reduce){.s-ann>div{animation:none!important;opacity:1!important}}' +
     '.s-cv{position:fixed;inset:0;z-index:39;pointer-events:none;width:100%;height:100%}' +
     '[data-season] .hero-mark>*{position:relative;z-index:1}' +
     '[data-season] .hero-mark::before{content:"";position:absolute;left:15%;right:15%;top:22%;bottom:22%;background:radial-gradient(closest-side,var(--glow,transparent),transparent);opacity:.16;filter:blur(40px);pointer-events:none;z-index:0}' +
@@ -340,6 +344,30 @@
     });
   }
 
+  /* ---------- заставка на весь экран: один раз за вкладку в этот день ---------- */
+  function intro(key, top, numTxt, title, sub){
+    var seen = ""; try{ seen = sessionStorage.getItem(key) || ""; }catch(e){}
+    if(seen === String(now.getFullYear())) return;
+    try{ sessionStorage.setItem(key, String(now.getFullYear())); }catch(e){}
+    var o = document.createElement("div"); o.className = "s-ann";
+    o.innerHTML = '<canvas></canvas><div class="lb a1"></div><div class="n a2"></div><div class="t a3"></div><div class="lb a4"></div>';
+    o.children[1].textContent = top; o.children[2].textContent = numTxt; o.children[3].textContent = title; o.children[4].textContent = sub;
+    document.body.appendChild(o);
+    /* белые острые звёзды вспыхивают вокруг */
+    var c = o.firstChild, x = c.getContext("2d"), W, H, S = [], t0 = performance.now(), raf;
+    function size(){ var d = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; c.width = W * d; c.height = H * d; x.setTransform(d, 0, 0, d, 0, 0); }
+    size();
+    for(var i = 0; i < (touch ? 26 : 50); i++) S.push({ x: Math.random(), y: Math.random(), s: 2 + Math.random() * 8, d: Math.random() * 1.6, p: Math.random() * 6.3 });
+    function star(X, Y, s, a){ x.globalAlpha = a; x.beginPath(); x.moveTo(X, Y - s); x.quadraticCurveTo(X, Y, X + s * .22, Y); x.quadraticCurveTo(X, Y, X, Y + s); x.quadraticCurveTo(X, Y, X - s * .22, Y); x.quadraticCurveTo(X, Y, X, Y - s); x.fill(); }
+    (function loop(now2){
+      var k = (now2 - t0) / 1000; x.clearRect(0, 0, W, H); x.fillStyle = "#eeebe5";
+      S.forEach(function(p){ var a = Math.max(0, Math.min(1, (k - p.d) * 2)) * (.45 + .55 * Math.abs(Math.sin(k * 1.4 + p.p))); star(p.x * W, p.y * H - k * 6, p.s, a * .8); });
+      raf = requestAnimationFrame(loop);
+    })(t0);
+    var hide = function(){ o.classList.add("out"); setTimeout(function(){ cancelAnimationFrame(raf); o.remove(); }, 900); };
+    o.addEventListener("click", hide); setTimeout(hide, calm ? 1800 : 4200);
+  }
+
   /* ---------- День рождения (17.12): только чёрное и белое, один из трёх видов ---------- */
   function num(text){
     var m = document.querySelector(".hero-mark"); if(!m) return;
@@ -348,6 +376,9 @@
   function birthday(){
     var v = +((location.search.match(/[?&]v=(\d)/) || [])[1]) || 1 + Math.floor(Math.random() * 3);
     root.setAttribute("data-bday", v);
+    intro("kz-bday", "17.12", roman(AGE),
+      uk() ? "Сьогодні Katsuyuki " + AGE : "Katsuyuki turns " + AGE + " today",
+      uk() ? "Мій день народження" : "It's my birthday");
     if(v === 2) num(roman(AGE));                 /* XVIII, XIX… */
     if(v !== 1) return;
     shine("rgba(255,255,255,.9)");
@@ -360,16 +391,9 @@
 
   /* ---------- Годовщина сайта (18.10) ---------- */
   function anniversary(){
-    /* заставка при первом заходе в этот день (один раз за вкладку) */
-    var seen = ""; try{ seen = sessionStorage.getItem("kz-ann") || ""; }catch(e){}
-    if(seen !== String(now.getFullYear())){
-      try{ sessionStorage.setItem("kz-ann", String(now.getFullYear())); }catch(e){}
-      var o = document.createElement("div"); o.className = "s-ann";
-      o.innerHTML = '<div class="lb">18.10.2026 — 18.10.' + (2026 + YEARS) + '</div><div class="n">' + roman(YEARS) + '</div><div class="t">' + (uk() ? (YEARS === 1 ? "Рік katsuyuki.studio" : YEARS + " роки katsuyuki.studio") : (YEARS === 1 ? "One year of katsuyuki.studio" : YEARS + " years of katsuyuki.studio")) + '</div><div class="lb">' + (uk() ? "Дякую, що дивитесь" : "Thank you for watching") + '</div>';
-      document.body.appendChild(o);
-      var hide = function(){ o.classList.add("out"); setTimeout(function(){ o.remove(); }, 900); };
-      o.addEventListener("click", hide); setTimeout(hide, calm ? 1500 : 3200);
-    }
+    intro("kz-ann", "18.10.2026 — 18.10." + (2026 + YEARS), roman(YEARS),
+      uk() ? (YEARS === 1 ? "Рік katsuyuki.studio" : YEARS + " роки katsuyuki.studio") : (YEARS === 1 ? "One year of katsuyuki.studio" : YEARS + " years of katsuyuki.studio"),
+      uk() ? "Дякую, що дивитесь" : "Thank you for watching");
     /* бегущая строка под шапкой */
     var h = document.querySelector("header");
     if(h){
