@@ -618,7 +618,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   /* размытое превью под картинкой (mqdefault весит около 15 КБ и приходит почти сразу) */
   window.ytBlur = function(img, id){
     var p = img.parentNode; if(!p || !id || img.classList.contains("lz")) return null;
-    var q = document.createElement("i"); q.className = "lq"; q.style.backgroundImage = "url(https://i.ytimg.com/vi/" + id + "/mqdefault.jpg)";
+    var q = document.createElement("i"); q.className = "lq"; q.style.backgroundImage = "url(/img/covers/" + id + "-s.jpg),url(https://i.ytimg.com/vi/" + id + "/mqdefault.jpg)";
     p.insertBefore(q, img); img.classList.add("lz");
     function ok(){ if(img.complete && img.naturalWidth > 120){ img.classList.add("ok"); setTimeout(function(){ q.remove(); }, 900); } }
     img.addEventListener("load", ok); ok();
@@ -629,10 +629,10 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     if(!w.id){ onFail(); return; }
     var q = img.parentNode ? ytBlur(img, w.id) : null;
     if(q){ var f0 = onFail; onFail = function(){ q.remove(); f0(); }; }
-    var tries = ["maxresdefault","hqdefault"], i = 0;
+    var tries = ["/img/covers/"+w.id+".jpg","https://i.ytimg.com/vi/"+w.id+"/maxresdefault.jpg","https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg"], i = 0;
     img.onload = function(){ if(img.naturalWidth <= 120) next(); };
     img.onerror = next;
-    function next(){ if(i < tries.length) img.src = "https://i.ytimg.com/vi/"+w.id+"/"+tries[i++]+".jpg"; else onFail(); }
+    function next(){ if(i < tries.length) img.src = tries[i++]; else onFail(); }
     next();
   }
   var latest = WORKS[0];

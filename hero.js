@@ -17,7 +17,9 @@
     .sort(function(a, b){ return (+b.year || 0) - (+a.year || 0) || a._i - b._i; });
   if(!W.length) return;
   function cover(w, hq){ return "https://i.ytimg.com/vi/" + w.id + "/" + (hq ? "hqdefault" : "maxresdefault") + ".jpg"; }
-  function img(w){ var i = new Image(); i.alt = w.title || ""; i.decoding = "async"; i.src = cover(w); i.onload = function(){ if(i.naturalWidth <= 120) i.src = cover(w, 1); }; i.onerror = function(){ i.onerror = null; i.src = cover(w, 1); }; return i; }
+  function img(w){ var i = new Image(), t = ["/img/covers/" + w.id + ".jpg", cover(w), cover(w, 1)], k = 0; i.alt = w.title || ""; i.decoding = "async";
+    function next(){ if(k < t.length) i.src = t[k++]; else i.onerror = null; }
+    i.onload = function(){ if(i.naturalWidth <= 120) next(); }; i.onerror = next; next(); return i; }
   function meta(w){ return [w.year].concat(w.tags || []).filter(Boolean).join(" · "); }
   /* открыть плеер сайта: нажимаем на карточку этой работы в сетке */
   function play(w){
