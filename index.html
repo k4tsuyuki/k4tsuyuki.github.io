@@ -818,7 +818,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
       btn.addEventListener("click", function(){
         track("copy: " + c.label);
         var done = function(){ btn.textContent = t("copied"); setTimeout(function(){ btn.textContent = t("copy"); }, 1600); };
-        try{ navigator.clipboard.writeText(c.value).then(done, function(){ selectText(el.children[1]); }); }catch(e){ selectText(el.children[1]); }
+        window.kzCopy(c.value, btn).then(function(ok){ if(ok) done(); else selectText(el.children[1]); });
       });
       el.children[2].appendChild(btn);
       if(isMail){ var a = document.createElement("a"); a.href = c.url; a.className = "lb"; a.setAttribute("data-i18n", "write"); a.textContent = t("write"); a.style.marginLeft = "10px"; a.addEventListener("click", function(){ track("contact: " + c.label); }); el.children[2].appendChild(a); }
@@ -1022,5 +1022,6 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 <script src="/goth/lace.js"></script>
 <script src="/goth/sigil.js"></script>
 <script src="/goth/egg.js"></script>
+<script src="/toast.js"></script>
 </body>
 </html>

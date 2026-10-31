@@ -337,7 +337,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
     if(c.url){ a.href = c.url; if(!/^mailto:/.test(c.url)){ a.target = "_blank"; a.rel = "noopener"; } }
     else a.addEventListener("click", function(){
       var done = function(){ var t = a.textContent; a.textContent = root.lang === "uk" ? "Скопійовано" : "Copied"; setTimeout(function(){ a.textContent = t; }, 1600); };
-      try{ navigator.clipboard.writeText(c.value).then(done, function(){}); }catch(e){}
+      window.kzCopy(c.value, a).then(function(ok){ if(ok) done(); });
     });
     a.addEventListener("click", function(){ try{ window.goatcounter.count({ path: "order contact: " + label, title: "order contact: " + label, event: true }); }catch(e){} });
     acts.appendChild(a);
@@ -518,6 +518,7 @@ if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
 <script src="/goth/style.js"></script>
 <script src="/goth/sigil.js"></script>
 <script src="/goth/egg.js"></script>
+<script src="/toast.js"></script>
 <script src="/goth/gothsub.js"></script>
 </body>
 </html>

@@ -180,12 +180,13 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 
   <div class="head"><h2><span data-en>Collabs</span><span data-uk>Колаби</span></h2></div>
   <div class="collab">
-    <div class="tile"><span class="lb m"><span data-en>Credit me as</span><span data-uk>Вказуйте мене як</span></span><div class="v">Katsuyuki · youtube.com/@k4tsuyuki</div><button class="cp" type="button"><span data-en>Copy</span><span data-uk>Копіювати</span></button></div>
+    <div class="tile"><span class="lb m"><span data-en>Credit me as</span><span data-uk>Вказуйте мене як</span></span><div class="v">Katsuyuki · youtube.com/@k4tsuyuki</div><button class="cp" type="button" id="cpCredit"><span data-en>Copy</span><span data-uk>Копіювати</span></button></div>
     <div class="tile"><span class="lb m">YouTube / TikTok</span><div class="v"><span data-en>Tag @k4tsuyuki in the description. My logo is not for free use, ask first.</span><span data-uk>Позначте @k4tsuyuki в описі. Моє лого не для вільного використання, спершу запитайте.</span></div></div>
     <div class="tile"><span class="lb m"><span data-en>Write to</span><span data-uk>Пишіть</span></span><div class="v"><a href="mailto:katsuyukiadmin@gmail.com">katsuyukiadmin@gmail.com</a></div></div>
   </div>
 </main>
-<script>(function(){var e=document.querySelector(".age");if(!e)return;var b=new Date(e.dataset.born+"T00:00:00"),n=new Date(),a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;e.textContent=a;})();</script>
+<script>(function(){var e=document.querySelector(".age");if(!e)return;var b=new Date(e.dataset.born+"T00:00:00"),n=new Date(),a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;e.textContent=a;})();
+document.getElementById("cpCredit").addEventListener("click",function(){var b=this;window.kzCopy("Katsuyuki · youtube.com/@k4tsuyuki",b).then(function(ok){if(!ok)return;var t=b.innerHTML;b.innerHTML=document.documentElement.lang==="uk"?"Скопійовано":"Copied";setTimeout(function(){b.innerHTML=t},1600)});try{window.goatcounter.count({path:"copy: credit",title:"copy: credit",event:true})}catch(e){}});</script>
 <script>
 (function(){
   var root = document.documentElement;
@@ -231,6 +232,7 @@ if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
 <script src="/goth/style.js"></script>
 <script src="/goth/sigil.js"></script>
 <script src="/goth/egg.js"></script>
+<script src="/toast.js"></script>
 <script src="/goth/gothsub.js"></script>
 </body>
 </html>
