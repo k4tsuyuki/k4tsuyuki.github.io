@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<title>Katsuyuki</title>
+<title>Katsuyuki · Video editor</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -606,7 +606,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 
   /* ---- тексты ---- */
   var name = SITE.name || "Katsuyuki", yr = new Date().getFullYear();
-  document.title = name;
+  document.title = name + " · Video editor";
   txt("yearNow", yr); txt("copy", "© " + yr + " " + name);
   txt("sw", SITE.software);
   var yt = (SITE.contacts||[]).find(function(c){ return /youtube/i.test(c.label); });
@@ -625,6 +625,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     return q;
   };
   function thumb(w, img, onFail){
+    if(!img.alt && w.title) img.alt = w.title;
     if(!w.id){ onFail(); return; }
     var q = img.parentNode ? ytBlur(img, w.id) : null;
     if(q){ var f0 = onFail; onFail = function(){ q.remove(); f0(); }; }

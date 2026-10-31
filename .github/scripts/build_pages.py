@@ -89,7 +89,13 @@ def main():
         page = PAGE.format(title=e(w["title"]), desc=e(desc), url=f"{SITE}/w/{slug}/", image=e(image), slug=slug, iw=iw, ih=ih)
         (OUT / slug).mkdir(parents=True, exist_ok=True)
         (OUT / slug / "index.html").write_text(page, encoding="utf-8")
-    print("Pages:", len(works))
+    # sitemap.xml: main pages + every edit page, so search engines find them all
+    urls = [SITE + p for p in ("/", "/about/", "/order/", "/files/")] + [f"{SITE}/w/{w['slug']}/" for w in works]
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    xml += [f"  <url><loc>{html.escape(u)}</loc></url>" for u in urls]
+    xml.append("</urlset>")
+    (ROOT / "sitemap.xml").write_text("\n".join(xml) + "\n", encoding="utf-8")
+    print("Pages:", len(works), "| sitemap URLs:", len(urls))
 
 
 if __name__ == "__main__":
