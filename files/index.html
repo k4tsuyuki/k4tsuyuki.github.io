@@ -552,17 +552,18 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) })
       .then(function(r){ return r.json(); }).then(function(j){ if(!j.ok || !j.url) throw new Error(j.error || "no link"); return j; });
   }
-  function done(url){
+  function done(url, j){
     try{ localStorage.setItem("mail", email()); }catch(e){ }
     $("bLink").href = url; $("bIn").hidden = true; $("bDone").hidden = false;
-    $("bDoneTxt").textContent = (uk() ? "Копію також надіслано на " : "A copy was also sent to ") + email() + ".";
+    var lim = j && j.hours ? (uk() ? "Посилання працює " + j.hours + " год. і відкривається " + j.uses + " рази. " : "The link works for " + j.hours + " hours and opens " + j.uses + " times. ") : "";
+    $("bDoneTxt").textContent = lim + (uk() ? "Копію також надіслано на " : "A copy was also sent to ") + email() + ".";
   }
   $("bFree").addEventListener("click", function(){
     if(!ENDPOINT){ msg(uk() ? "Завантаження ще налаштовується." : "Downloads are being set up.", true); return; }
     if(!goodMail()){ needMail(); return; }
     var b = this; b.disabled = true; msg(uk() ? "Готую файл…" : "Preparing the file…");
-    call({ action: "free", id: cur.id, email: email(), lang: uk() ? "UA" : "EN" }).then(function(j){ track("files: download " + cur.title); done(j.url); })
-      .catch(function(){ msg(uk() ? "Не вдалося. Спробуйте ще раз." : "Something went wrong. Please try again.", true); })
+    call({ action: "free", id: cur.id, email: email(), lang: uk() ? "UA" : "EN" }).then(function(j){ track("files: download " + cur.title); done(j.url, j); })
+      .catch(function(err){ msg(String(err && err.message) === "limit" ? (uk() ? "Забагато завантажень. Спробуйте пізніше." : "Too many downloads. Please try again later.") : (uk() ? "Не вдалося. Спробуйте ще раз." : "Something went wrong. Please try again."), true); })
       .then(function(){ b.disabled = false; });
   });
 
@@ -603,7 +604,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
           return actions.order.capture().then(function(o){
             track("files: paid " + p.title);
             return call({ action: "sale", id: p.id, orderID: o.id, email: email(), lang: uk() ? "UA" : "EN" });
-          }).then(function(j){ done(j.url); })
+          }).then(function(j){ done(j.url, j); })
             .catch(function(){ msg(uk() ? "Оплата пройшла, але файл не відкрився. Напишіть мені, я надішлю його вручну." : "Paid, but the file didn't open. Write to me and I'll send it by hand.", true); });
         },
         onError: function(){ msg(uk() ? "PayPal не відповів. Спробуйте ще раз." : "PayPal didn't respond. Please try again.", true); }

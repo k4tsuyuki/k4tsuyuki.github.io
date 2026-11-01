@@ -356,6 +356,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   /* минимальный срок каждого формата в днях; эдиты делаются по очереди, поэтому дни складываются */
   var DAYS = { short:2, standard:3, long:7, choice:7 };
   var freeFrom = "";   /* с какого дня я свободен (очередь из Google Таблицы, когда подключён ENDPOINT) */
+  var formKey = "";    /* ключ от Apps Script: без него заявка не принимается (защита от ботов) */
   var root = document.documentElement, box = document.getElementById("orderBox"), form = document.getElementById("orderForm");
   var uk = function(){ return root.lang === "uk"; };
   var qty = { short:0, standard:0, long:0, choice:0 };
@@ -419,9 +420,10 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   }
   function queue(){
     if(!ENDPOINT) return;
-    fetch(ENDPOINT + "?q=queue").then(function(r){ return r.json(); })
-      .then(function(j){ if(j && /^\d{4}-\d\d-\d\d$/.test(j.free || "")){ freeFrom = j.free; syncDeadline(); } }).catch(function(){});
+    return fetch(ENDPOINT + "?q=queue").then(function(r){ return r.json(); })
+      .then(function(j){ if(j && j.t) formKey = j.t; if(j && /^\d{4}-\d\d-\d\d$/.test(j.free || "")){ freeFrom = j.free; syncDeadline(); } }).catch(function(){});
   }
+  queue();
   function draw(){
     briefs(); syncDeadline();
     document.querySelectorAll(".ci").forEach(function(r){ var k = r.getAttribute("data-k"); r.querySelector("b").textContent = qty[k]; r.classList.toggle("on", qty[k] > 0); });
@@ -462,6 +464,11 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   document.getElementById("langBtn").addEventListener("click", placeholders);
 
   function viaScript(o){
+    /* ключа ещё нет (страница не успела его получить): берём и ждём пару секунд, как человек */
+    if(!formKey) return queue().then(function(){ return new Promise(function(ok){ setTimeout(ok, 3500); }); }).then(function(){ o.t = formKey; return send(o); });
+    o.t = formKey; return send(o);
+  }
+  function send(o){
     /* text/plain: так браузер не делает лишний предварительный запрос, Apps Script это принимает */
     return fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(o) })
       .then(function(r){ return r.json(); }).then(function(j){ if(!j.ok) throw new Error(j.error); });
@@ -505,7 +512,13 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
         form.hidden = true; document.getElementById("fDone").hidden = false;
         try{ window.goatcounter.count({ path: "order form: sent", title: "order form: sent", event: true }); }catch(e){}
       })
-      .catch(function(){ msg(uk() ? "Не вдалося надіслати. Спробуйте ще раз або напишіть на пошту." : "Couldn't send. Try again or write to my email.", true); })
+      .catch(function(err){
+        var c = String(err && err.message);
+        if(c === "reload"){ formKey = ""; queue(); }
+        msg(c === "limit" ? (uk() ? "Ви вже надіслали кілька замовлень сьогодні. Напишіть мені на пошту." : "You've already sent several orders today. Please write to my email.")
+          : c === "busy" ? (uk() ? "Забагато заявок зараз. Спробуйте за годину або напишіть на пошту." : "Too many orders right now. Try again in an hour or write to my email.")
+          : (uk() ? "Не вдалося надіслати. Спробуйте ще раз або напишіть на пошту." : "Couldn't send. Try again or write to my email."), true);
+      })
       .then(function(){ btn.disabled = false; });
   });
 })();
