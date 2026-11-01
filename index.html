@@ -223,6 +223,15 @@ img.lz.lz.ok{opacity:1}
 a.c-row:hover{padding-left:10px}
 .c-row .v{font-size:clamp(28px,5.4vw,84px);line-height:1;letter-spacing:-.03em;overflow-wrap:anywhere}
 .copy{border:1px solid var(--hair);border-radius:999px;padding:6px 12px}
+.subs{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px 32px;padding-block:clamp(16px,2.2vw,26px);border-bottom:1px solid var(--hair)}
+.subs .st{font-size:clamp(20px,2.2vw,30px);letter-spacing:-.02em;line-height:1.1;margin-top:6px}
+.subs form{display:flex;gap:8px;flex:1;max-width:460px;min-width:min(100%,280px)}
+.subs input{flex:1;min-width:0;font:inherit;font-size:16px;color:var(--paper);background:transparent;border:1px solid var(--hair);border-radius:999px;padding:0 16px;height:36px;outline:none}
+.subs input:focus{border-color:var(--paper)}
+.subs button{border:1px solid var(--paper);border-radius:999px;padding:0 16px;height:36px;background:var(--paper);color:var(--void);white-space:nowrap}
+.subs button:disabled{opacity:.5}
+.subs .sm{flex-basis:100%;text-align:right;color:var(--ash);min-height:0}
+.subs .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .copy:hover{border-color:var(--paper)}
 
 footer{border-top:1px solid var(--hair);padding-block:24px 36px}
@@ -453,6 +462,11 @@ footer .jp{font-size:24px}
   <section id="contact">
     <div class="wrap">
       <div class="s-head"><div><div class="lb" data-i18n="collab">Commissions / Collabs</div><h2><span data-i18n="h_contact">Contact</span> <span class="jp">連絡</span></h2></div></div>
+      <div class="subs" id="subs" hidden>
+        <div><div class="lb m" data-i18n="sub_l">New edits by email</div><div class="st" data-i18n="sub_t">Get a letter when a new edit is out</div></div>
+        <form id="subForm" novalidate><input type="email" id="subMail" autocomplete="email" inputmode="email" placeholder="name@mail.com" maxlength="120" aria-label="Email"><input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><button class="lb" type="submit" data-i18n="sub_b">Subscribe</button></form>
+        <div class="sm lb" id="subMsg"></div>
+      </div>
       <div class="rows" id="contacts"></div>
     </div>
   </section>
@@ -525,12 +539,14 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     en: { role:"Video editor", nav_works:"Works", nav_contact:"Contact", nav_news:"News", h_news:"News", news_sub:"Updates", news_more:"Show more", open_link:"Open ↗︎", latest:"Latest", software:"Software",
           head:"Katsuyuki / video editor", works:"Works", see_all:"See all ↓︎", contact:"Contact", click:"Click to watch",
           h_works:"Works", h_contact:"Contact", collab:"Commissions / Collabs", top:"Back to top ↑︎", close:"Close ✕",
+          sub_l:"New edits by email", sub_t:"Get a letter when a new edit is out", sub_b:"Subscribe", sub_ok:"Check your email to confirm", sub_already:"You're already subscribed", sub_bad:"Enter a valid email", sub_err:"Couldn't subscribe. Try again later",
           watch:"Watch", no:"No.", copy:"Copy", copied:"Copied", write:"Write ↗︎", c_Email:"Email",
           nolink:"This work has no video link yet.", noload:"The video can't load here.", noembed:"This video can't be embedded.",
           again:"Watch again", upnext:"More edits", open:"Open for commissions", recent:"Recent", onyt:"Watch on YouTube ↗︎", lang_to:"EN", lang_aria:"Switch to Ukrainian", nav_order:"Order", nav_files:"PFS", nav_about:"About", nt_new:"New post", nt_read:"Read", all:"All", more:"All edits ↓︎", more2:"More ↓︎", less:"Hide ↑︎", order_arrow:"Order an edit →", light:"Light theme", dark:"Dark theme" },
     uk: { role:"Відеомонтажер", nav_works:"Роботи", nav_contact:"Контакти", nav_news:"Новини", h_news:"Новини", news_sub:"Оновлення", news_more:"Показати ще", open_link:"Відкрити ↗︎", latest:"Остання робота", software:"Софт",
           head:"Katsuyuki / відеомонтажер", works:"Роботи", see_all:"Усі роботи ↓︎", contact:"Контакти", click:"Натисни, щоб дивитися",
           h_works:"Роботи", h_contact:"Контакти", collab:"Замовлення / колаби", top:"Нагору ↑︎", close:"Закрити ✕",
+          sub_l:"Нові едіти на пошту", sub_t:"Отримайте лист, коли вийде новий едіт", sub_b:"Підписатися", sub_ok:"Перевірте пошту, щоб підтвердити", sub_already:"Ви вже підписані", sub_bad:"Вкажіть правильну пошту", sub_err:"Не вдалося підписатися. Спробуйте пізніше",
           watch:"Дивитися", no:"№", copy:"Копіювати", copied:"Скопійовано", write:"Написати ↗︎", c_Email:"Пошта",
           nolink:"У цієї роботи ще немає посилання.", noload:"Відео тут не завантажилось.", noembed:"Це відео не можна вбудувати.",
           again:"Ще раз", upnext:"Інші едіти", open:"Відкритий до замовлень", recent:"Нещодавні", onyt:"Дивитися на YouTube ↗︎", lang_to:"УКР", lang_aria:"Перейти на англійську", nav_order:"Замовити", nav_files:"PFS", nav_about:"Про мене", nt_new:"Нова новина", nt_read:"Читати", all:"Усі", more:"Усі едіти ↓︎", more2:"Ще ↓︎", less:"Сховати ↑︎", order_arrow:"Замовити едіт →", light:"Світла тема", dark:"Темна тема" }
@@ -807,6 +823,28 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   } else { $("navNews").remove(); }
 
   /* ---- контакты ---- */
+  /* подписка на новые эдиты. SUBS_LIVE: false — блок виден только по ?test или ?demo */
+  (function(){
+    var SUBS_LIVE = false, ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
+    var demo = /[?&]demo\b/.test(location.search), box = $("subs"), key = "";
+    if(!box || !(SUBS_LIVE || demo || /[?&]test\b/.test(location.search))) return;
+    box.hidden = false;
+    if(!demo) fetch(ENDPOINT + "?q=key").then(function(r){ return r.json(); }).then(function(j){ key = j.t || ""; }).catch(function(){});
+    var form = $("subForm"), inp = $("subMail"), m = $("subMsg");
+    function say(k){ m.setAttribute("data-i18n", k); m.textContent = t(k); }
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var v = inp.value.trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ say("sub_bad"); inp.focus(); return; }
+      var b = form.querySelector("button"); b.disabled = true;
+      var go = demo ? new Promise(function(ok){ setTimeout(function(){ ok({ ok: true }); }, 400); })
+        : fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "subscribe", email: v, lang: lang === "uk" ? "UA" : "EN", t: key, website: form.website.value }) }).then(function(r){ return r.json(); });
+      go.then(function(j){ if(!j.ok) throw 0; say(j.already ? "sub_already" : "sub_ok"); inp.value = ""; track("subscribe"); })
+        .catch(function(){ say("sub_err"); })
+        .then(function(){ b.disabled = false; });
+    });
+  })();
+
   (SITE.contacts||[]).forEach(function(c){
     var isMail = /^mailto:/.test(c.url||"");
     var el = document.createElement(c.url && !isMail ? "a" : "div");

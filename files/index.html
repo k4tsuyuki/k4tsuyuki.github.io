@@ -145,6 +145,11 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
    В тёмной теме блок инвертируется: фон и кнопки становятся чёрными, текст светлым, синий цвет сохраняется. */
 :root:not([data-theme="light"]) #pp iframe{filter:invert(1) hue-rotate(180deg)}
 .b-msg{color:var(--ash)}
+.b-code{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-height:20px}
+.b-code .lnk{color:var(--ash);text-decoration:underline;text-underline-offset:3px}
+.b-code .amt{flex:1;min-width:150px}.b-code .amt input{font-size:15px;padding:7px 12px;text-transform:uppercase}
+.b-code .ok{color:var(--paper)}
+.b-files{display:grid;gap:8px}.b-files a{justify-content:space-between}
 .b-msg.err{color:var(--paper)}
 .b-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 @media (max-width:760px){
@@ -248,6 +253,10 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
       <span class="amt"><b>€</b><input type="number" inputmode="decimal" id="bAmount" min="0" step="0.5"></span></label>
     <label class="field lb"><span><span data-en>Your email</span><span data-uk>Ваша пошта</span></span>
       <span class="amt"><input type="email" id="bEmail" autocomplete="email" inputmode="email" placeholder="name@mail.com" maxlength="120"></span></label>
+    <div class="b-code" id="bCodeBox"><button class="lnk lb" type="button" id="bCodeOpen"><span data-en>Have a code?</span><span data-uk>Є промокод?</span></button>
+      <span class="amt" id="bCodeRow" hidden><input type="text" id="bCode" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Promo code"></span>
+      <button class="btn lb" type="button" id="bCodeApply" hidden><span data-en>Apply</span><span data-uk>Застосувати</span></button>
+      <span class="lb m" id="bCodeMsg"></span></div>
     <div id="pp" hidden></div>
     <div class="b-foot"><span class="b-msg lb" id="bMsg"></span><button class="btn solid lb" type="button" id="bFree" hidden><span data-en>Download</span><span data-uk>Завантажити</span></button></div>
   </div>
@@ -256,6 +265,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     <h2><span data-en>Your file is ready</span><span data-uk>Ваш файл готовий</span></h2>
     <p class="m" style="margin:0" id="bDoneTxt"></p>
     <div><a class="btn solid lb" id="bLink" href="#" target="_blank" rel="noopener"><span data-en>Download ↓</span><span data-uk>Завантажити ↓</span></a></div>
+    <div class="b-files" id="bFiles" hidden></div>
   </div>
 </dialog>
 
@@ -430,17 +440,28 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 
   /* окно покупки */
   function msg(t, err){ $("bMsg").textContent = t || ""; $("bMsg").classList.toggle("err", !!err); }
+  /* промокод: disc = { code, pct, price } после проверки на сервере */
+  var disc = null;
+  /* CODES_LIVE: false — поле промокода видно только по ?test или ?demo (в ?demo любой код даёт −20%, ничего не покупается) */
+  var CODES_LIVE = false, DEMO = /[?&]demo\b/.test(location.search);
+  function need(){ return disc ? disc.price : cur.price; }
+  function showPrice(){
+    $("bPrice").innerHTML = disc ? '<span class="old">' + eur(cur.price) + '</span>' + eur(disc.price) + (cur.pwyw ? "+" : "") : priceText(cur);
+    $("bAmount").min = need(); $("bMin").innerHTML = need() ? both("min ", "мін. ") + eur(need()) : both("0 = free", "0 = безкоштовно");
+    if(cur.pwyw && amount() < need()) $("bAmount").value = need() || "";
+  }
   function amount(){ var v = parseFloat(String($("bAmount").value).replace(",", ".")); return isNaN(v) ? 0 : Math.round(v * 100) / 100; }
   function email(){ return String($("bEmail").value).trim(); }
   function goodMail(){ return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email()); }
   function needMail(){ msg(uk() ? "Вкажіть пошту, туди прийде копія файлу." : "Enter your email, a copy of the file will be sent there.", true); $("bEmail").focus(); }
   function mode(){
     /* 0 € — кнопка Download, от 1 € — PayPal */
-    var a = cur.pwyw ? amount() : cur.price, free = a <= 0 && !cur.price;
+    var a = cur.pwyw ? amount() : need(), free = a <= 0 && !need();
     $("bFree").hidden = !free; $("pp").hidden = free || !PAYPAL_CLIENT_ID;
-    if(cur.pwyw && cur.price && a < cur.price) msg((uk() ? "Мінімум " : "Minimum ") + eur(cur.price), true);
+    if(cur.pwyw && need() && a < need()) msg((uk() ? "Мінімум " : "Minimum ") + eur(need()), true);
     else if(!free && !PAYPAL_CLIENT_ID) msg(uk() ? "Оплата ще налаштовується. Напишіть мені на пошту." : "Payments are being set up. Please write to my email.");
     else msg("");
+    if(DEMO && disc){ $("pp").hidden = true; msg(uk() ? "Демо: оплата вимкнена" : "Demo: payment is off"); }
   }
   /* видео эдита для превью: из works.js (у работы file: "id") или из обложки yt:ID */
   function vidOf(p){
@@ -522,7 +543,9 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   function open(p){
     cur = p; track("files: open " + p.title);
     $("bIn").hidden = false; $("bDone").hidden = true;
-    $("bKind").innerHTML = isPack(p) ? both("Pack", "Пак") : both("Project file", "Проєктний файл");
+    $("bKind").innerHTML = p.bundle ? both("Bundle · " + p.bundle.length + " files", "Набір · " + p.bundle.length + " файлів") : isPack(p) ? both("Pack", "Пак") : both("Project file", "Проєктний файл");
+    disc = null; $("bCode").value = ""; $("bCodeMsg").textContent = ""; $("bCodeRow").hidden = $("bCodeApply").hidden = true; $("bCodeOpen").hidden = false;
+    $("bCodeBox").hidden = !p.price || !ENDPOINT || !(CODES_LIVE || DEMO || /[?&]test\b/.test(location.search));
     $("bCover").outerHTML = cover(p, "bCover"); preview(p);
     $("bTitle").textContent = p.title; $("bTags").innerHTML = tags(p);
     $("bPrice").innerHTML = priceText(p);
@@ -555,6 +578,9 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   function done(url, j){
     try{ localStorage.setItem("mail", email()); }catch(e){ }
     $("bLink").href = url; $("bIn").hidden = true; $("bDone").hidden = false;
+    var many = j && j.files && j.files.length > 1;
+    $("bLink").parentNode.hidden = many; $("bFiles").hidden = !many; $("bFiles").innerHTML = "";
+    if(many) j.files.forEach(function(f){ var a = document.createElement("a"); a.className = "btn lb"; a.href = f.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = f.title + " ↓"; $("bFiles").appendChild(a); });
     var lim = j && j.hours ? (uk() ? "Посилання працює " + j.hours + " год. і відкривається " + j.uses + " рази. " : "The link works for " + j.hours + " hours and opens " + j.uses + " times. ") : "";
     $("bDoneTxt").textContent = lim + (uk() ? "Копію також надіслано на " : "A copy was also sent to ") + email() + ".";
   }
@@ -562,10 +588,29 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
     if(!ENDPOINT){ msg(uk() ? "Завантаження ще налаштовується." : "Downloads are being set up.", true); return; }
     if(!goodMail()){ needMail(); return; }
     var b = this; b.disabled = true; msg(uk() ? "Готую файл…" : "Preparing the file…");
-    call({ action: "free", id: cur.id, email: email(), lang: uk() ? "UA" : "EN" }).then(function(j){ track("files: download " + cur.title); done(j.url, j); })
+    call({ action: "free", id: cur.id, email: email(), code: disc ? disc.code : "", lang: uk() ? "UA" : "EN" }).then(function(j){ track("files: download " + cur.title); done(j.url, j); })
       .catch(function(err){ msg(String(err && err.message) === "limit" ? (uk() ? "Забагато завантажень. Спробуйте пізніше." : "Too many downloads. Please try again later.") : (uk() ? "Не вдалося. Спробуйте ще раз." : "Something went wrong. Please try again."), true); })
       .then(function(){ b.disabled = false; });
   });
+
+  /* промокод */
+  $("bCodeOpen").addEventListener("click", function(){ this.hidden = true; $("bCodeRow").hidden = $("bCodeApply").hidden = false; $("bCode").focus(); });
+  function applyCode(){
+    var c = String($("bCode").value).trim(), m = $("bCodeMsg"), b = $("bCodeApply");
+    if(!c) return;
+    b.disabled = true; m.classList.remove("ok"); m.textContent = uk() ? "Перевіряю…" : "Checking…";
+    (DEMO ? new Promise(function(ok){ setTimeout(function(){ ok({ json: function(){ return { ok: true, code: c.toUpperCase(), pct: 20, price: Math.round(cur.price * 80) / 100 }; } }); }, 300); }) : fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "code", id: cur.id, code: c }) }))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if(!j.ok){ disc = null; m.textContent = uk() ? "Код не діє" : "This code doesn't work"; }
+        else { disc = { code: j.code, pct: j.pct, price: j.price }; m.classList.add("ok"); m.textContent = "✓ −" + j.pct + "%"; track("files: code " + j.code); }
+        showPrice(); mode();
+      })
+      .catch(function(){ m.textContent = uk() ? "Не вдалося перевірити" : "Couldn't check the code"; })
+      .then(function(){ b.disabled = false; });
+  }
+  $("bCodeApply").addEventListener("click", applyCode);
+  $("bCode").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); applyCode(); } });
 
   /* PayPal: кнопка появляется только когда вставлен PAYPAL_CLIENT_ID */
   var sdk = null;
@@ -587,15 +632,15 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
       window.paypal.Buttons({
         style: { layout: "vertical", shape: "pill", color: root.getAttribute("data-theme") === "light" ? "black" : "white", label: "pay", height: 44 },
         onClick: function(d, actions){
-          var a = p.pwyw ? amount() : p.price;
-          if(a < p.price || a <= 0){ mode(); return actions.reject(); }
+          var a = p.pwyw ? amount() : need();
+          if(a < need() || a <= 0){ mode(); return actions.reject(); }
           if(!goodMail()){ needMail(); return actions.reject(); }
           return actions.resolve();
         },
         createOrder: function(d, actions){
-          var a = p.pwyw ? amount() : p.price;
+          var a = p.pwyw ? amount() : need();
           return actions.order.create({
-            purchase_units: [{ amount: { currency_code: "EUR", value: a.toFixed(2) }, description: p.title.slice(0, 120), custom_id: p.id }],
+            purchase_units: [{ amount: { currency_code: "EUR", value: a.toFixed(2) }, description: p.title.slice(0, 120), custom_id: p.id + (disc ? "|" + disc.code : "") }],
             application_context: { shipping_preference: "NO_SHIPPING", brand_name: "Katsuyuki" }
           });
         },
