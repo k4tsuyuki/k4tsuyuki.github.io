@@ -30,6 +30,9 @@ PAGE = """<!doctype html>
 <meta property="og:image:width" content="{iw}">
 <meta property="og:image:height" content="{ih}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
+<meta name="twitter:description" content="{desc}">
+<meta name="twitter:image" content="{image}">
 <meta name="theme-color" content="#060606">
 <meta http-equiv="refresh" content="0; url=/?w={slug}">
 <style>html{{background:#060606}}</style>

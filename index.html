@@ -8,25 +8,30 @@
 <script>try{if(sessionStorage.getItem("kz-style")==="goth")document.documentElement.setAttribute("data-style","goth");localStorage.removeItem("kz-style")}catch(e){}</script>
 <script>/* пока не показалась заставка с логотипом (первое открытие во вкладке), сайт скрыт, чтобы не мелькал */try{if(!sessionStorage.getItem("kz-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("kzi");setTimeout(function(){document.documentElement.classList.remove("kzi")},4000)}}catch(e){}</script>
 <style>html.kzi,html.kzi body{background:#050505}html.kzi body>*{visibility:hidden}</style>
-</head>
-<body>
-
-<title>Katsuyuki · Video editor</title>
+<title>Katsuyuki · Video editor, AMV and MMV edits</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <meta name="google-site-verification" content="ojnnUZZpVo94NGaPhKpwAY3PpiS6MPvEmiTzT38b-fI" />
-<meta name="description" content="Katsuyuki: anime edits, AMV and manga animation.">
+<meta name="description" content="Katsuyuki, video editor from Ukraine based in Berlin. AMV and MMV edits made in After Effects, commissions and project files.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Katsuyuki">
-<meta property="og:title" content="Katsuyuki">
+<meta property="og:title" content="Katsuyuki · Video editor, AMV and MMV edits">
 <meta property="og:description" content="Video editor. AMV and MMV edits.">
 <meta property="og:url" content="https://katsuyuki.studio/">
 <meta property="og:image" content="https://katsuyuki.studio/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://katsuyuki.studio/">
+<link rel="alternate" hreflang="en" href="https://katsuyuki.studio/">
+<link rel="alternate" hreflang="x-default" href="https://katsuyuki.studio/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="twitter:title" content="Katsuyuki · Video editor, AMV and MMV edits">
+<meta name="twitter:description" content="Katsuyuki, video editor from Ukraine based in Berlin. AMV and MMV edits made in After Effects, commissions and project files.">
+<meta name="twitter:image" content="https://katsuyuki.studio/img/og.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://katsuyuki.studio/#me","name":"Katsuyuki","url":"https://katsuyuki.studio/","jobTitle":"Video editor","image":"https://katsuyuki.studio/img/avatar.png","email":"mailto:katsuyukiadmin@gmail.com","sameAs":["https://www.youtube.com/@k4tsuyuki","https://www.instagram.com/koyomifanboy/","https://t.me/katsuyuk1","https://steamcommunity.com/id/k4tsuyuki/","https://payhip.com/koyomifanboy"]},{"@type":"WebSite","@id":"https://katsuyuki.studio/#site","url":"https://katsuyuki.studio/","name":"Katsuyuki","publisher":{"@id":"https://katsuyuki.studio/#me"},"inLanguage":["en","uk"]}]}</script>
 <meta name="theme-color" content="#060606">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -129,6 +134,7 @@ html.vt-theme{transition:background-color .7s cubic-bezier(.65,0,.25,1)}
 .grow{flex:1}
 .name{font-weight:400;font-size:clamp(64px,10.4vw,168px);line-height:.86;letter-spacing:-.035em;margin:0;overflow-wrap:anywhere}
 .name{display:flex;justify-content:center}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .name img{display:block;width:min(82%,600px);margin-inline:auto;height:auto;animation:rise 1.1s cubic-bezier(.2,.7,.1,1) both}
 .top .logo{height:26px;width:auto}
 @keyframes rise{from{transform:translateY(18%);opacity:0}to{transform:none;opacity:1}}
@@ -388,6 +394,8 @@ footer .jp{font-size:24px}
 .spread{display:none!important}
 #dh:empty{height:calc(100svh - 58px);min-height:520px;max-height:900px;background:#000}
 </style>
+</head>
+<body>
 
 <header class="top">
   <div class="wrap lb">
@@ -427,7 +435,7 @@ footer .jp{font-size:24px}
       </div>
       <div class="grow"></div>
       <div class="hero-mark">
-        <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"></h1>
+        <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt=""><span class="vh">Katsuyuki · Video editor</span></h1>
       </div>
       <div class="grow"></div>
       <div class="lb m" data-i18n="recent">Recent</div>
@@ -622,7 +630,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
 
   /* ---- тексты ---- */
   var name = SITE.name || "Katsuyuki", yr = new Date().getFullYear();
-  document.title = name + " · Video editor";
+  document.title = name + " · Video editor, AMV and MMV edits";
   txt("yearNow", yr); txt("copy", "© " + yr + " " + name);
   txt("sw", SITE.software);
   var yt = (SITE.contacts||[]).find(function(c){ return /youtube/i.test(c.label); });
