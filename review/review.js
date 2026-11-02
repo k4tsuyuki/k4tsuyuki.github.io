@@ -2,7 +2,7 @@
    Клиент смотрит черновик (YouTube "по ссылке"), оставляет комментарии к секундам и нажимает Approve.
    LIVE: false — для обычных посетителей висит плашка "техработы". Проверка: ?test (настоящие данные) или ?demo (пример). */
 (function(){
-  var LIVE = false;
+  var LIVE = true;
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
   var q = new URLSearchParams(location.search), key = q.get("k") || "", DEMO = q.has("demo"), TEST = q.has("test");
   var root = document.documentElement, app = document.getElementById("app");
