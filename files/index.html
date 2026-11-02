@@ -443,7 +443,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
   /* промокод: disc = { code, pct, price } после проверки на сервере */
   var disc = null;
   /* CODES_LIVE: false — поле промокода видно только по ?test или ?demo (в ?demo любой код даёт −20%, ничего не покупается) */
-  var CODES_LIVE = false, DEMO = /[?&]demo\b/.test(location.search);
+  var CODES_LIVE = true, DEMO = /[?&]demo\b/.test(location.search);
   function need(){ return disc ? disc.price : cur.price; }
   function showPrice(){
     $("bPrice").innerHTML = disc ? '<span class="old">' + eur(cur.price) + '</span>' + eur(disc.price) + (cur.pwyw ? "+" : "") : priceText(cur);

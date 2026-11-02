@@ -825,7 +825,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   /* ---- контакты ---- */
   /* подписка на новые эдиты. SUBS_LIVE: false — блок виден только по ?test или ?demo */
   (function(){
-    var SUBS_LIVE = false, ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
+    var SUBS_LIVE = true, ENDPOINT = "https://script.google.com/macros/s/AKfycbz8BB4JviJmS3QEM2PcfzHuJt7190Vrx1Auoysb2Bj_WjxrKzrVK6FFg8vjXuT_uUM/exec";
     var demo = /[?&]demo\b/.test(location.search), box = $("subs"), key = "";
     if(!box || !(SUBS_LIVE || demo || /[?&]test\b/.test(location.search))) return;
     box.hidden = false;
