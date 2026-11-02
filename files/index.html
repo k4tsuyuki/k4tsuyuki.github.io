@@ -5,18 +5,26 @@
 <script>try{if(sessionStorage.getItem("kz-style")==="goth")document.documentElement.setAttribute("data-style","goth");localStorage.removeItem("kz-style")}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PFS · Katsuyuki</title>
+<title>PFS · After Effects project files · Katsuyuki</title>
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-<meta name="description" content="After Effects project files and packs by Katsuyuki.">
+<meta name="description" content="After Effects project files and packs by Katsuyuki, video editor. Free and paid files, payment via PayPal.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Katsuyuki">
-<meta property="og:title" content="PFS · Katsuyuki">
+<meta property="og:title" content="PFS · After Effects project files · Katsuyuki">
 <meta property="og:description" content="After Effects project files and packs. Payment via PayPal.">
 <meta property="og:url" content="https://katsuyuki.studio/files/">
 <meta property="og:image" content="https://katsuyuki.studio/img/og-pfs.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://katsuyuki.studio/files/">
+<link rel="alternate" hreflang="en" href="https://katsuyuki.studio/files/">
+<link rel="alternate" hreflang="x-default" href="https://katsuyuki.studio/files/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="twitter:title" content="PFS · After Effects project files · Katsuyuki">
+<meta name="twitter:description" content="After Effects project files and packs by Katsuyuki, video editor. Free and paid files, payment via PayPal.">
+<meta name="twitter:image" content="https://katsuyuki.studio/img/og-pfs.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://katsuyuki.studio/#me","name":"Katsuyuki","url":"https://katsuyuki.studio/","jobTitle":"Video editor","image":"https://katsuyuki.studio/img/avatar.png","email":"mailto:katsuyukiadmin@gmail.com","sameAs":["https://www.youtube.com/@k4tsuyuki","https://www.instagram.com/koyomifanboy/","https://t.me/katsuyuk1","https://steamcommunity.com/id/k4tsuyuki/","https://payhip.com/koyomifanboy"]},{"@type":"CollectionPage","@id":"https://katsuyuki.studio/files/#page","url":"https://katsuyuki.studio/files/","name":"PFS · After Effects project files","description":"After Effects project files and packs by Katsuyuki.","author":{"@id":"https://katsuyuki.studio/#me"},"isPartOf":{"@id":"https://katsuyuki.studio/#site"}}]}</script>
 <meta name="theme-color" content="#060606">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,6 +68,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tgl svg{width:12px;height:12px}
 
 main{padding-block:clamp(28px,5vw,64px) clamp(48px,7vw,96px)}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 h1{font-weight:400;font-size:clamp(56px,10vw,150px);line-height:.85;letter-spacing:-.04em;margin:12px 0 18px}
 .intro{display:flex;justify-content:space-between;gap:16px 24px;align-items:flex-end;flex-wrap:wrap;border-bottom:1px solid var(--hair);padding-bottom:20px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -227,7 +236,7 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 
 <main class="wrap">
   <div class="lb m"><span data-en>Project files / Packs</span><span data-uk>Проєктні файли / Паки</span></div>
-  <h1>PFS</h1>
+  <h1>PFS<span class="vh"> · After Effects project files and packs</span></h1>
   <div class="intro">
     <div class="chips lb" id="chips">
       <button class="chip on" type="button" data-f="all"><span data-en>All</span><span data-uk>Усі</span></button>
@@ -270,13 +279,28 @@ dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px);-webkit-bac
 </dialog>
 
 <script src="/shop.js"></script>
+<script>
+(function(){ try{
+  var S = "https://katsuyuki.studio/", L = (window.SHOP || []).map(function(p, i){
+    var yt = /^yt:/.test(p.cover || "") ? p.cover.slice(3) : "", img = !p.cover ? "" : yt ? S + "img/covers/" + yt + ".jpg" : S + p.cover;
+    var it = { "@type": "Product", "name": p.title, "url": S + "files/?f=" + p.id, "brand": { "@type": "Brand", "name": "Katsuyuki" },
+      "offers": { "@type": "Offer", "price": String(p.price || 0), "priceCurrency": "EUR", "availability": "https://schema.org/InStock", "url": S + "files/?f=" + p.id } };
+    if(img) it.image = img;
+    return { "@type": "ListItem", "position": i + 1, "item": it };
+  });
+  if(!L.length) return;
+  var el = document.createElement("script"); el.type = "application/ld+json";
+  el.textContent = JSON.stringify({ "@context": "https://schema.org", "@type": "ItemList", "name": "PFS", "numberOfItems": L.length, "itemListElement": L });
+  document.head.appendChild(el);
+}catch(e){} })();
+</script>
 <script src="/arrows.js" defer></script>
 <script src="/works.js"></script>
 <script>
 (function(){
   var root = document.documentElement;
   function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
-  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = "PFS" + " · Katsuyuki"; }
+  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = "PFS · After Effects project files · Katsuyuki"; }
   function morph(fn, cls, after){
     var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     if(!document.startViewTransition || reduce){ fn(); return; }

@@ -5,18 +5,26 @@
 <script>try{if(sessionStorage.getItem("kz-style")==="goth")document.documentElement.setAttribute("data-style","goth");localStorage.removeItem("kz-style")}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Order an edit · Katsuyuki</title>
+<title>Order an edit · Video editor · Katsuyuki</title>
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-<meta name="description" content="Order an edit from Katsuyuki: short, standard, long or your own idea.">
+<meta name="description" content="Order an edit from Katsuyuki: short, standard, long or your own idea. From €20, payment via PayPal, 50% upfront.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Katsuyuki">
-<meta property="og:title" content="Order an edit · Katsuyuki">
+<meta property="og:title" content="Order an edit · Video editor · Katsuyuki">
 <meta property="og:description" content="Short €20 · Standard €50 · Long €150 · Your choice €50–300 · PayPal, 50% upfront">
 <meta property="og:url" content="https://katsuyuki.studio/order/">
 <meta property="og:image" content="https://katsuyuki.studio/img/og-order.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://katsuyuki.studio/order/">
+<link rel="alternate" hreflang="en" href="https://katsuyuki.studio/order/">
+<link rel="alternate" hreflang="x-default" href="https://katsuyuki.studio/order/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="twitter:title" content="Order an edit · Video editor · Katsuyuki">
+<meta name="twitter:description" content="Order an edit from Katsuyuki: short, standard, long or your own idea. From €20, payment via PayPal, 50% upfront.">
+<meta name="twitter:image" content="https://katsuyuki.studio/img/og-order.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://katsuyuki.studio/#me","name":"Katsuyuki","url":"https://katsuyuki.studio/","jobTitle":"Video editor","image":"https://katsuyuki.studio/img/avatar.png","email":"mailto:katsuyukiadmin@gmail.com","sameAs":["https://www.youtube.com/@k4tsuyuki","https://www.instagram.com/koyomifanboy/","https://t.me/katsuyuk1","https://steamcommunity.com/id/k4tsuyuki/","https://payhip.com/koyomifanboy"]},{"@type":"Service","@id":"https://katsuyuki.studio/order/#service","name":"Video edit commission","serviceType":"Video editing","url":"https://katsuyuki.studio/order/","provider":{"@id":"https://katsuyuki.studio/#me"},"offers":[{"@type":"Offer","name":"Short","description":"Up to 30 s, 2 days","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Standard","description":"Up to 1 min, 3–4 days","price":"50","priceCurrency":"EUR"},{"@type":"Offer","name":"Long","description":"2–3 min, 1 week","price":"150","priceCurrency":"EUR"},{"@type":"AggregateOffer","name":"Your choice","lowPrice":"50","highPrice":"300","priceCurrency":"EUR"}]}]}</script>
 <meta name="theme-color" content="#060606">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -301,7 +309,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
 (function(){
   var root = document.documentElement;
   function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
-  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Замовити едіт" : "Order an edit") + " · Katsuyuki"; }
+  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Замовити едіт" : "Order an edit") + " · Video editor · Katsuyuki"; }
   function morph(fn, cls, after){
     var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     if(!document.startViewTransition || reduce){ fn(); return; }
