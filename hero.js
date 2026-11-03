@@ -24,7 +24,7 @@
   /* открыть плеер сайта: нажимаем на карточку этой работы в сетке */
   function play(w){
     var c = Array.prototype.find.call(document.querySelectorAll("#grid .card, #arcGrid .card"), function(c){ return c._w && c._w.id === w.id; });
-    if(c) c.click(); else window.open("https://www.youtube.com/watch?v=" + w.id, "_blank");
+    if(c) c.click(); else window.open("https://www.youtube.com/watch?v=" + w.id, "_blank", "noopener");
   }
 
   var css = '' +
