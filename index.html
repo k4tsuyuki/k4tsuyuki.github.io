@@ -653,14 +653,10 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     if(!w.id){ onFail(); return; }
     var q = img.parentNode ? ytBlur(img, w.id) : null;
     if(q){ var f0 = onFail; onFail = function(){ q.remove(); f0(); }; }
-    var tries = ["/img/covers/"+w.id+".jpg","https://i.ytimg.com/vi/"+w.id+"/maxresdefault.jpg","https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg"], i = 0, wp = true;
+    var tries = ["/img/covers/"+w.id+".jpg","https://i.ytimg.com/vi/"+w.id+"/maxresdefault.jpg","https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg"], i = 0;
     img.onload = function(){ if(img.naturalWidth <= 120) next(); };
     img.onerror = next;
-    /* сначала WebP нужного размера (640 или 1280 по ширине карточки), если его нет — обычный jpg, потом YouTube */
-    function next(){
-      if(wp){ wp = false; img.sizes = sizes || "(max-width:760px) 100vw, 34vw"; img.srcset = "/img/covers/"+w.id+"-m.webp 640w, /img/covers/"+w.id+".webp 1280w"; img.src = tries[0]; return; }
-      img.removeAttribute("srcset");
-      if(i < tries.length) img.src = tries[i++]; else onFail(); }
+    function next(){ if(i < tries.length) img.src = tries[i++]; else onFail(); }
     next();
   }
   var latest = WORKS[0];

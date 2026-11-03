@@ -23,9 +23,11 @@ def ids():
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     made = 0
+    hqf = OUT / "hq.txt"   # обложки, уже пересохранённые в максимальном качестве
+    hq = set(hqf.read_text().split()) if hqf.exists() else set()
     for vid in ids():
         big, small = OUT / f"{vid}.jpg", OUT / f"{vid}-s.jpg"
-        if big.exists() and small.exists():
+        if big.exists() and small.exists() and vid in hq:
             continue
         im = None
         for q in ("maxresdefault", "sddefault", "hqdefault"):
@@ -43,27 +45,11 @@ def main():
             h = round(im.width * 9 / 16); top = (im.height - h) // 2
             im = im.crop((0, top, im.width, top + h))
         b = im.copy(); b.thumbnail((1280, 720), Image.LANCZOS)
-        b.save(big, quality=82, optimize=True, progressive=True)
+        b.save(big, quality=95, subsampling=0, optimize=True, progressive=True)
         s = im.copy(); s.thumbnail((320, 180), Image.LANCZOS)
-        s.save(small, quality=70, optimize=True)
+        s.save(small, quality=85, optimize=True)
+        hq.add(vid); hqf.write_text("\n".join(sorted(hq)) + "\n")
         made += 1
     print("covers downloaded:", made)
-    webp()
-
-def webp():
-    """WebP-копии для сайта: <id>.webp (1280) и <id>-m.webp (640). Делаются из готовых .jpg."""
-    n = 0
-    for big in OUT.glob("*.jpg"):
-        if big.stem.endswith("-s"):
-            continue
-        w1, w2 = OUT / f"{big.stem}.webp", OUT / f"{big.stem}-m.webp"
-        if w1.exists() and w2.exists():
-            continue
-        im = Image.open(big).convert("RGB")
-        im.save(w1, "WEBP", quality=78, method=6)
-        m = im.copy(); m.thumbnail((640, 360), Image.LANCZOS); m.save(w2, "WEBP", quality=74, method=6)
-        n += 1
-    print("webp made:", n)
-
 if __name__ == "__main__":
     sys.exit(main())
