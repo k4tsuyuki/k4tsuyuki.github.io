@@ -4,6 +4,8 @@
 <script src="/maint.js"></script>
 <script>try{if(sessionStorage.getItem("kz-style")==="goth")document.documentElement.setAttribute("data-style","goth");localStorage.removeItem("kz-style")}catch(e){}</script>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Order an edit · Video editor · Katsuyuki</title>
 <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png">
@@ -26,9 +28,7 @@
 <meta name="twitter:image" content="https://katsuyuki.studio/img/og-order.jpg">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://katsuyuki.studio/#me","name":"Katsuyuki","url":"https://katsuyuki.studio/","jobTitle":"Video editor","image":"https://katsuyuki.studio/img/avatar.png","email":"mailto:katsuyukiadmin@gmail.com","sameAs":["https://www.youtube.com/@k4tsuyuki","https://www.instagram.com/koyomifanboy/","https://t.me/katsuyuk1","https://steamcommunity.com/id/k4tsuyuki/","https://payhip.com/koyomifanboy"]},{"@type":"Service","@id":"https://katsuyuki.studio/order/#service","name":"Video edit commission","serviceType":"Video editing","url":"https://katsuyuki.studio/order/","provider":{"@id":"https://katsuyuki.studio/#me"},"offers":[{"@type":"Offer","name":"Short","description":"Up to 30 s, 2 days","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Standard","description":"Up to 1 min, 3–4 days","price":"50","priceCurrency":"EUR"},{"@type":"Offer","name":"Long","description":"2–3 min, 1 week","price":"150","priceCurrency":"EUR"},{"@type":"AggregateOffer","name":"Your choice","lowPrice":"50","highPrice":"300","priceCurrency":"EUR"}]}]}</script>
 <meta name="theme-color" content="#060606">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap">
+<style>@font-face{font-family:"Shippori Mincho";src:url(/fonts/jp-kanji.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap;unicode-range:U+4F5C,U+4F9D,U+54C1,U+65B0,U+7740,U+7D42,U+7D61,U+9023,U+983C}</style>
 <script>try{if(localStorage.getItem("theme")==="light")document.documentElement.setAttribute("data-theme","light");if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
 <link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
@@ -508,6 +508,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
     var ideaText = list.map(function(x){ return (multi ? x.edit + "\n" : "") + x.idea; }).join("\n\n");
     var exText = list.filter(function(x){ return x.examples; }).map(function(x){ return (multi ? x.edit + "\n" : "") + x.examples; }).join("\n\n");
     if(d.get("botcheck")) return;
+    try{ window.kzSealPrime && window.kzSealPrime(); }catch(e){}
     var btn = document.getElementById("fSend"); btn.disabled = true; msg(uk() ? "Надсилаю…" : "Sending…");
     var o = {
       items: items(), qty: qty, total: t.text, deposit: t.dep,
@@ -518,6 +519,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
       .then(function(){
         form.reset(); kept = []; Object.keys(qty).forEach(function(k){ qty[k] = 0; }); setMode(true);
         form.hidden = true; document.getElementById("fDone").hidden = false;
+        try{ window.kzSeal && window.kzSeal(); }catch(e){}
         try{ window.goatcounter.count({ path: "order form: sent", title: "order form: sent", event: true }); }catch(e){}
       })
       .catch(function(err){
@@ -542,5 +544,6 @@ if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
 <script src="/goth/egg.js"></script>
 <script src="/toast.js"></script>
 <script src="/goth/gothsub.js"></script>
+<script src="/seal.js"></script>
 </body>
 </html>
