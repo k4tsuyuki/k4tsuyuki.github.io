@@ -17,7 +17,7 @@
     .sort(function(a, b){ return (+b.year || 0) - (+a.year || 0) || a._i - b._i; });
   if(!W.length) return;
   function cover(w, hq){ return "https://i.ytimg.com/vi/" + w.id + "/" + (hq ? "hqdefault" : "maxresdefault") + ".jpg"; }
-  function img(w){ var i = new Image(), t = ["/img/covers/" + w.id + ".jpg", cover(w), cover(w, 1)], k = 0; i.alt = w.title || ""; i.decoding = "async";
+  function img(w){ var i = new Image(), t = ["/img/covers/" + w.id + ".webp", "/img/covers/" + w.id + ".jpg", cover(w), cover(w, 1)], k = 0; i.alt = w.title || ""; i.decoding = "async";
     function next(){ if(k < t.length) i.src = t[k++]; else i.onerror = null; }
     i.onload = function(){ if(i.naturalWidth <= 120) next(); }; i.onerror = next; next(); return i; }
   function meta(w){ return [w.year].concat(w.tags || []).filter(Boolean).join(" · "); }
@@ -38,7 +38,7 @@
     '.dh-full::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,6,.4) 0%,rgba(6,6,6,.4) 45%,rgba(6,6,6,.92) 88%);pointer-events:none}' +
     '.dh-logo{position:absolute;z-index:2;left:50%;top:40%;transform:translate(-50%,-50%);width:min(86%,640px);filter:none!important;pointer-events:none}' +
     '.dh-info{position:absolute;z-index:3;left:max(16px,4vw);right:max(16px,4vw);bottom:22px;display:grid;gap:12px}' +
-    '.dh-logo{aspect-ratio:3/1}.dh-logo .name{display:none!important}.dh-logo.hero-mark::before{display:none!important}' +
+    '.dh-logo{aspect-ratio:3/1}.dh-logo .name{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.dh-logo .name img{display:none}.dh-logo.hero-mark::before{display:none!important}' +
     '.dh-logo .name{margin:0;font-size:inherit;line-height:0;display:block}.dh-logo .logo-img{width:100%;display:block}.dh-full .status{margin:0;border-top:1px solid var(--hair);border-bottom:0;padding:12px 0 0}' +
     '.dh-play{display:flex;align-items:center;gap:14px;background:none;border:0;color:inherit;cursor:pointer;padding:0;text-align:left;font:inherit}' +
     '.dh-play .c{width:54px;height:54px;border-radius:50%;border:1px solid #eeebe5;display:grid;place-items:center;flex:none;transition:background .25s}' +
@@ -141,13 +141,13 @@
   var nav = document.querySelector(".top nav");
   if(nav){
     var bg = document.createElement("button"); bg.className = "dh-burger"; bg.type = "button"; bg.setAttribute("aria-label", "Menu"); bg.innerHTML = "<i></i>"; nav.appendChild(bg);
-    var menu = document.createElement("div"); menu.className = "dh-menu"; menu.setAttribute("aria-hidden", "true");
+    var menu = document.createElement("div"); menu.className = "dh-menu"; menu.setAttribute("aria-hidden", "true"); menu.inert = true;
     menu.innerHTML = '<div class="mh"><img class="logo-img" src="img/logo.png" alt="Katsuyuki"><button class="x" type="button" aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div>' +
       '<nav><a href="#works" data-t="works"></a><a href="#news" data-t="news"></a><a href="#contact" data-t="contact"></a><a href="about/" data-t="about"></a><a href="files/">PFS</a></nav>' +
       '<div class="row lbx"><button type="button" data-p="langBtn"></button><button type="button" data-p="themeBtn">◐</button></div>';
     document.body.appendChild(menu);
-    function close(){ menu.classList.remove("on"); menu.setAttribute("aria-hidden", "true"); }
-    bg.onclick = function(){ menu.classList.add("on"); menu.setAttribute("aria-hidden", "false"); };
+    function close(){ menu.classList.remove("on"); menu.setAttribute("aria-hidden", "true"); menu.inert = true; }
+    bg.onclick = function(){ menu.inert = false; menu.classList.add("on"); menu.setAttribute("aria-hidden", "false"); };
     menu.querySelector(".x").onclick = close;
     menu.querySelectorAll("nav a").forEach(function(a){ a.addEventListener("click", close); });
     menu.querySelectorAll("[data-p]").forEach(function(b){ b.onclick = function(){ var t = document.getElementById(b.dataset.p); if(t) t.click(); }; });

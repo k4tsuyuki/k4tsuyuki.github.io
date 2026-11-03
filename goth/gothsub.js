@@ -12,7 +12,7 @@
   var gr = document.createElement("div"); gr.className = "g-gr"; document.body.appendChild(gr);
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   /* один холст: пепел падает сверху, дым поднимается от нижнего края */
-  var c = document.createElement("canvas"); c.className = "g-cv"; c.style.zIndex = 1; document.body.appendChild(c);
+  var c = document.createElement("canvas"); c.setAttribute("aria-hidden", "true"); c.className = "g-cv"; c.style.zIndex = 1; document.body.appendChild(c);
   var x = c.getContext("2d"), W, H, dpr = Math.min(2, devicePixelRatio || 1), A = [], S = [];
   function size(){ W = innerWidth; H = innerHeight; c.width = W * dpr; c.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); }
   size(); addEventListener("resize", size);

@@ -167,7 +167,7 @@
     ov.hidden = false; requestAnimationFrame(function(){ ov.classList.add("on"); });
     document.addEventListener("keydown", onKey);
     try{ window.goatcounter && window.goatcounter.count({ path: "draw a card", event: true }); }catch(e){}
-    draw();
+    setTimeout(draw, reduce ? 0 : 250);
   }
   function close(){
     if(!ov) return; ov.classList.remove("on"); document.removeEventListener("keydown", onKey);
@@ -184,8 +184,17 @@
       ov.querySelector(".kz-front .n").textContent = roman(i + 1);
       ov.querySelector(".kz-front .t").textContent = w.title;
       ov.querySelector(".kz-front .y").textContent = w.year || "";
-      tc.classList.remove("shuf"); void tc.offsetWidth; if(!reduce) tc.classList.add("shuf");
-      setTimeout(function(){ tc.classList.add("flip"); sound("flip"); busy = false; }, reduce ? 0 : 700);
+      /* переворот только после того, как тасовка закончилась: иначе первый раз карта просто дёргалась и резко показывала эдит */
+      var flipped = false;
+      function flip(){
+        if(flipped) return; flipped = true; tc.removeEventListener("animationend", flip);
+        tc.classList.remove("shuf"); void tc.offsetWidth;
+        requestAnimationFrame(function(){ tc.classList.add("flip"); sound("flip"); setTimeout(function(){ busy = false; }, 400); });
+      }
+      tc.classList.remove("shuf"); void tc.offsetWidth;
+      if(reduce){ flip(); return; }
+      tc.addEventListener("animationend", flip); tc.classList.add("shuf");
+      setTimeout(flip, 1200);
     }
     if(tc.classList.contains("flip")){ tc.classList.remove("flip"); setTimeout(go, reduce ? 0 : 650); } else go();
   }

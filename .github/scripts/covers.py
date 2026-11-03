@@ -48,6 +48,22 @@ def main():
         s.save(small, quality=70, optimize=True)
         made += 1
     print("covers downloaded:", made)
+    webp()
+
+def webp():
+    """WebP-копии для сайта: <id>.webp (1280) и <id>-m.webp (640). Делаются из готовых .jpg."""
+    n = 0
+    for big in OUT.glob("*.jpg"):
+        if big.stem.endswith("-s"):
+            continue
+        w1, w2 = OUT / f"{big.stem}.webp", OUT / f"{big.stem}-m.webp"
+        if w1.exists() and w2.exists():
+            continue
+        im = Image.open(big).convert("RGB")
+        im.save(w1, "WEBP", quality=78, method=6)
+        m = im.copy(); m.thumbnail((640, 360), Image.LANCZOS); m.save(w2, "WEBP", quality=74, method=6)
+        n += 1
+    print("webp made:", n)
 
 if __name__ == "__main__":
     sys.exit(main())
