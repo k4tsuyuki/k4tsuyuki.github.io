@@ -142,7 +142,7 @@
 
   var P = [], ticks = [], ctx, W, H;
   function engine(){
-    var c = document.createElement("canvas"); c.className = "s-cv"; document.body.appendChild(c);
+    var c = document.createElement("canvas"); c.setAttribute("aria-hidden", "true"); c.className = "s-cv"; document.body.appendChild(c);
     var dpr = Math.min(2, devicePixelRatio || 1); ctx = c.getContext("2d");
     function size(){ W = innerWidth; H = innerHeight; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
     size(); addEventListener("resize", size);

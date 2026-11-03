@@ -33,7 +33,7 @@
 <meta name="twitter:title" content="Katsuyuki · Video editor, AMV and MMV edits">
 <meta name="twitter:description" content="Katsuyuki, video editor from Ukraine based in Berlin. AMV and MMV edits made in After Effects, commissions and project files.">
 <meta name="twitter:image" content="https://katsuyuki.studio/img/og.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://katsuyuki.studio/#me","name":"Katsuyuki","url":"https://katsuyuki.studio/","jobTitle":"Video editor","image":"https://katsuyuki.studio/img/avatar.png","email":"mailto:katsuyukiadmin@gmail.com","sameAs":["https://www.youtube.com/@k4tsuyuki","https://www.instagram.com/koyomifanboy/","https://t.me/katsuyuk1","https://steamcommunity.com/id/k4tsuyuki/","https://payhip.com/koyomifanboy"]},{"@type":"WebSite","@id":"https://katsuyuki.studio/#site","url":"https://katsuyuki.studio/","name":"Katsuyuki","publisher":{"@id":"https://katsuyuki.studio/#me"},"inLanguage":["en","uk"]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://katsuyuki.studio/#me","name":"Katsuyuki","url":"https://katsuyuki.studio/","jobTitle":"Video editor","image":"https://katsuyuki.studio/img/avatar.png","sameAs":["https://www.youtube.com/@k4tsuyuki","https://www.instagram.com/koyomifanboy/","https://t.me/katsuyuk1","https://steamcommunity.com/id/k4tsuyuki/","https://payhip.com/koyomifanboy"]},{"@type":"WebSite","@id":"https://katsuyuki.studio/#site","url":"https://katsuyuki.studio/","name":"Katsuyuki","publisher":{"@id":"https://katsuyuki.studio/#me"},"inLanguage":["en","uk"]}]}</script>
 <meta name="theme-color" content="#060606">
 <style>@font-face{font-family:"Shippori Mincho";src:url(/fonts/jp-kanji.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap;unicode-range:U+4F5C,U+4F9D,U+54C1,U+65B0,U+7740,U+7D42,U+7D61,U+9023,U+983C}</style>
 <link rel="preload" href="/fonts/sans-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -378,7 +378,7 @@ footer .jp{font-size:24px}
 .ntf-h i{width:7px;height:7px;border-radius:50%;background:var(--acc,var(--paper));box-shadow:0 0 8px var(--acc,var(--paper));animation:ntfp 1.6s infinite}
 @keyframes ntfp{50%{opacity:.35}}
 .ntf-h .d{opacity:.55;margin-left:auto;margin-right:26px}
-.ntf h4{margin:0 0 6px;font-size:16px;line-height:1.2}
+.ntf .ntf-t{margin:0 0 6px;font-size:16px;line-height:1.2;font-weight:700}
 .ntf p{margin:0 0 12px;font-size:13px;line-height:1.4;opacity:.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ntf .go{display:inline-block;border:1px solid var(--paper);border-radius:99px;padding:6px 14px;color:var(--paper);text-decoration:none;cursor:pointer;background:none;font-family:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
 .ntf .go:hover{background:var(--paper);color:var(--bar)}
@@ -411,7 +411,7 @@ footer .jp{font-size:24px}
   <div class="wrap spread">
     <div class="sheet">
       <button class="cover" id="cover" aria-label="Play latest work">
-        <img id="coverImg" alt="">
+        <img id="coverImg" alt="Latest edit cover">
       </button>
       <div class="lb stack">
         <div><span data-i18n="latest">Latest</span><br><span id="coverTitle">Archetype 3HC</span><br><span class="m" id="coverYear">2026</span></div>
@@ -427,7 +427,7 @@ footer .jp{font-size:24px}
       </div>
       <div class="lb cols">
         <div><span data-i18n="works">Works</span><br><a href="#works" class="m" data-i18n="see_all">See all ↓︎</a></div>
-        <div><span data-i18n="contact">Contact</span><br><a href="#contact" class="m" id="mailTop">katsuyukiadmin@gmail.com</a></div>
+        <div><span data-i18n="contact">Contact</span><br><a href="#contact" class="m" id="mailTop">Email</a></div>
       </div>
       <div class="status lb">
         <span class="on"><i></i><span data-i18n="open">Open for commissions</span></span>
@@ -435,7 +435,7 @@ footer .jp{font-size:24px}
       </div>
       <div class="grow"></div>
       <div class="hero-mark">
-        <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt=""><span class="vh">Katsuyuki · Video editor</span></h1>
+        <h1 class="name" id="heroName"><img class="logo-img" src="img/logo.png" alt="Katsuyuki logo"><span class="vh">Katsuyuki · Video editor</span></h1>
       </div>
       <div class="grow"></div>
       <div class="lb m" data-i18n="recent">Recent</div>
@@ -648,21 +648,25 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     img.addEventListener("load", ok); ok();
     return q;
   };
-  function thumb(w, img, onFail){
+  function thumb(w, img, onFail, sizes){
     if(!img.alt && w.title) img.alt = w.title;
     if(!w.id){ onFail(); return; }
     var q = img.parentNode ? ytBlur(img, w.id) : null;
     if(q){ var f0 = onFail; onFail = function(){ q.remove(); f0(); }; }
-    var tries = ["/img/covers/"+w.id+".jpg","https://i.ytimg.com/vi/"+w.id+"/maxresdefault.jpg","https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg"], i = 0;
+    var tries = ["/img/covers/"+w.id+".jpg","https://i.ytimg.com/vi/"+w.id+"/maxresdefault.jpg","https://i.ytimg.com/vi/"+w.id+"/hqdefault.jpg"], i = 0, wp = true;
     img.onload = function(){ if(img.naturalWidth <= 120) next(); };
     img.onerror = next;
-    function next(){ if(i < tries.length) img.src = tries[i++]; else onFail(); }
+    /* сначала WebP нужного размера (640 или 1280 по ширине карточки), если его нет — обычный jpg, потом YouTube */
+    function next(){
+      if(wp){ wp = false; img.sizes = sizes || "(max-width:760px) 100vw, 34vw"; img.srcset = "/img/covers/"+w.id+"-m.webp 640w, /img/covers/"+w.id+".webp 1280w"; img.src = tries[0]; return; }
+      img.removeAttribute("srcset");
+      if(i < tries.length) img.src = tries[i++]; else onFail(); }
     next();
   }
   var latest = WORKS[0];
   if(latest){
     txt("coverTitle", latest.title); txt("coverYear", latest.year);
-    thumb(latest, $("coverImg"), function(){ $("coverImg").hidden = true; });
+    thumb(latest, $("coverImg"), function(){ $("coverImg").hidden = true; }, "100vw");
     $("cover").addEventListener("click", function(){ openPlayer(latest); });
   }
 
@@ -690,8 +694,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     if(fileOf(w)){ var pm = document.createElement("span"); pm.className = "pfm"; pm.textContent = "+ Project file"; b.querySelector(".frame").appendChild(pm); }
     if(w.note){ var n = document.createElement("span"); n.className = "c-note"; n.textContent = w.note; b.querySelector(".c-meta").appendChild(n); }
     b.querySelector(".ph").textContent = w.title;
-    var img = b.querySelector("img");
-    thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; });
+    var img = b.querySelector("img"); img.alt = w.title;
+    thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; }, i === 0 ? "(max-width:760px) 100vw, 66vw" : "(max-width:760px) 50vw, 34vw");
     b.addEventListener("click", function(){ openPlayer(w); });
     b._w = w;
     (w.archive ? arcGrid() : $("grid")).appendChild(b);
@@ -750,8 +754,8 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
     b.innerHTML = '<div class="frame"><img alt="" loading="lazy"><div class="ph" hidden></div></div><span class="t"></span>';
     b.querySelector(".t").textContent = w.title;
     b.querySelector(".ph").textContent = w.title;
-    var img = b.querySelector("img");
-    thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; });
+    var img = b.querySelector("img"); img.alt = w.title;
+    thumb(w, img, function(){ img.remove(); b.querySelector(".ph").hidden = false; }, "(max-width:760px) 50vw, 25vw");
     b.addEventListener("click", function(){ openPlayer(w); });
     $("strip").appendChild(b);
   });
@@ -807,13 +811,13 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
       if(!fresh || seen === key) return;
       $("navNews").classList.add("new");
       function mark(){ try { localStorage.setItem("newsSeen", key); } catch(e){} }
-      var box = document.createElement("aside"); box.className = "ntf"; box.setAttribute("role", "status");
-      box.innerHTML = '<div class="ntf-h lb"><i></i><span data-i18n="nt_new"></span><span class="d"></span></div><h4></h4><p></p>' +
+      var box = document.createElement("div"); box.className = "ntf"; box.setAttribute("role", "status");
+      box.innerHTML = '<div class="ntf-h lb"><i></i><span data-i18n="nt_new"></span><span class="d"></span></div><p class="ntf-t"></p><p></p>' +
         '<button class="go lb" data-i18n="nt_read"></button><button class="x" aria-label="Close">✕</button><div class="ntf-bar"><b></b></div>';
       box.querySelector("[data-i18n=nt_new]").textContent = t("nt_new");
       box.querySelector(".go").textContent = t("nt_read");
       var m = String(n.date).match(/^(\d{4})-(\d{2})-(\d{2})/); box.querySelector(".d").textContent = m ? m[3] + "." + m[2] : "";
-      box.querySelector("h4").textContent = n.title || "";
+      box.querySelector(".ntf-t").textContent = n.title || "";
       var p = box.querySelector("p"); if(n.text) p.textContent = n.text.split("\n")[0]; else p.remove();
       document.body.appendChild(box);
       var timer;

@@ -17,7 +17,7 @@
   document.head.appendChild(css);
   /* дым: мягкие серые клубы медленно поднимаются от низа первого экрана */
   function smoke(full){
-    var c = document.createElement("canvas"); c.className = "g-smoke"; full.appendChild(c);
+    var c = document.createElement("canvas"); c.setAttribute("aria-hidden", "true"); c.className = "g-smoke"; full.appendChild(c);
     var x = c.getContext("2d"), W, H, P = [];
     function size(){ W = c.width = c.clientWidth; H = c.height = c.clientHeight; }
     size(); addEventListener("resize", size);

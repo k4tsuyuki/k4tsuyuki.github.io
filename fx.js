@@ -71,7 +71,7 @@
 
   /* пепел: редкие серые частицы медленно падают (только при html[data-style=goth]) */
   if(!reduce){
-    var c = document.createElement("canvas"); c.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9997";
+    var c = document.createElement("canvas"); c.setAttribute("aria-hidden", "true"); c.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9997";
     document.body.appendChild(c);
     var x = c.getContext("2d"), W, H, dpr = Math.min(2, devicePixelRatio || 1), P = [];
     function size(){ W = innerWidth; H = innerHeight; c.width = W * dpr; c.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); }
