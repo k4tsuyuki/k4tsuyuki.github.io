@@ -48,14 +48,52 @@ def channel_id(state):
     sys.exit("Could not find the channel id for @" + HANDLE)
 
 
-def feed(cid):
-    _, xml = get(f"https://www.youtube.com/feeds/videos.xml?channel_id={cid}")
+def parse_feed(xml):
     ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
     return [{
         "id": e.find("yt:videoId", ns).text,
         "title": e.find("a:title", ns).text or "",
         "published": e.find("a:published", ns).text or "",
     } for e in ET.fromstring(xml).findall("a:entry", ns)]
+
+
+def from_videos_page():
+    """Last resort when both feeds are down: newest uploads from the channel's Videos tab, titles via oEmbed."""
+    _, page = get(f"https://www.youtube.com/@{HANDLE}/videos")
+    ids = []
+    for vid in re.findall(r'"videoId":"([\w-]{11})"', page):
+        if vid not in ids:
+            ids.append(vid)
+    now = datetime.now(timezone.utc)
+    out = []
+    for i, vid in enumerate(ids[:15]):
+        try:
+            _, body = get(f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json")
+            title = json.loads(body).get("title", "")
+        except Exception:
+            continue
+        # the page lists newest first; these fake dates keep that order and the year
+        out.append({"id": vid, "title": title, "published": "%d-00-%02d" % (now.year, 99 - i)})
+    if not out:
+        raise RuntimeError("no videos found on the Videos page")
+    return out
+
+
+def feed(cid):
+    """YouTube's RSS feed sometimes answers 404 for days, so try the uploads playlist feed and then the Videos page."""
+    errors = []
+    for url in (f"https://www.youtube.com/feeds/videos.xml?channel_id={cid}",
+                f"https://www.youtube.com/feeds/videos.xml?playlist_id=UU{cid[2:]}"):
+        try:
+            _, xml = get(url)
+            return parse_feed(xml)
+        except Exception as e:
+            errors.append(f"{url.split('?')[1][:11]}: {e}")
+    try:
+        return from_videos_page()
+    except Exception as e:
+        errors.append(f"videos page: {e}")
+    raise RuntimeError("; ".join(errors))
 
 
 def is_short(vid):
