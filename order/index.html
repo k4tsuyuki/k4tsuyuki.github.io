@@ -172,9 +172,14 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
 .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;font-size:clamp(18px,1.7vw,24px);letter-spacing:-.01em;line-height:1.2}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";font-size:20px;color:var(--ash);transition:transform .3s}
-.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details.on summary::after{transform:rotate(45deg)}
 .faq summary:hover::after{color:var(--paper)}
-.faq .a{color:var(--ash);max-width:44em;padding:0 0 18px;margin:-4px 0 0;font-size:clamp(15px,1.2vw,17px);line-height:1.5}
+.faq .a-w{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.2,0,0,1),opacity .35s ease}
+.faq details.on .a-w{grid-template-rows:1fr;opacity:1}
+.faq .a-w>.a{overflow:hidden;min-height:0}
+@media (prefers-reduced-motion:reduce){.faq .a-w{transition:none}}
+.faq .a>span{display:block;padding-bottom:18px}
+.faq .a{color:var(--ash);max-width:44em;padding:0;margin:0;font-size:clamp(15px,1.2vw,17px);line-height:1.5}
 .legal{margin-top:clamp(36px,5vw,56px)}
 .legal a{text-decoration:underline;text-underline-offset:3px}
 .legal a:hover{color:var(--paper)}
@@ -271,15 +276,15 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   <section class="faq" id="faq">
     <div class="lb m">FAQ</div>
     <h2><span data-en>Questions</span><span data-uk>Питання</span></h2>
-    <details><summary><span data-en>How does it work?</span><span data-uk>Як це працює?</span></summary><p class="a"><span data-en>Pick an option and fill in the form. I reply by email within a few hours, we agree on the details and the final price, then you get a PayPal invoice for 50% and I start.</span><span data-uk>Оберіть варіант і заповніть форму. Я відповім на email протягом кількох годин, ми узгодимо деталі й фінальну ціну, потім ви отримаєте рахунок PayPal на 50%, і я почну.</span></p></details>
-    <details><summary><span data-en>How long does it take?</span><span data-uk>Скільки це займає?</span></summary><p class="a"><span data-en>From 2 days for a short edit to about a week for a long one. Edits are made one after another, so the form shows the earliest deadline you can pick right now.</span><span data-uk>Від 2 днів для короткого замовлення до приблизно тижня для довгого. Замовлення виконуються по черзі, тому форма показує найраніший термін, який можна обрати зараз.</span></p></details>
-    <details><summary><span data-en>Can I ask for changes?</span><span data-uk>Можна попросити правки?</span></summary><p class="a"><span data-en>Yes, 3 revisions are included in the price. When the edit is ready you get a private preview page. Leave your comments there, I fix them, and you approve the final version.</span><span data-uk>Так, 3 правки входять у ціну. Коли робота готова, ви отримуєте приватну сторінку з превʼю. Залиште там коментарі, я все виправлю, і ви підтвердите фінальну версію.</span></p></details>
-    <details><summary><span data-en>When do I pay the rest?</span><span data-uk>Коли платити решту?</span></summary><p class="a"><span data-en>After you approve the preview you get a PayPal invoice for the other 50%.</span><span data-uk>Після того як ви підтвердите превʼю, ви отримаєте рахунок PayPal на інші 50%.</span></p></details>
-    <details><summary><span data-en>Can I post the edit on my channel?</span><span data-uk>Можна викладати роботу в себе?</span></summary><p class="a"><span data-en>Yes, anywhere and as often as you like, it’s yours to use. One condition: credit me as Katsuyuki · youtube.com/@k4tsuyuki. Without the credit this permission doesn’t apply, and I can report the upload on the platform.</span><span data-uk>Так, будь-де і скільки завгодно, вона ваша. Одна умова: вкажіть мене як Katsuyuki · youtube.com/@k4tsuyuki. Без цього дозвіл не діє, і я можу поскаржитися на відео на платформі.</span></p></details>
-    <details><summary><span data-en>Can I get the project file?</span><span data-uk>Можна отримати файл проєкту?</span></summary><p class="a"><span data-en>Yes, for an extra fee. We agree on the price personally.</span><span data-uk>Так, за додаткову плату. Ціну обговоримо особисто.</span></p></details>
-    <details><summary><span data-en>What footage do you work with?</span><span data-uk>З яким футажем ви працюєте?</span></summary><p class="a"><span data-en>Anime, and with “Your choice” also live-action footage like films. Tell me the song and send examples of edits you like, it helps a lot.</span><span data-uk>Аніме, а у варіанті «На ваш вибір» також реальний футаж, наприклад фільми. Напишіть пісню та скиньте приклади робіт, які вам подобаються, це дуже допомагає.</span></p></details>
-    <details><summary><span data-en>Can I order several edits at once?</span><span data-uk>Можна замовити кілька робіт одразу?</span></summary><p class="a"><span data-en>Yes. Tap “+ Several edits” in the form and describe each one.</span><span data-uk>Так. Натисніть «+ Кілька робіт» у формі й опишіть кожен.</span></p></details>
-    <details><summary><span data-en>How can I pay?</span><span data-uk>Як можна оплатити?</span></summary><p class="a"><span data-en>Only PayPal. You can pay with a PayPal account or a card through PayPal.</span><span data-uk>Лише PayPal. Можна оплатити з акаунта PayPal або карткою через PayPal.</span></p></details>
+    <details><summary><span data-en>How does it work?</span><span data-uk>Як це працює?</span></summary><div class="a-w"><p class="a"><span data-en>Pick an option and fill in the form. I reply by email within a few hours, we agree on the details and the final price, then you get a PayPal invoice for 50% and I start.</span><span data-uk>Оберіть варіант і заповніть форму. Я відповім на email протягом кількох годин, ми узгодимо деталі й фінальну ціну, потім ви отримаєте рахунок PayPal на 50%, і я почну.</span></p></div></details>
+    <details><summary><span data-en>How long does it take?</span><span data-uk>Скільки це займає?</span></summary><div class="a-w"><p class="a"><span data-en>From 2 days for a short edit to about a week for a long one. Edits are made one after another, so the form shows the earliest deadline you can pick right now.</span><span data-uk>Від 2 днів для короткого замовлення до приблизно тижня для довгого. Замовлення виконуються по черзі, тому форма показує найраніший термін, який можна обрати зараз.</span></p></div></details>
+    <details><summary><span data-en>Can I ask for changes?</span><span data-uk>Можна попросити правки?</span></summary><div class="a-w"><p class="a"><span data-en>Yes, 3 revisions are included in the price. When the edit is ready you get a private preview page. Leave your comments there, I fix them, and you approve the final version.</span><span data-uk>Так, 3 правки входять у ціну. Коли робота готова, ви отримуєте приватну сторінку з превʼю. Залиште там коментарі, я все виправлю, і ви підтвердите фінальну версію.</span></p></div></details>
+    <details><summary><span data-en>When do I pay the rest?</span><span data-uk>Коли платити решту?</span></summary><div class="a-w"><p class="a"><span data-en>After you approve the preview you get a PayPal invoice for the other 50%.</span><span data-uk>Після того як ви підтвердите превʼю, ви отримаєте рахунок PayPal на інші 50%.</span></p></div></details>
+    <details><summary><span data-en>Can I post the edit on my channel?</span><span data-uk>Можна викладати роботу в себе?</span></summary><div class="a-w"><p class="a"><span data-en>Yes, anywhere and as often as you like, it’s yours to use. One condition: credit me as Katsuyuki · youtube.com/@k4tsuyuki. Without the credit this permission doesn’t apply, and I can report the upload on the platform.</span><span data-uk>Так, будь-де і скільки завгодно, вона ваша. Одна умова: вкажіть мене як Katsuyuki · youtube.com/@k4tsuyuki. Без цього дозвіл не діє, і я можу поскаржитися на відео на платформі.</span></p></div></details>
+    <details><summary><span data-en>Can I get the project file?</span><span data-uk>Можна отримати файл проєкту?</span></summary><div class="a-w"><p class="a"><span data-en>Yes, for an extra fee. We agree on the price personally.</span><span data-uk>Так, за додаткову плату. Ціну обговоримо особисто.</span></p></div></details>
+    <details><summary><span data-en>What footage do you work with?</span><span data-uk>З яким футажем ви працюєте?</span></summary><div class="a-w"><p class="a"><span data-en>Anime, and with “Your choice” also live-action footage like films. Tell me the song and send examples of edits you like, it helps a lot.</span><span data-uk>Аніме, а у варіанті «На ваш вибір» також реальний футаж, наприклад фільми. Напишіть пісню та скиньте приклади робіт, які вам подобаються, це дуже допомагає.</span></p></div></details>
+    <details><summary><span data-en>Can I order several edits at once?</span><span data-uk>Можна замовити кілька робіт одразу?</span></summary><div class="a-w"><p class="a"><span data-en>Yes. Tap “+ Several edits” in the form and describe each one.</span><span data-uk>Так. Натисніть «+ Кілька робіт» у формі й опишіть кожен.</span></p></div></details>
+    <details><summary><span data-en>How can I pay?</span><span data-uk>Як можна оплатити?</span></summary><div class="a-w"><p class="a"><span data-en>Only PayPal. You can pay with a PayPal account or a card through PayPal.</span><span data-uk>Лише PayPal. Можна оплатити з акаунта PayPal або карткою через PayPal.</span></p></div></details>
   </section>
   <div class="lb m legal"><a href="/impressum/">Impressum</a> · <a href="/impressum/#privacy-top"><span data-en>Privacy</span><span data-uk>Приватність</span></a></div>
 </main>
@@ -573,5 +578,16 @@ if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
 <script src="/toast.js"></script>
 <script src="/goth/gothsub.js"></script>
 <script src="/seal.js"></script>
+<script>
+/* FAQ: плавное раскрытие и закрытие ответов */
+document.querySelectorAll(".faq details").forEach(function(d){
+  var w = d.querySelector(".a-w"), t;
+  d.querySelector("summary").addEventListener("click", function(e){
+    e.preventDefault(); clearTimeout(t);
+    if(!d.open){ d.open = true; w.offsetHeight; d.classList.add("on"); }
+    else { d.classList.remove("on"); t = setTimeout(function(){ d.open = false; }, 450); }
+  });
+});
+</script>
 </body>
 </html>
