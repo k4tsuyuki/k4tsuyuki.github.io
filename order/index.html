@@ -164,6 +164,20 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   .two{grid-template-columns:minmax(0,1fr)}
   .top .who .m{display:none}
 }
+/* FAQ */
+.faq{margin-top:clamp(40px,6vw,80px)}
+.faq h2{font-weight:400;font-size:clamp(28px,3.4vw,44px);letter-spacing:-.02em;line-height:1;margin:8px 0 clamp(16px,2vw,24px)}
+.faq details{border-top:1px solid var(--hair)}
+.faq details:last-child{border-bottom:1px solid var(--hair)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;font-size:clamp(18px,1.7vw,24px);letter-spacing:-.01em;line-height:1.2}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:20px;color:var(--ash);transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq summary:hover::after{color:var(--paper)}
+.faq .a{color:var(--ash);max-width:44em;padding:0 0 18px;margin:-4px 0 0;font-size:clamp(15px,1.2vw,17px);line-height:1.5}
+.legal{margin-top:clamp(36px,5vw,56px)}
+.legal a{text-decoration:underline;text-underline-offset:3px}
+.legal a:hover{color:var(--paper)}
 /* плавный переход между страницами: размытие + лёгкий зум (Chrome, Edge, Safari 18.2+; в остальных просто открывается) */
 @view-transition{navigation:auto;types:page}
 :root:active-view-transition-type(page)::view-transition-old(root){animation:pg-out .35s cubic-bezier(.4,0,.2,1) both}
@@ -200,7 +214,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
 <main class="wrap">
   <div class="s-head">
     <div class="lb m"><span data-en>Commissions</span><span data-uk>Замовлення</span></div>
-    <h1><span><span data-en>Order an edit</span><span data-uk>Замовити едіт</span></span> <span class="jp">依頼</span></h1>
+    <h1><span><span data-en>Order an edit</span><span data-uk>Замовити роботу</span></span> <span class="jp">依頼</span></h1>
   </div>
 
   <div class="plans">
@@ -254,17 +268,31 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
     </div>
     <div class="acts lb" id="acts"></div>
   </div>
+  <section class="faq" id="faq">
+    <div class="lb m">FAQ</div>
+    <h2><span data-en>Questions</span><span data-uk>Питання</span></h2>
+    <details><summary><span data-en>How does it work?</span><span data-uk>Як це працює?</span></summary><p class="a"><span data-en>Pick an option and fill in the form. I reply by email within a few hours, we agree on the details and the final price, then you get a PayPal invoice for 50% and I start.</span><span data-uk>Оберіть варіант і заповніть форму. Я відповім на email протягом кількох годин, ми узгодимо деталі й фінальну ціну, потім ви отримаєте рахунок PayPal на 50%, і я почну.</span></p></details>
+    <details><summary><span data-en>How long does it take?</span><span data-uk>Скільки це займає?</span></summary><p class="a"><span data-en>From 2 days for a short edit to about a week for a long one. Edits are made one after another, so the form shows the earliest deadline you can pick right now.</span><span data-uk>Від 2 днів для короткого замовлення до приблизно тижня для довгого. Замовлення виконуються по черзі, тому форма показує найраніший термін, який можна обрати зараз.</span></p></details>
+    <details><summary><span data-en>Can I ask for changes?</span><span data-uk>Можна попросити правки?</span></summary><p class="a"><span data-en>Yes, 3 revisions are included in the price. When the edit is ready you get a private preview page. Leave your comments there, I fix them, and you approve the final version.</span><span data-uk>Так, 3 правки входять у ціну. Коли робота готова, ви отримуєте приватну сторінку з превʼю. Залиште там коментарі, я все виправлю, і ви підтвердите фінальну версію.</span></p></details>
+    <details><summary><span data-en>When do I pay the rest?</span><span data-uk>Коли платити решту?</span></summary><p class="a"><span data-en>After you approve the preview you get a PayPal invoice for the other 50%.</span><span data-uk>Після того як ви підтвердите превʼю, ви отримаєте рахунок PayPal на інші 50%.</span></p></details>
+    <details><summary><span data-en>Can I post the edit on my channel?</span><span data-uk>Можна викладати роботу в себе?</span></summary><p class="a"><span data-en>Yes, anywhere and as often as you like, it’s yours to use. One condition: credit me as Katsuyuki · youtube.com/@k4tsuyuki. Without the credit this permission doesn’t apply, and I can report the upload on the platform.</span><span data-uk>Так, будь-де і скільки завгодно, вона ваша. Одна умова: вкажіть мене як Katsuyuki · youtube.com/@k4tsuyuki. Без цього дозвіл не діє, і я можу поскаржитися на відео на платформі.</span></p></details>
+    <details><summary><span data-en>Can I get the project file?</span><span data-uk>Можна отримати файл проєкту?</span></summary><p class="a"><span data-en>Yes, for an extra fee. We agree on the price personally.</span><span data-uk>Так, за додаткову плату. Ціну обговоримо особисто.</span></p></details>
+    <details><summary><span data-en>What footage do you work with?</span><span data-uk>З яким футажем ви працюєте?</span></summary><p class="a"><span data-en>Anime, and with “Your choice” also live-action footage like films. Tell me the song and send examples of edits you like, it helps a lot.</span><span data-uk>Аніме, а у варіанті «На ваш вибір» також реальний футаж, наприклад фільми. Напишіть пісню та скиньте приклади робіт, які вам подобаються, це дуже допомагає.</span></p></details>
+    <details><summary><span data-en>Can I order several edits at once?</span><span data-uk>Можна замовити кілька робіт одразу?</span></summary><p class="a"><span data-en>Yes. Tap “+ Several edits” in the form and describe each one.</span><span data-uk>Так. Натисніть «+ Кілька робіт» у формі й опишіть кожен.</span></p></details>
+    <details><summary><span data-en>How can I pay?</span><span data-uk>Як можна оплатити?</span></summary><p class="a"><span data-en>Only PayPal. You can pay with a PayPal account or a card through PayPal.</span><span data-uk>Лише PayPal. Можна оплатити з акаунта PayPal або карткою через PayPal.</span></p></details>
+  </section>
+  <div class="lb m legal"><a href="/impressum/">Impressum</a> · <a href="/impressum/#privacy-top"><span data-en>Privacy</span><span data-uk>Приватність</span></a></div>
 </main>
 
 <dialog id="orderBox" aria-labelledby="fTitle">
   <form class="f-in" id="orderForm" novalidate>
     <div class="f-head">
       <div><div class="lb m"><span data-en>Order form</span><span data-uk>Форма замовлення</span></div>
-        <h2 id="fTitle"><span data-en>Tell me about your edit</span><span data-uk>Розкажіть про едіт</span></h2></div>
+        <h2 id="fTitle"><span data-en>Tell me about your edit</span><span data-uk>Розкажіть про роботу</span></h2></div>
       <button class="tgl lb" type="button" id="fClose" aria-label="Close">✕</button>
     </div>
 
-    <div class="field lb"><span><span data-en>Option</span><span data-uk>Варіант</span><button type="button" class="m more-t" id="cartToggle"><span data-en>+ Several edits</span><span data-uk>+ Кілька едітів</span></button><button type="button" class="m more-t" id="cartOne" hidden><span data-en>Just one edit</span><span data-uk>Лише один едіт</span></button></span>
+    <div class="field lb"><span><span data-en>Option</span><span data-uk>Варіант</span><button type="button" class="m more-t" id="cartToggle"><span data-en>+ Several edits</span><span data-uk>+ Кілька робіт</span></button><button type="button" class="m more-t" id="cartOne" hidden><span data-en>Just one edit</span><span data-uk>Лише одна робота</span></button></span>
       <div class="cart single" id="cart">
         <div class="ci" data-k="short"><span class="ci-n"><span data-en>Short</span><span data-uk>Короткий</span><i>€20</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
         <div class="ci" data-k="standard"><span class="ci-n"><span data-en>Standard</span><span data-uk>Звичайний</span><i>€50</i></span><span class="qty"><button type="button" class="dn" aria-label="−">−</button><b>0</b><button type="button" class="up" aria-label="+">+</button></span></div>
@@ -309,7 +337,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
 (function(){
   var root = document.documentElement;
   function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } }
-  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Замовити едіт" : "Order an edit") + " · Video editor · Katsuyuki"; }
+  function syncLang(){ var uk = root.lang === "uk"; document.getElementById("langBtn").textContent = uk ? "УКР" : "EN"; document.title = (uk ? "Замовити роботу" : "Order an edit") + " · Video editor · Katsuyuki"; }
   function morph(fn, cls, after){
     var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
     if(!document.startViewTransition || reduce){ fn(); return; }
@@ -386,10 +414,10 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   document.getElementById("cartOne").addEventListener("click", function(){ setMode(true); });
   /* блоки пожеланий: один на каждый эдит (2 коротких = 2 блока), введённый текст сохраняется */
   var T = {
-    want: ["What do you want?", "Що ви хочете?"], ex: ["Examples", "Приклади"], opt: ["Optional", "Необовʼязково"], edit: ["Edit", "Едіт"],
+    want: ["What do you want?", "Що ви хочете?"], ex: ["Examples", "Приклади"], opt: ["Optional", "Необовʼязково"], edit: ["Edit", "Робота"],
     phIdea: ["Anime or film, characters, song, mood, length…", "Аніме чи фільм, персонажі, пісня, настрій, тривалість…"],
     phIdeaOwn: ["Anime or your own footage (film, series), characters, song, mood…", "Аніме або ваш футаж (фільм, серіал), персонажі, пісня, настрій…"],
-    phEx: ["Links to edits you like, the song, clips (YouTube, TikTok, Google Drive…)", "Посилання на едіти, які подобаються, пісню, кліпи (YouTube, TikTok, Google Drive…)"]
+    phEx: ["Links to edits you like, the song, clips (YouTube, TikTok, Google Drive…)", "Посилання на роботи, які подобаються, пісню, кліпи (YouTube, TikTok, Google Drive…)"]
   };
   var LOCAL = { short:"Короткий", standard:"Звичайний", long:"Довгий", choice:"На ваш вибір" };
   var kept = [];
