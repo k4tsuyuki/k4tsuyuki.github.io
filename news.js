@@ -14,6 +14,13 @@
 
 window.NEWS = [
   {
+    date: "2026-11-05",
+    title: "Small things, done right",
+    text: "Draw a card. A link in Works pulls a random edit like a tarot card.\nCovers. They tilt under the cursor, and a fast swipe across one slices it open.\nOrder. A wax seal with my K after you send an order, plus FAQ with answers on revisions, payment and posting.\nPreviews. Clients get a private page to watch the draft and leave comments.\nPFS. Promo codes now work at checkout.\nEmail. Subscribe under contacts to get a letter when a new edit is out.\n\nThe site also loads faster now.",
+    link: "/order/",
+    button: "Order an edit"
+  },
+  {
     date: "2026-10-31",
     title: "About me, and a few details",
     text: "About. A new page: who I am, what I edit on, and how to credit me in collabs.\nGothic. The cross button next to the theme switch turns the whole site gothic.\nLinks. A link to the site or to any single edit now shows its own preview card in Discord, Telegram and other apps.\nCopy. Copying my email or Discord now shows a clear notice.\n\nThere's also something hidden on the site. Try to find it.",
