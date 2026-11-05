@@ -226,10 +226,15 @@ img.lz.lz.ok{opacity:1}
 .n-h::after{content:"+";font-size:20px;line-height:1;color:var(--ash);transition:transform .3s,color .2s;flex:none}
 .n-h:hover::after{color:var(--paper)}
 .n-row.open .n-h::after{transform:rotate(45deg)}
+.n-row{transition:padding .45s cubic-bezier(.2,0,0,1)}
+.n-row h3{transition:font-size .45s cubic-bezier(.2,0,0,1),line-height .45s}
 .n-row:not(.open){padding-block:16px}
 .n-row:not(.open) h3{font-size:clamp(18px,1.7vw,24px);line-height:1.2;letter-spacing:-.01em}
 .n-row:not(.open) .d{padding-top:.35em}
-.n-row:not(.open) .n-b{display:none}
+.n-b{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .45s cubic-bezier(.2,0,0,1),opacity .35s ease}
+.n-b>.n-in{overflow:hidden;min-height:0}
+.n-row:not(.open) .n-b{grid-template-rows:0fr;opacity:0}
+@media (prefers-reduced-motion:reduce){.n-row,.n-row h3,.n-b{transition:none}}
 .more{margin-top:20px;border:1px solid var(--hair);border-radius:999px;padding:8px 16px}
 .more:hover{border-color:var(--paper)}
 
@@ -787,7 +792,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
       var el = document.createElement("article"); el.className = "n-row";
       if(i >= SHOWN) el.hidden = true;
       var m = String(n.date || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
-      el.innerHTML = '<time class="d lb"></time><div><h3><button class="n-h" type="button"></button></h3><div class="n-b"><p></p></div></div>';
+      el.innerHTML = '<time class="d lb"></time><div><h3><button class="n-h" type="button"></button></h3><div class="n-b"><div class="n-in"><p></p></div></div></div>';
       if(i === 0) el.classList.add("open");
       el.querySelector(".n-h").setAttribute("aria-expanded", i === 0 ? "true" : "false");
       el.querySelector(".n-h").addEventListener("click", function(){ var o = el.classList.toggle("open"); this.setAttribute("aria-expanded", o ? "true" : "false"); });
@@ -799,7 +804,7 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
         var a = document.createElement("a"); a.className = "go lb"; a.href = n.link; a.target = "_blank"; a.rel = "noopener";
         if(n.button) a.textContent = n.button + " ↗\ufe0e"; else { a.setAttribute("data-i18n", "open_link"); a.textContent = t("open_link"); }
         a.addEventListener("click", function(){ track("news link: " + (n.title || n.link)); });
-        el.querySelector(".n-b").appendChild(a);
+        el.querySelector(".n-in").appendChild(a);
       }
       $("newsList").appendChild(el);
     });
