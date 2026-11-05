@@ -221,6 +221,15 @@ img.lz.lz.ok{opacity:1}
 .n-row p{margin:12px 0 0;max-width:62ch;color:var(--ash);white-space:pre-line;overflow-wrap:anywhere}
 .n-row .go{display:inline-block;margin-top:16px;border:1px solid var(--hair);border-radius:999px;padding:7px 14px;transition:border-color .3s}
 .n-row .go:hover{border-color:var(--paper)}
+/* свёрнутые новости: открыт только последний пост, остальные раскрываются по нажатию */
+.n-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;width:100%;text-align:left;cursor:pointer}
+.n-h::after{content:"+";font-size:20px;line-height:1;color:var(--ash);transition:transform .3s,color .2s;flex:none}
+.n-h:hover::after{color:var(--paper)}
+.n-row.open .n-h::after{transform:rotate(45deg)}
+.n-row:not(.open){padding-block:16px}
+.n-row:not(.open) h3{font-size:clamp(18px,1.7vw,24px);line-height:1.2;letter-spacing:-.01em}
+.n-row:not(.open) .d{padding-top:.35em}
+.n-row:not(.open) .n-b{display:none}
 .more{margin-top:20px;border:1px solid var(--hair);border-radius:999px;padding:8px 16px}
 .more:hover{border-color:var(--paper)}
 
@@ -773,21 +782,24 @@ if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test
   var NEWS = (window.NEWS || []).filter(function(n){ return n && (n.title || n.text); });
   if(NEWS.length){
     $("news").hidden = false;
-    var SHOWN = 4;
+    var SHOWN = 6;
     NEWS.forEach(function(n, i){
       var el = document.createElement("article"); el.className = "n-row";
       if(i >= SHOWN) el.hidden = true;
       var m = String(n.date || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
-      el.innerHTML = '<time class="d lb"></time><div><h3></h3><p></p></div>';
+      el.innerHTML = '<time class="d lb"></time><div><h3><button class="n-h" type="button"></button></h3><div class="n-b"><p></p></div></div>';
+      if(i === 0) el.classList.add("open");
+      el.querySelector(".n-h").setAttribute("aria-expanded", i === 0 ? "true" : "false");
+      el.querySelector(".n-h").addEventListener("click", function(){ var o = el.classList.toggle("open"); this.setAttribute("aria-expanded", o ? "true" : "false"); });
       el.querySelector("time").textContent = m ? m[3] + "." + m[2] + "." + m[1] : (n.date || "");
       if(m) el.querySelector("time").setAttribute("datetime", m[0]);
-      el.querySelector("h3").textContent = n.title || "";
+      el.querySelector(".n-h").textContent = n.title || "";
       var p = el.querySelector("p"); if(n.text) p.textContent = n.text; else p.remove();
       if(n.link){
         var a = document.createElement("a"); a.className = "go lb"; a.href = n.link; a.target = "_blank"; a.rel = "noopener";
         if(n.button) a.textContent = n.button + " ↗\ufe0e"; else { a.setAttribute("data-i18n", "open_link"); a.textContent = t("open_link"); }
         a.addEventListener("click", function(){ track("news link: " + (n.title || n.link)); });
-        el.lastElementChild.appendChild(a);
+        el.querySelector(".n-b").appendChild(a);
       }
       $("newsList").appendChild(el);
     });
