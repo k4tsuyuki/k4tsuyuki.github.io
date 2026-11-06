@@ -22,16 +22,29 @@
   --f:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif}
 :root[data-theme="light"]{--void:#e9e7e2;--sheet:#f6f5f1;--paper:#111;--ash:#6f6c66;--hair:rgba(17,17,17,.16);--logo:invert(1);color-scheme:light}
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{min-height:100%}
 body{margin:0;background:var(--void);color:var(--paper);font-family:var(--f);-webkit-font-smoothing:antialiased;
-  display:flex;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+  display:flex;min-height:100vh;min-height:100dvh;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
 .sheet{flex:1;background:var(--sheet);border:1px solid var(--hair);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(18px,3vw,32px);min-height:0}
 .lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;line-height:1.2}
 .m{color:var(--ash)}
 .top{display:flex;justify-content:space-between;gap:16px}
-.mid{text-align:center}
+.mid{text-align:center;margin:28px 0}
 .mid img{width:min(70%,420px);height:auto;margin:0 auto 28px;display:block;filter:var(--logo)}
-.code{font-size:clamp(72px,16vw,180px);line-height:.85;letter-spacing:-.04em;margin:0 0 18px}
+.code{font-size:clamp(56px,11vw,130px);line-height:.85;letter-spacing:-.04em;margin:0 0 14px}
+/* катакомбы (catacomb.js): лабиринт всегда тёмный, это подземелье */
+.cat{display:flex;flex-direction:column;align-items:center;gap:14px;margin:22px 0 26px}
+.maze{position:relative;width:min(380px,100%);aspect-ratio:1;border:1px solid var(--hair);background:#030303;touch-action:none;user-select:none;-webkit-user-select:none}
+.maze canvas{width:100%;height:100%;display:block}
+.maze .won{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.85);color:#eeebe5}
+.maze.done .won{display:flex}
+.maze .won .btn{border-color:#eeebe5;color:#eeebe5}.maze .won .btn:hover{background:#eeebe5;color:#000}
+.pad{display:grid;grid-template-columns:repeat(3,46px);gap:6px}
+.pad button{height:46px;background:none;border:1px solid var(--hair);color:var(--paper);font:inherit;font-size:16px;cursor:pointer;touch-action:none}
+.pad button:hover,.pad button:focus-visible{border-color:var(--paper)}
+.hint{margin:0;font-size:13px}
+@media (hover:hover) and (pointer:fine){.pad{display:none}}
+:focus-visible{outline:2px solid var(--paper);outline-offset:3px}
 h1{font-size:clamp(22px,3vw,30px);font-weight:400;margin:0 0 8px}
 p{margin:0 0 26px;color:var(--ash)}
 .btn{display:inline-block;border:1px solid var(--paper);border-radius:999px;padding:9px 18px;color:var(--paper);text-decoration:none;background:none;font:inherit;cursor:pointer;transition:background .3s,color .3s}
@@ -68,11 +81,16 @@ html[lang="uk"] p[data-uk],html[lang="uk"] h1[data-uk]{display:block}
   <div class="mid">
     <div class="code">404</div>
     <h1 data-en>Page not found</h1><h1 data-uk>Сторінку не знайдено</h1>
-    <p data-en>This link is broken or the page was moved.</p><p data-uk>Посилання не працює або сторінку перенесено.</p>
+    <p data-en>This link is broken or the page was moved. You are in the catacombs now.</p><p data-uk>Посилання не працює або сторінку перенесено. Тепер ви в катакомбах.</p>
+    <div class="cat">
+      <div class="maze" id="maze"><canvas id="mz" width="840" height="840" role="img" aria-label="Maze"></canvas><div class="won"><span class="lb" id="mzMsg"></span><button class="btn lb" id="again" type="button"></button></div></div>
+      <div class="pad" aria-label="Move"><span></span><button type="button" data-d="0,-1" aria-label="Up">↑</button><span></span><button type="button" data-d="-1,0" aria-label="Left">←</button><button type="button" data-d="0,1" aria-label="Down">↓</button><button type="button" data-d="1,0" aria-label="Right">→</button></div>
+      <p class="hint lb m"><span data-en>Reach the exit before the shade reaches you. Arrows, WASD or swipe.</span><span data-uk>Дійдіть до виходу, поки вас не наздогнала тінь. Стрілки, WASD або свайп.</span></p>
+    </div>
     <a class="btn lb" href="/"><span data-en>Back to home</span><span data-uk>На головну</span></a>
   </div>
   <div class="top lb m"><span>katsuyuki.studio</span><span></span></div>
 </main>
-
+<script src="/catacomb.js"></script>
 </body>
 </html>
