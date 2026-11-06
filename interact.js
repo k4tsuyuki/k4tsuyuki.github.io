@@ -10,7 +10,7 @@
   var css = '' +
     '.frame.kz-t{transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}' +
     '.frame.kz-t.kz-live{transition:transform .08s linear}' +
-    '#grid .frame,#arcGrid .frame{touch-action:pan-y}' +
+    '#grid .frame{touch-action:pan-y}' +
     '.kz-half{position:absolute;inset:0;z-index:4;pointer-events:none;transition:transform .9s cubic-bezier(.16,.8,.2,1),opacity .8s ease .2s}' +
     '.kz-half img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.85)}' +
     '.kz-cutbg{position:absolute;inset:0;z-index:3;background:#000;pointer-events:none}' +
@@ -125,7 +125,8 @@
     setTimeout(function(){ card._kzHold = false; card.click(); }, reduce ? 0 : 560);
     setTimeout(function(){ made.forEach(function(m){ m.remove(); }); done(); }, 1500);
   }
-  function wireAll(){ document.querySelectorAll("#grid .card, #arcGrid .card").forEach(wire); }
+  /* в архиве (#arcGrid) обложки бросают (dark.js), там разреза нет */
+  function wireAll(){ document.querySelectorAll("#grid .card").forEach(wire); }
   wireAll();
   /* архив догружается позже: подключаем новые карточки */
   try{ new MutationObserver(wireAll).observe(document.getElementById("works") || document.body, { childList: true, subtree: true }); }catch(e){}
