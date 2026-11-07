@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/maint.js"></script>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Year in edits · Katsuyuki</title>
+<link rel="icon" type="image/png" sizes="64x64" href="/img/favicon.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="description" content="Katsuyuki's year in edits: every edit of the year, the edit of the year and the songs behind them.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Katsuyuki">
+<meta property="og:title" content="Year in edits · Katsuyuki">
+<meta property="og:description" content="Every edit of the year in one story.">
+<meta property="og:url" content="https://katsuyuki.studio/year/">
+<meta property="og:image" content="https://katsuyuki.studio/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://katsuyuki.studio/year/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#060606">
+<script>try{if(localStorage.getItem("lang")==="uk")document.documentElement.lang="uk";}catch(e){}</script>
+<link rel="preload" href="/fonts/sans-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Layout: a phone-sized story stage (tap to advance, like stories) centered on black, a year rail below. Site look: black/white, Arial, bold caps labels, roman numerals, † marks, grain. */
+:root{
+  --ink:#060606; --paper:#f2f2f0; --mute:#8a8c90; --line:#26272a; --navy:#0d1220; --frost:#b9c3d6;
+  --sans:"KN",Arial,"Liberation Sans","Helvetica Neue",Helvetica,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--ink);color:var(--paper);font-family:var(--sans);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;align-items:center;gap:18px;padding-block:20px 28px;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+.lbl{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.demo{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:center;max-width:420px;line-height:1.6}
+.demo b{color:var(--paper)}
+
+.stage{position:relative;width:min(400px,100%);aspect-ratio:9/16;max-height:calc(100svh - 150px);background:var(--ink);
+  border:1px solid var(--line);overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:manipulation;cursor:pointer}
+@supports not (aspect-ratio:1){.stage{height:700px}}
+.bars{position:absolute;inset:10px 10px auto;display:flex;gap:4px;z-index:5}
+.bar{flex:1;height:2px;background:rgba(242,242,240,.22);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--paper)}
+.top{position:absolute;inset:20px 14px auto;display:flex;justify-content:space-between;align-items:center;z-index:5;color:var(--mute)}
+.grain{position:absolute;inset:-50%;z-index:4;pointer-events:none;opacity:.07;background-image:var(--noise);animation:gr 1s steps(4) infinite}
+@keyframes gr{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}}
+
+.slide{position:absolute;inset:0;padding:64px 26px 34px;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .5s ease,transform .7s cubic-bezier(.2,.7,.2,1);transform:scale(1.03)}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.slide .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;color:var(--mute)}
+.big{font-weight:700;line-height:.86;letter-spacing:-.04em}
+.roman{font-size:clamp(64px,22vw,104px)}
+.cross{color:var(--mute);font-weight:400}
+.rise>*{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.on .rise>*{opacity:1;transform:none}
+.on .rise>*:nth-child(2){transition-delay:.15s}.on .rise>*:nth-child(3){transition-delay:.3s}.on .rise>*:nth-child(4){transition-delay:.45s}.on .rise>*:nth-child(5){transition-delay:.6s}
+
+/* I intro */
+.s-intro{justify-content:center;align-items:center;text-align:center;gap:22px;background:radial-gradient(120% 70% at 50% 110%,var(--navy),transparent 70%)}
+.s-intro img{width:78%;filter:drop-shadow(0 0 30px rgba(185,195,214,.12))}
+.s-intro .roman{font-size:clamp(52px,17vw,84px)}
+/* II count */
+.count{font-size:clamp(140px,48vw,210px)}
+.vs{display:flex;gap:10px;align-items:baseline;color:var(--mute);font-size:14px}
+.vs strong{color:var(--paper)}
+/* III wall */
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:18px}
+.wall.many{grid-template-columns:repeat(5,1fr);gap:3px}
+.wall i{aspect-ratio:16/9;background:#111 center/cover;filter:grayscale(1) brightness(.75);opacity:0;transform:scale(.9);transition:opacity .4s, transform .5s, filter 1.6s}
+.on .wall i{opacity:1;transform:none}
+.on .wall i.c{filter:grayscale(0) brightness(1)}
+/* IV pick */
+.pick{margin-top:20px;position:relative}
+.pick .cv{aspect-ratio:16/9;background:#111 center/cover;filter:grayscale(1);transition:filter 2.4s ease .8s}
+.on .pick .cv{filter:grayscale(0)}
+.pick h2{font-size:30px;line-height:1;margin:16px 0 8px;text-wrap:balance;letter-spacing:-.02em}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{border:1px solid var(--paper);border-radius:99px;padding:3px 9px;font-size:10px;font-weight:700;letter-spacing:.12em}
+.badge{position:absolute;top:8px;left:8px;border:1px solid rgba(242,242,240,.85);border-radius:99px;padding:3px 9px;font-size:10px;font-weight:700;letter-spacing:.1em;background:rgba(6,6,6,.35)}
+/* V facts */
+.facts{display:flex;flex-direction:column;margin-top:22px}
+.fact{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;padding:16px 0;border-top:1px solid var(--line)}
+.fact:last-child{border-bottom:1px solid var(--line)}
+.fact .n{font-size:46px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;min-width:2.2ch}
+.fact .k{color:var(--frost);font-size:13px;line-height:1.35}
+.tag{display:inline-block;border:1px dashed var(--mute);color:var(--mute);padding:2px 6px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+/* VI soundtrack */
+.tracks{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column}
+.tracks li{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.tracks li span:first-child{color:var(--mute);font-size:11px;font-weight:700;letter-spacing:.1em}
+.tracks li em{font-style:normal;color:var(--mute);font-size:11px}
+.eq{display:flex;gap:2px;align-items:flex-end;height:12px}
+.eq b{width:2px;background:var(--paper);animation:eq 1s ease-in-out infinite}
+.eq b:nth-child(2){animation-delay:-.3s}.eq b:nth-child(3){animation-delay:-.6s}
+@keyframes eq{0%,100%{height:3px}50%{height:12px}}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--paper);color:var(--paper);background:none;padding:10px 16px;font:700 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--paper);color:var(--ink)}
+.btn:focus-visible,.yr:focus-visible{outline:2px solid var(--frost);outline-offset:3px}
+/* VII outro */
+.s-out{align-items:center;text-align:center;gap:14px}
+.card{width:52%;aspect-ratio:9/16;border:1px solid var(--line);margin-top:6px;background:#000}
+.card canvas{width:100%;height:100%;display:block}
+.hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:var(--mute);z-index:5;pointer-events:none;transition:opacity .4s}
+
+.rail{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:420px}
+.yr{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 11px;font:700 11px var(--sans);letter-spacing:.14em;cursor:pointer}
+.yr[aria-pressed="true"]{border-color:var(--paper);color:var(--paper)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@font-face{font-family:"KN";src:local("Arial"),local("ArialMT"),url(/fonts/sans-Regular.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"KN";src:local("Arial Bold"),local("Arial-BoldMT"),url(/fonts/sans-Bold.woff2) format("woff2");font-weight:700;font-display:block}
+html{background:var(--ink)}
+a{color:inherit;text-decoration:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+body{margin:0;min-height:100%}
+.topbar{width:min(400px,100%);display:flex;justify-content:space-between;align-items:center;color:var(--mute)}
+.topbar a:hover{color:var(--paper)}
+.foot a{pointer-events:auto}
+.slide a,.slide button{position:relative;z-index:6}
+.save{margin-top:4px}
+html:not([lang="uk"]) [data-uk],html[lang="uk"] [data-en]{display:none!important}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<h1 class="vh">Katsuyuki · Year in edits</h1>
+<div class="topbar lbl"><a href="/" aria-label="Back to the site">← Katsuyuki</a><button class="lbl" id="lang" type="button" style="background:none;border:0;color:inherit;cursor:pointer;font-family:inherit">EN / UA</button></div>
+
+<div class="stage" id="stage" tabindex="0" aria-label="Year in edits">
+  <div class="bars" id="bars"></div>
+  <div class="top lbl"><span>Katsuyuki</span><span id="topYear"></span></div>
+  <div id="slides"></div>
+  <div class="grain"></div>
+  <div class="hint lbl" id="hint"><span data-en>Tap →</span><span data-uk>Тапни →</span></div>
+</div>
+
+<div class="rail" id="rail" aria-label="Years"></div>
+
+<script src="/works.js"></script>
+<script>
+/* ИТОГИ ГОДА. Всё берётся из works.js само.
+   Эдит года: поставь best: true у нужной работы в works.js (иначе берётся верхняя работа года).
+   Плейлист: впиши ссылку в playlist: "" в начале works.js (без ссылки кнопки нет).
+   Текущий год появляется здесь 17 декабря; раньше можно посмотреть так: /year/?preview */
+(function(){
+var SITE = window.SITE || {}, ALL = (window.WORKS || []).slice();
+var now = new Date(), Y = now.getFullYear();
+var open = now.getMonth() === 11 && now.getDate() >= 17 || /[?&]preview/.test(location.search);
+var R = function(n){ var m=[[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],[50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]], s=""; m.forEach(function(p){ while(n>=p[0]){ s+=p[1]; n-=p[0]; } }); return s; };
+var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
+var vid = function(l){ return ((l||"").match(/(?:youtu\.be\/|v=|\/shorts\/|\/embed\/)([\w-]{11})/) || [])[1] || ""; };
+var root = document.documentElement, uk = function(){ return root.lang === "uk"; };
+var $ = function(id){ return document.getElementById(id); };
+
+/* те же адреса /w/…/, что делает build_pages.py */
+var W = ALL.map(function(w, i){ return { t: w.title, y: +w.year, id: vid(w.link), link: w.link, tags: w.tags || [], r: w.ratio || "", a: !!w.archive, best: !!w.best, badge: w.badge || "", i: i }; });
+(function(){ var s = W.slice().sort(function(a, b){ return b.y - a.y || a.i - b.i; }), used = {};
+  s.forEach(function(w){ var base = w.t.toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || w.id || "work", slug = base, n = 2;
+    while(used[slug]) slug = base + "-" + (n++); used[slug] = 1; w.slug = slug; }); })();
+
+var years = [], seen = {};
+W.forEach(function(w){ if(!seen[w.y] && (w.y < Y || w.y === Y && open)){ seen[w.y] = 1; years.push(w.y); } });
+years.sort();
+if(!years.length) return;
+var qy = +((location.search.match(/[?&]y=(\d{4})/) || [])[1] || 0);
+var year = years.indexOf(qy) > -1 ? qy : years[years.length - 1];
+
+function T(en, ua){ return '<span data-en>' + en + '</span><span data-uk>' + ua + '</span>'; }
+function edits(n){ var m10 = n % 10, m100 = n % 100; return T(n === 1 ? "edit" : "edits", m10 === 1 && m100 !== 11 ? "едит" : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? "едити" : "едитів"); }
+function cover(id, small){ return "/img/covers/" + id + (small ? "-s" : "") + ".jpg"; }
+function clean(t){ return t.replace(/\s*\((?:practice|collab part|mep part|quality test|ft\.[^)]*|rm:[^)]*)\)/ig, "").replace(/\s+(?:\d+HC|V\d)$/, "").split(/ — /)[0].trim(); }
+
+var idx = 0, slides = [], t0 = 0, paused = false, elapsed = 0, DUR = 6500;
+
+function build(y){
+  var ws = W.filter(function(w){ return w.y === y; }), prev = W.filter(function(w){ return w.y === y - 1; });
+  var k4 = ws.filter(function(w){ return w.tags.indexOf("4K") > -1; }).length;
+  var col = ws.filter(function(w){ return w.tags.some(function(t){ return /collab/i.test(t); }); }).length;
+  var mmv = ws.filter(function(w){ return w.tags.indexOf("MMV") > -1; }).length;
+  var r43 = ws.filter(function(w){ return /^(1920x1440|4:3)$/.test(w.r); }).length;
+  var top = ws.filter(function(w){ return w.best; })[0] || ws.filter(function(w){ return !w.a; })[0] || ws[0];
+  var diff = prev.length ? ws.length - prev.length : null, S = [];
+  S.push('<section class="slide s-intro"><div class="rise" style="display:flex;flex-direction:column;align-items:center;gap:22px;width:100%">' +
+    '<img src="/img/logo.png" alt="Katsuyuki">' +
+    '<div class="lbl" style="color:var(--frost)">' + T("Year in edits", "Рік в едитах") + '</div>' +
+    '<div class="big roman">' + R(y) + '</div></div></section>');
+  S.push('<section class="slide"><div class="rise" style="display:flex;flex-direction:column;gap:14px;margin-top:auto">' +
+    '<div class="lbl" style="color:var(--frost)">' + T("Released this year", "Вийшло за рік") + '</div>' +
+    '<div class="big count" data-count="' + ws.length + '">0</div>' +
+    '<div class="lbl">' + edits(ws.length) + (mmv ? ' · ' + (ws.length - mmv) + ' AMV · ' + mmv + ' MMV' : '') + '</div>' +
+    (diff !== null ? '<div class="vs"><span class="cross">†</span><span>' + R(y - 1) + ': <strong>' + prev.length + '</strong></span><span>' + (diff > 0 ? "+" + diff : diff < 0 ? diff : "=") + '</span></div>' : '') +
+    '</div><div class="foot lbl"><span>I</span><span>' + R(y) + '</span></div></section>');
+  S.push('<section class="slide"><div class="lbl" style="color:var(--frost)">' + T("Every cover of ", "Усі обкладинки ") + R(y) + '</div>' +
+    '<div class="wall ' + (ws.length > 12 ? "many" : "") + '">' + ws.map(function(w){ return '<i style="background-image:url(' + cover(w.id, 1) + ')" title="' + esc(w.t) + '"></i>'; }).join("") + '</div>' +
+    '<div class="foot lbl"><span>II</span><span>' + T("From black and white to colour", "Від ч/б до кольору") + '</span></div></section>');
+  S.push('<section class="slide"><div class="lbl" style="color:var(--frost)">' + T("Edit of the year", "Едит року") + '</div>' +
+    '<div class="pick"><div class="cv" style="background-image:url(' + cover(top.id) + ')"></div>' + (top.badge ? '<span class="badge">★ ' + esc(top.badge) + '</span>' : '') +
+    '<h2>' + esc(top.t) + '</h2><div class="pills">' + top.tags.map(function(t){ return '<span class="pill">' + esc(t) + '</span>'; }).join("") + '</div></div>' +
+    '<div class="foot lbl"><span>III</span><a href="/w/' + top.slug + '/" data-go>' + T("Watch ↗", "Дивитись ↗") + '</a></div></section>');
+  S.push('<section class="slide"><div class="lbl" style="color:var(--frost)">' + T("In numbers", "У цифрах") + '</div><div class="facts">' +
+    '<div class="fact"><span class="n">' + k4 + '/' + ws.length + '</span><span class="k">' + T("in 4K", "у 4K") + '</span></div>' +
+    (r43 ? '<div class="fact"><span class="n">' + r43 + '</span><span class="k">' + T("in 4:3", "у 4:3") + '</span></div>' : '') +
+    '<div class="fact"><span class="n">' + col + '</span><span class="k">' + T(col === 1 ? "collab" : "collabs", col === 1 ? "колаб" : "колаби") + '</span></div>' +
+    '</div><div class="foot lbl"><span>IV</span><span>' + R(y) + '</span></div></section>');
+  var tr = ws.filter(function(w){ return !/practice|quality test|opening|manga animation/i.test(w.t); }).slice(0, 8);
+  S.push('<section class="slide"><div class="lbl" style="color:var(--frost)">' + T("Soundtrack of ", "Саундтрек ") + R(y) + '</div>' +
+    '<ol class="tracks">' + tr.map(function(w, i){ return '<li><span>' + R(i + 1) + '</span><span>' + esc(clean(w.t)) + '</span>' + (i === 0 ? '<span class="eq"><b></b><b></b><b></b></span>' : '<em>›</em>') + '</li>'; }).join("") + '</ol>' +
+    (SITE.playlist ? '<div style="margin-top:18px"><a class="btn" href="' + esc(SITE.playlist) + '" target="_blank" rel="noopener" data-go>' + T("Open playlist ↗", "Відкрити плейлист ↗") + '</a></div>' : '') +
+    '<div class="foot lbl"><span>V</span><span>' + T("Songs from the edits", "Пісні з едитів") + '</span></div></section>');
+  S.push('<section class="slide s-out"><div class="lbl" style="color:var(--frost)">' + T("Story card", "Картка для сторіс") + '</div>' +
+    '<div class="card"><canvas id="card" width="1080" height="1920"></canvas></div>' +
+    '<div class="big" style="font-size:26px;letter-spacing:-.01em">' + T("See you in ", "До зустрічі в ") + R(y + 1) + '</div>' +
+    '<button class="btn save" id="save" type="button">' + T("Save card", "Зберегти картку") + '</button></section>');
+  return S;
+}
+
+function render(){
+  $("slides").innerHTML = build(year).join("");
+  slides = [].slice.call(document.querySelectorAll(".slide"));
+  $("bars").innerHTML = slides.map(function(){ return '<div class="bar"><i></i></div>'; }).join("");
+  $("topYear").textContent = R(year);
+  drawCard();
+  go(0);
+}
+function go(i){
+  idx = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach(function(s, j){ s.classList.toggle("on", j === idx); });
+  [].forEach.call($("bars").children, function(b, j){ b.firstChild.style.width = j < idx ? "100%" : "0"; });
+  $("hint").style.opacity = idx === 0 ? 1 : 0;
+  var s = slides[idx];
+  [].forEach.call(s.querySelectorAll("[data-count]"), function(el){ var n = +el.dataset.count, st = performance.now();
+    (function f(t){ var p = Math.min(1, ((t || st) - st) / 1100); el.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))); if(p < 1) requestAnimationFrame(f); })(); });
+  [].forEach.call(s.querySelectorAll(".wall i"), function(el, k){ el.classList.remove("c"); el.style.transitionDelay = (k * 60) + "ms, " + (k * 60) + "ms, " + (900 + k * 140) + "ms"; setTimeout(function(){ el.classList.add("c"); }, 30); });
+  elapsed = 0; t0 = performance.now();
+  try{ if(idx === slides.length - 1 && window.goatcounter && goatcounter.count) goatcounter.count({ path: "year: finished " + year, title: "year: finished " + year, event: true }); }catch(e){}
+}
+function tick(t){
+  if(!paused){ elapsed = t - t0; var p = Math.min(1, elapsed / DUR), b = $("bars").children[idx]; if(b) b.firstChild.style.width = (p * 100) + "%";
+    if(p >= 1){ if(idx < slides.length - 1) go(idx + 1); else t0 = t - DUR; } }
+  else t0 = t - elapsed;
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+function img(src){ return new Promise(function(ok){ var im = new Image(); im.onload = function(){ ok(im); }; im.onerror = function(){ ok(null); }; im.src = src; }); }
+var cardReady = null;
+function drawCard(){
+  var c = $("card"); if(!c) return; var x = c.getContext("2d"), Wd = 1080, H = 1920, y = year;
+  var ws = W.filter(function(w){ return w.y === y; }), F = '"KN", Arial, sans-serif';
+  cardReady = Promise.all([img("/img/logo.png")].concat(ws.slice(0, 9).map(function(w){ return img(cover(w.id, 1)); }))).then(function(ims){
+    if(y !== year) return;
+    x.fillStyle = "#060606"; x.fillRect(0, 0, Wd, H);
+    var g = x.createRadialGradient(Wd / 2, H * 1.05, 20, Wd / 2, H * 1.05, Wd); g.addColorStop(0, "#0d1220"); g.addColorStop(1, "rgba(6,6,6,0)"); x.fillStyle = g; x.fillRect(0, 0, Wd, H);
+    var L = ims[0]; if(L){ var lw = Wd * .72, lh = lw * L.height / L.width; x.drawImage(L, (Wd - lw) / 2, 140, lw, lh); }
+    x.textAlign = "center";
+    x.fillStyle = "#b9c3d6"; x.font = "700 30px " + F; if("letterSpacing" in x) x.letterSpacing = "6px"; x.fillText(uk() ? "РІК В ЕДИТАХ" : "YEAR IN EDITS", Wd / 2, 580);
+    x.fillStyle = "#f2f2f0"; x.font = "700 224px " + F; if("letterSpacing" in x) x.letterSpacing = "-8px"; x.fillText(R(y), Wd / 2, 820);
+    var cw = 296, ch = 166, gap = 16, ox = (Wd - (cw * 3 + gap * 2)) / 2, oy = 940;
+    ims.slice(1).forEach(function(im, i){ if(!im) return; var cx = ox + (i % 3) * (cw + gap), cy = oy + Math.floor(i / 3) * (ch + gap), r = im.width / im.height, sw = im.width, sh = im.height, sx = 0, sy = 0;
+      if(r > cw / ch){ sw = im.height * cw / ch; sx = (im.width - sw) / 2; } else { sh = im.width * ch / cw; sy = (im.height - sh) / 2; }
+      x.save(); x.filter = "grayscale(1)"; x.drawImage(im, sx, sy, sw, sh, cx, cy, cw, ch); x.restore(); });
+    if("letterSpacing" in x) x.letterSpacing = "0px"; x.fillStyle = "#f2f2f0"; x.font = "700 128px " + F; x.fillText(String(ws.length), Wd / 2, 1600);
+    x.font = "700 28px " + F; if("letterSpacing" in x) x.letterSpacing = "6px"; x.fillStyle = "#8a8c90"; x.fillText(uk() ? "ЕДИТІВ" : (ws.length === 1 ? "EDIT" : "EDITS"), Wd / 2, 1656);
+    x.fillText("KATSUYUKI.STUDIO  †", Wd / 2, 1820);
+  });
+}
+function save(){
+  var c = $("card"); if(!c) return;
+  (cardReady || Promise.resolve()).then(function(){ c.toBlob(function(b){ if(!b) return;
+    var name = "katsuyuki-" + year + ".png", f = null;
+    try{ f = new File([b], name, { type: "image/png" }); }catch(e){}
+    try{ if(window.goatcounter && goatcounter.count) goatcounter.count({ path: "year: save card " + year, title: "year: save card", event: true }); }catch(e){}
+    if(f && navigator.canShare && navigator.canShare({ files: [f] })){ navigator.share({ files: [f] }).catch(function(){}); return; }
+    var a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }, "image/png"); });
+}
+
+var st = $("stage"), hold = null, held = false;
+st.addEventListener("pointerdown", function(e){ if(e.target.closest("a,button")) return; held = false; hold = setTimeout(function(){ held = true; paused = true; }, 220); });
+st.addEventListener("pointerup", function(e){ if(e.target.closest("a,button")) return; clearTimeout(hold); if(held){ paused = false; return; } var r = st.getBoundingClientRect(); go(e.clientX - r.left < r.width * .33 ? idx - 1 : idx + 1); });
+st.addEventListener("pointerleave", function(){ clearTimeout(hold); paused = false; });
+st.addEventListener("click", function(e){ if(e.target.closest("#save")) save(); });
+st.addEventListener("keydown", function(e){ if(e.target !== st) return; if(e.key === "ArrowRight" || e.key === " "){ go(idx + 1); e.preventDefault(); } if(e.key === "ArrowLeft") go(idx - 1); });
+$("rail").innerHTML = years.length > 1 ? years.map(function(y){ return '<button class="yr" type="button" id="y' + y + '" aria-pressed="' + (y === year) + '">' + R(y) + '</button>'; }).join("") : "";
+$("rail").addEventListener("click", function(e){ var b = e.target.closest(".yr"); if(!b) return; year = +b.id.slice(1); [].forEach.call($("rail").children, function(c){ c.setAttribute("aria-pressed", c === b); }); render(); });
+$("lang").addEventListener("click", function(){ var l = uk() ? "en" : "uk"; root.lang = l; try{ localStorage.setItem("lang", l); }catch(e){} drawCard(); });
+/* шум плёнки */
+(function(){ var c = document.createElement("canvas"); c.width = c.height = 160; var x = c.getContext("2d"), d = x.createImageData(160, 160); for(var i = 0; i < d.data.length; i += 4){ var v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; } x.putImageData(d, 0, 0); root.style.setProperty("--noise", "url(" + c.toDataURL() + ")"); })();
+render();
+})();
+</script>
+<script>
+window.track = function(){};
+if(/(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)){
+  window.goatcounter = { allow_local: false };
+  var gc = document.createElement("script"); gc.async = true; gc.src = "https://gc.zgo.at/count.js";
+  gc.setAttribute("data-goatcounter", "https://katsuyuki.goatcounter.com/count"); document.head.appendChild(gc);
+}
+if("serviceWorker" in navigator && /(^|\.)katsuyuki\.studio$|\.github\.io$/.test(location.hostname)) addEventListener("load", function(){ navigator.serviceWorker.register("/sw.js").catch(function(){}); });
+</script>
+</body>
+</html>
