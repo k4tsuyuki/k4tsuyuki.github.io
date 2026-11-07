@@ -7,6 +7,8 @@
 window.SITE = {
   name: "Katsuyuki",
   software: "After Effects / Photoshop",
+  /* плейлист года (Spotify); ссылка появится кнопкой на странице /year/. Пусто = кнопки нет */
+  playlist: "",
   /* контакты: если ссылки нет (url: ""), рядом будет кнопка Copy */
   contacts: [
     { label: "Email",   value: "katsuyukiadmin@gmail.com", url: "mailto:katsuyukiadmin@gmail.com" },
@@ -28,6 +30,7 @@ window.SITE = {
      link  — ссылка на YouTube (любая: youtu.be, watch, shorts)
      tags  — метки, например ["AMV", "4K"]
      badge — (необязательно) плашка на обложке, например badge: "Flxwery's pick"
+     best  — (необязательно) best: true = «эдит года» на странице итогов /year/
      ratio — (необязательно) формат кадра, если не 16:9, например ratio: "1920x1440"
              или ratio: "1920x800". Обычно сайт ставит его сам.
    --------------------------------------------------------------------- */
