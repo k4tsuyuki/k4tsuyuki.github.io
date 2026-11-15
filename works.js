@@ -8,7 +8,7 @@ window.SITE = {
   name: "Katsuyuki",
   software: "After Effects / Photoshop",
   /* плейлист года (Spotify); ссылка появится кнопкой на странице /year/. Пусто = кнопки нет */
-  playlist: "",
+  playlist: "https://open.spotify.com/playlist/6bPA96KYsPAGdUq33AV0eU",
   /* контакты: если ссылки нет (url: ""), рядом будет кнопка Copy */
   contacts: [
     { label: "Email",   value: "katsuyukiadmin@gmail.com", url: "mailto:katsuyukiadmin@gmail.com" },
